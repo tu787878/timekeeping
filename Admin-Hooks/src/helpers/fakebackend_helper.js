@@ -109,7 +109,7 @@ export const getProductDetail = id =>
   get(`${url.GET_PRODUCTS_DETAIL}/${id}`, { params: { id } });
 
 // get Events
-export const getEvents = () => get(url.GET_EVENTS);
+export const getEvents = () => get(url.GET_EVENT_DEMO);
 
 // add Events
 export const addNewEvent = event => post(url.ADD_NEW_EVENT, event);
@@ -200,6 +200,13 @@ export const getProjectsDetails = id =>
 
 // get tasks
 export const getTasks = () => get(url.GET_TASKS);
+
+// get teams
+export const getTeams = () => get(url.GET_TEAMS);
+export const updateTeams = team => put(`${url.GET_TEAMS}/${team.id}`, team);
+
+export const getStaffs = () => get(url.GET_STAFFS);
+export const updateStaffs = staff => put(`${url.GET_STAFFS}/${staff.id}`, staff);
 
 // get contacts
 export const getUsers = () => get(url.GET_USERS);

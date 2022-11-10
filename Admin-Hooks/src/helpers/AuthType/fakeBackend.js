@@ -891,6 +891,7 @@ const fakeBackend = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (members) {
+          console.log(members);
           // Passing fake JSON data as response
           resolve([200, members]);
         } else {

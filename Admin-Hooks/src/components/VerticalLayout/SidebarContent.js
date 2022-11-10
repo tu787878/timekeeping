@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom"
 import { Link } from "react-router-dom"
 
 import AccessControl from "../../guard/guard"
-import { authProtectedContent } from "../../common/data/sidebar-element"
+import { authProtectedContent, adminContent} from "../../common/data/sidebar-element"
 
 //i18n
 import { withTranslation } from "react-i18next"
@@ -90,77 +90,97 @@ const SidebarContent = props => {
     return false
   }
 
+  const renderLink = (object, i) =>{
+    if (object.children.length == 0) {
+      if (object.className != "") {
+        return (
+          <AccessControl
+            key={i}
+            allowedPermissions={[object.allowedPermissions]}
+            id={object.id}
+          >
+            <li>
+              <Link to={object.path}>
+                <i className={`bx ${object.className}`}></i>
+                <span>{props.t(object.contextId)}</span>
+              </Link>
+            </li>
+          </AccessControl>
+        )
+      } else {
+        return (
+          <AccessControl
+            key={i}
+            allowedPermissions={[object.allowedPermissions]}
+            id={object.id}
+          >
+            <li>
+              <Link to={object.path}>
+                <span>{props.t(object.contextId)}</span>
+              </Link>
+            </li>
+          </AccessControl>
+        )
+      }
+    } else {
+      return (
+        <AccessControl
+          key={i}
+          allowedPermissions={[object.allowedPermissions]}
+          id={object.id}
+        >
+          <li>
+            <Link to="/#" className="has-arrow">
+              <i className={`bx ${object.className}`}></i>
+              <span>{props.t(object.contextId)}</span>
+            </Link>
+            <ul className="sub-menu">
+              {object.children.map(function (child, ic) {
+                return (
+                  <AccessControl
+                    key={ic}
+                    allowedPermissions={[child.allowedPermissions]}
+                    id={child.id}
+                  >
+                    <li>
+                      <Link to={child.path}>
+                        {props.t(child.contextId)}
+                      </Link>
+                    </li>
+                  </AccessControl>
+                )
+              })}
+            </ul>
+          </li>
+        </AccessControl>
+      )
+    }
+
+  }
+
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
-            {authProtectedContent.map(function (object, i) {
-              if (object.children.length == 0) {
-                if (object.className != "") {
-                  return (
-                    <AccessControl
-                      key={i}
-                      allowedPermissions={[object.allowedPermissions]}
-                      id={object.id}
-                    >
-                      <li>
-                        <Link to={object.path}>
-                          <i className={`bx ${object.className}`}></i>
-                          <span>{props.t(object.contextId)}</span>
-                        </Link>
-                      </li>
-                    </AccessControl>
-                  )
-                } else {
-                  return (
-                    <AccessControl
-                      key={i}
-                      allowedPermissions={[object.allowedPermissions]}
-                      id={object.id}
-                    >
-                      <li>
-                        <Link to={object.path}>
-                          {props.t(object.contextId)}
-                        </Link>
-                      </li>
-                    </AccessControl>
-                  )
-                }
-              } else {
-                return (
-                  <AccessControl
-                    key={i}
-                    allowedPermissions={[object.allowedPermissions]}
-                    id={object.id}
-                  >
-                    <li>
-                      <Link to="/#" className="has-arrow">
-                        <i className={`bx ${object.className}`}></i>
-                        <span>{props.t(object.contextId)}</span>
-                      </Link>
-                      <ul className="sub-menu">
-                        {object.children.map(function (child, ic) {
-                          return (
-                            <AccessControl
-                              key={ic}
-                              allowedPermissions={[child.allowedPermissions]}
-                              id={child.id}
-                            >
-                              <li>
-                                <Link to={child.path}>
-                                  {props.t(child.contextId)}
-                                </Link>
-                              </li>
-                            </AccessControl>
-                          )
-                        })}
-                      </ul>
-                    </li>
-                  </AccessControl>
-                )
-              }
-            })}
+            {
+              authProtectedContent.map(function (object, i) {
+                return renderLink(object, i);
+              })
+            }
+            <AccessControl
+              allowedPermissions={[""]}
+              id="semi_admin"
+            >
+              <li className="menu-title">Admin</li>
+            </AccessControl>
+
+            {
+              adminContent.map(function (object, i) {
+                return renderLink(object, i);
+              })
+            }
+
           </ul>
         </div>
       </SimpleBar>

@@ -52,6 +52,12 @@ import ContactsGrid from "../pages/Contacts/contacts-grid"
 import ContactsList from "../pages/Contacts/ContactList/contacts-list"
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
+
+// admin
+import TeamManager from "../pages/admin/ContactList/contacts-list"
+import StaffManager from "../pages/admin/Staff/contacts-list"
+
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard , id:"Dashboard", allowedPermissions:["view"], className:"", contextId:"Dashboard"},
 
@@ -84,6 +90,10 @@ const authProtectedRoutes = [
   { path: "/contacts-grid", component: ContactsGrid, id:"Contact", allowedPermissions: ["view"] },
   { path: "/contacts-list", component: ContactsList, id:"Contact", allowedPermissions: ["view"] },
   { path: "/contacts-profile", component: ContactsProfile, id:"Contact", allowedPermissions: ["view"] },
+
+  // admin
+  { path: "/team-manager", component: TeamManager, id:"Team", allowedPermissions: ["edit"] },
+  { path: "/staff-manager", component: StaffManager, id:"Staff", allowedPermissions: ["edit"] },
 
 
   // this route should be at the end of all other routes

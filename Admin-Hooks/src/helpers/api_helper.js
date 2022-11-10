@@ -7,7 +7,7 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 });
 
- axiosApi.defaults.headers.common["Authorization"] = getToken();
+axiosApi.defaults.headers.common["Authorization"] = getToken();
 
 axiosApi.interceptors.response.use(
   response => response,

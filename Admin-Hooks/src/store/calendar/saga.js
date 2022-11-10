@@ -33,7 +33,7 @@ import {
 function* fetchEvents() {
   try {
     const response = yield call(getEvents)
-    yield put(getEventsSuccess(response))
+    yield put(getEventsSuccess(response.data))
   } catch (error) {
     yield put(getEventsFail(error))
   }

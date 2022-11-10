@@ -1,0 +1,8 @@
+// admin
+export const GET_TEAMS = "GET_TEAMS"
+export const GET_TEAMS_SUCCESS = "GET_TEAMS_SUCCESS"
+export const GET_TEAMS_FAIL = "GET_TEAMS_FAIL"
+
+export const UPDATE_TEAMS = "UPDATE_TEAMS"
+export const UPDATE_TEAMS_SUCCESS = "UPDATE_TEAMS_SUCCESS"
+export const UPDATE_TEAMS_FAIL = "UPDATE_TEAMS_FAIL"

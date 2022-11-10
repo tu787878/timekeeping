@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const checkPermissions = (userPermissions, allowedPermissions, id) => {
-    if (allowedPermissions == undefined || allowedPermissions.length === 0) {
+    
+  if (allowedPermissions == undefined || allowedPermissions.length === 0) {
       return true;
-    }
-  
+  }
+  if(userPermissions.includes("admin")) return true;
     const res = allowedPermissions.map(permission => {
       return permission+id;
     })

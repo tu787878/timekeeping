@@ -11,7 +11,7 @@ const authProtectedContent = [
   { path: "/calendar", id:"Calendar", allowedPermissions: ["view"], className:"bx-calendar", contextId:"Calendar", children:[]},
 
   // //profile
-  { path: "/profile", id:"Profile", allowedPermissions: ["view"], className:"bx-calendar", contextId:"Profile", children:[]},
+  // { path: "/profile", id:"Profile", allowedPermissions: ["view"], className:"bx-calendar", contextId:"Profile", children:[]},
 
   // Tasks
   { path: "/#", id:"Task", allowedPermissions: ["view"], className:"bx-task", contextId:"Tasks",
@@ -52,8 +52,16 @@ const authProtectedContent = [
     ] 
   },
 
-
-
 ]
 
-export { authProtectedContent}
+const adminContent = [
+    // staff
+    { path: "/#", id:"StaffManager", allowedPermissions: ["view"], className:"bxs-user-detail", contextId:"Staff Manager", 
+      children:[
+        { path: "/team-manager", id:"Team", allowedPermissions: ["edit"], className:"", contextId:"Team", children:[] },
+        { path: "/staff-manager", id:"Staff", allowedPermissions: ["edit"], className:"", contextId:"Staff", children:[] },
+      ] 
+    },
+]
+
+export { authProtectedContent, adminContent}

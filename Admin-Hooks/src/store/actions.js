@@ -44,3 +44,8 @@ export * from "./dashboard-saas/actions";
 
 //demo
 export * from "./demo/actions";
+
+
+//admin
+export * from "./admin/team/actions";
+export * from "./admin/staff/actions";
