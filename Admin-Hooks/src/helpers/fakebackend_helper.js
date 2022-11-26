@@ -205,11 +205,33 @@ export const getTasks = () => get(url.GET_TASKS);
 export const getTeams = () => get(url.GET_TEAMS);
 export const updateTeams = team => put(`${url.GET_TEAMS}/${team.id}`, team);
 
+export const getCapabilities = () => get(url.GET_CAPABILITIES);
+
+
+//////////////////////////////////////////////////// 
+//  scan-device, cards
+
+export const getScanDevices = () => get(url.GET_SCAN_DEVICE);
+export const updateScanDevice = (device) => put(url.GET_SCAN_DEVICE, device);
+export const deleteScanDevice = (device) => del(url.GET_SCAN_DEVICE, device);
+export const addScanDevice = (device) => post(url.GET_SCAN_DEVICE, device);
+
+export const getCards = (deviceId) => get(`${url.GET_CARDS}/${deviceId}`);
+export const addCard = (card) => post(url.GET_CARDS, card);
+export const deleteCard = (card) => del(url.GET_CARDS, card);
+
+export const getWaitingCards = (deviceId) => get(`${url.GET_WAITING_CARDS}/${deviceId}`);
+export const addWaitingCard = (card) => post(url.GET_WAITING_CARDS, card);
+export const deleteWaitingCard = (card) => del(url.GET_WAITING_CARDS, card);
+
+///////////////////////////////////////////////////
+
 export const getStaffs = () => get(url.GET_STAFFS);
 export const updateStaffs = staff => put(`${url.GET_STAFFS}/${staff.id}`, staff);
+export const newStaff = staff => post(`${url.GET_STAFFS}`, staff);
 
 // get contacts
-export const getUsers = () => get(url.GET_USERS);
+export const getUsers = id => get(url.GET_USERS);
 
 // add user
 export const addNewUser = user => post(url.ADD_NEW_USER, user);
@@ -243,7 +265,7 @@ export const updateProject = project => put(url.UPDATE_PROJECT, project);
 export const deleteProject = project =>
   del(url.DELETE_PROJECT, { headers: { project } });
 
-export const getUserProfile = () => get(url.GET_USER_PROFILE);
+export const getUserProfile = id => get(url.GET_USER_PROFILE + "/" + id);
 
 // get inboxmail
 export const getInboxMails = () => get(url.GET_INBOX_MAILS);

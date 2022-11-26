@@ -28,10 +28,10 @@ function* fetchUsers() {
   }
 }
 
-function* fetchUserProfile() {
+function* fetchUserProfile({ payload: id }) {
   try {
-    const response = yield call(getUserProfile)
-    yield put(getUserProfileSuccess(response))
+    const response = yield call(getUserProfile, id)
+    yield put(getUserProfileSuccess(response.data))
   } catch (error) {
     yield put(getUserProfileFail(error))
   }

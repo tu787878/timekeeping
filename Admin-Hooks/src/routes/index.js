@@ -46,6 +46,7 @@ import PagesMaintenance from "../pages/Utility/pages-maintenance"
 import PagesComingsoon from "../pages/Utility/pages-comingsoon"
 import Pages404 from "../pages/Utility/pages-404"
 import Pages500 from "../pages/Utility/pages-500"
+import PermissionDenied from "../pages/Utility/permission-denied"
 
 //Contacts
 import ContactsGrid from "../pages/Contacts/contacts-grid"
@@ -56,6 +57,9 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 // admin
 import TeamManager from "../pages/admin/ContactList/contacts-list"
 import StaffManager from "../pages/admin/Staff/contacts-list"
+import NewStaff from "../pages/admin/Staff/new-staff"
+import ScanDevice from "../pages/admin/scan-device/index"
+import SocketConfig from "../components/socket/socket"
 
 
 const authProtectedRoutes = [
@@ -90,11 +94,16 @@ const authProtectedRoutes = [
   { path: "/contacts-grid", component: ContactsGrid, id:"Contact", allowedPermissions: ["view"] },
   { path: "/contacts-list", component: ContactsList, id:"Contact", allowedPermissions: ["view"] },
   { path: "/contacts-profile", component: ContactsProfile, id:"Contact", allowedPermissions: ["view"] },
+  { path: "/contacts-profile/:id", component: ContactsProfile, id:"Contact", allowedPermissions: ["view"] },
 
   // admin
   { path: "/team-manager", component: TeamManager, id:"Team", allowedPermissions: ["edit"] },
   { path: "/staff-manager", component: StaffManager, id:"Staff", allowedPermissions: ["edit"] },
+  { path: "/new-staff", component: NewStaff, id:"Staff", allowedPermissions: ["edit"] },
 
+  // scan device
+  { path: "/scan-device", component: ScanDevice, id:"ScanDevice", allowedPermissions: ["edit"] },
+  { path: "/card-id", component: SocketConfig, id:"CardId", allowedPermissions: ["edit"] },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
@@ -111,6 +120,7 @@ const publicRoutes = [
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
+  { path: "/permission-denied", component: PermissionDenied },
 
   // Authentication Inner
   { path: "/page-recoverpw", component: Recoverpw },

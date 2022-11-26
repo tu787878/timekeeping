@@ -50,6 +50,8 @@ import Demo from "./demo/reducer";
 
 import Teams from "./admin/team/reducer";
 import Staffs from "./admin/staff/reducer";
+import Capabilities from "./admin/capability/reducer";
+import ScanDevices from "./admin/scan-device/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -72,7 +74,9 @@ const rootReducer = combineReducers({
   DashboardSaas,
   Demo,
   Teams,
-  Staffs
+  Staffs,
+  Capabilities,
+  ScanDevices
 })
 
 export default rootReducer

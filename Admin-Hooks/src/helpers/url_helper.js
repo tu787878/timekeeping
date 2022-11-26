@@ -1,7 +1,7 @@
 
 export const GET_DEMO_DATA =  process.env.REACT_APP_API_HOST + "/authenticate/helloWorld";
 export const LOGIN_DEMO = process.env.REACT_APP_API_HOST + "/authenticate";
-export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/7/calendar";
+export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/8/calendar";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
@@ -105,12 +105,25 @@ export const GET_TASKS = "/tasks";
 export const GET_TEAMS = process.env.REACT_APP_API_HOST + "/team";
 export const UPDATE_TEAMS = process.env.REACT_APP_API_HOST + "/team";
 
+export const GET_CAPABILITIES = process.env.REACT_APP_API_HOST + "/admin/capability?groupBy=tag";
+
 export const GET_STAFFS = process.env.REACT_APP_API_HOST + "/account";
 export const UPDATE_STAFFS = process.env.REACT_APP_API_HOST + "/account";
 
+
+///////////////////////////////////////////////////////////// 
+// scan devices, cards
+export const GET_SCAN_DEVICE = process.env.REACT_APP_API_HOST + "/admin/scan-device";
+
+export const GET_CARDS = process.env.REACT_APP_API_HOST + "/admin/cards";
+
+export const GET_WAITING_CARDS = process.env.REACT_APP_API_HOST + "/admin/waiting-cards";
+
+///////////////////////////////////////////////////
+
 //CONTACTS
 export const GET_USERS = "/users";
-export const GET_USER_PROFILE = "/user";
+export const GET_USER_PROFILE = process.env.REACT_APP_API_HOST + "/account";
 export const ADD_NEW_USER = "/add/user";
 export const UPDATE_USER = "/update/user";
 export const DELETE_USER = "/delete/user";

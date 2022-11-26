@@ -3,10 +3,14 @@ import {
   GET_STAFFS_FAIL,
   UPDATE_STAFFS_SUCCESS,
   UPDATE_STAFFS_FAIL,
+  NEW_STAFF_FAIL,
+  NEW_STAFF_SUCCESS,
+  RESET_STAFF_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
   staffs: [],
+  staff:{},
   error: {},
 }
 
@@ -33,6 +37,21 @@ const Staffs = (state = INIT_STATE, action) => {
           ...state,
           staff: action.payload,
         }
+        case NEW_STAFF_FAIL:
+        return {
+          ...state,
+          staff: action.payload,
+        }
+        case NEW_STAFF_SUCCESS:
+        return {
+          ...state,
+          staff: action.payload,
+        }
+        case RESET_STAFF_SUCCESS:
+          return {
+            ...state,
+            staff: {},
+          }
     default:
       return state
   }

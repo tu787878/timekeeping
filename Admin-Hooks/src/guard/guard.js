@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const checkPermissions = (userPermissions, allowedPermissions, id) => {
-    
+const checkPermissions = (accountRole, allowedPermissions, id) => {
+  if(accountRole?.roleName === "ADMIN") return true;
+  let userPermissions = accountRole?.capabilities;
   if (allowedPermissions == undefined || allowedPermissions.length === 0) {
       return true;
   }
@@ -31,10 +32,10 @@ const AccessControl = ({
   if (accessCheck) {
     permitted =
       accessCheck(extraAccessData, user) &&
-      checkPermissions(userPermissions, allowedPermissions, id);
+      checkPermissions(user.account.accountRole, allowedPermissions, id);
   } else {
     // otherwise only check permissions
-    permitted = checkPermissions(userPermissions, allowedPermissions, id);
+    permitted = checkPermissions(user.account.accountRole, allowedPermissions, id);
   }
 
   if (permitted) {

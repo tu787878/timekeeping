@@ -62,6 +62,12 @@ const adminContent = [
         { path: "/staff-manager", id:"Staff", allowedPermissions: ["edit"], className:"", contextId:"Staff", children:[] },
       ] 
     },
+
+    { path: "/#", id:"ScanDevice", allowedPermissions: ["view"], className:"bx bx-barcode", contextId:"Scan Device Manager", 
+      children:[
+        { path: "/scan-device", id:"Scandevice", allowedPermissions: ["edit"], className:"", contextId:"Scan Device", children:[] },
+      ] 
+    },
 ]
 
 export { authProtectedContent, adminContent}

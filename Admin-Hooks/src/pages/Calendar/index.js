@@ -179,34 +179,39 @@ const Calender = props => {
  }
 
  function convertNumToTime(number) {
-  // Check sign of given number
-  var sign = (number >= 0) ? 1 : -1;
+  // // Check sign of given number
+  // var sign = (number >= 0) ? 1 : -1;
 
-  // Set positive value of number of sign negative
-  number = number * sign;
+  // // Set positive value of number of sign negative
+  // number = number * sign;
 
-  // Separate the int from the decimal part
-  var hour = Math.floor(number);
-  var decpart = number - hour;
+  // // Separate the int from the decimal part
+  // var hour = Math.floor(number);
+  // var decpart = number - hour;
 
-  var min = 1 / 60;
-  // Round to nearest minute
-  decpart = min * Math.round(decpart / min);
+  // var min = 1 / 60;
+  // // Round to nearest minute
+  // decpart = min * Math.round(decpart / min);
 
-  var minute = Math.floor(decpart * 60) + '';
+  // var minute = Math.floor(decpart * 60) + '';
 
-  // Add padding if need
-  if (minute.length < 2) {
-  minute = '0' + minute; 
-  }
+  // // Add padding if need
+  // if (minute.length < 2) {
+  // minute = '0' + minute; 
+  // }
 
-  // Add Sign in final result
-  sign = sign == 1 ? '' : '-';
+  // // Add Sign in final result
+  // sign = sign == 1 ? '' : '-';
 
-  // Concate hours and minutes
-  let time = sign + hour + ':' + minute;
+  // // Concate hours and minutes
+  // let time = sign + hour + ':' + minute;
 
-  return time;
+  // return time;
+
+  const hours = Math.floor(Math.abs(number) / 60);
+  const minutes = Math.abs(number) % 60;
+
+  return (number < 0 ? "-" : "") + hours + ":" + minutes;
 }
 
   /**

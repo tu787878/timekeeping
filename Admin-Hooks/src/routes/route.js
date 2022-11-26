@@ -2,7 +2,10 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
 
-const checkPermissions = (userPermissions, allowedPermissions, id) => {
+const checkPermissions = (accountRole, allowedPermissions, id) => {
+
+  if(accountRole.roleName === "ADMIN") return true;
+  let userPermissions = accountRole.capabilities;
   if (allowedPermissions == undefined || allowedPermissions.length === 0) {
     return true;
   }
@@ -29,10 +32,10 @@ const Authmiddleware = ({
     render={props => {
       let user = JSON.parse(localStorage.getItem("authUser"));
       
-      if (isAuthProtected && (!user || !checkPermissions(user.account.accountRole.capabilities, allowedPermissions, id))) {
+      if (isAuthProtected && (!user || !checkPermissions(user.account.accountRole, allowedPermissions, id))) {
         return (
           <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
+            to={{ pathname: "/permission-denied", state: { from: props.location } }}
           />
         )
       }      

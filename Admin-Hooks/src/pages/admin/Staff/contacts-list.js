@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, Redirect, useHistory } from "react-router-dom";
 import TableContainer from "../../../components/Common/TableContainer";
 import {
   Card,
@@ -143,6 +143,7 @@ const StaffManager = props => {
       },
       {
         Header: "Action",
+        
         Cell: cellProps => {
           return (
             <div className="d-flex gap-3">
@@ -160,16 +161,12 @@ const StaffManager = props => {
                 </UncontrolledTooltip>
               </Link>
               <Link
-                to="#"
-                className="text-danger"
-                onClick={() => {
-                  const userData = cellProps.row.original;
-                  onClickDelete(userData);
-                }}
+                to={`./contacts-profile/${cellProps.row.original.id}`}
+                className="text-info"
               >
-                <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
+                <i className="mdi mdi-account-details font-size-18" id="deletetooltip" />
                 <UncontrolledTooltip placement="top" target="deletetooltip">
-                  Delete
+                  View
                 </UncontrolledTooltip>
               </Link>
             </div>
@@ -233,7 +230,7 @@ const StaffManager = props => {
 
   //delete customer
   const [deleteModal, setDeleteModal] = useState(false);
-
+  let history = useHistory();
   const onClickDelete = users => {
     setContact(users);
     setDeleteModal(true);
@@ -246,9 +243,9 @@ const StaffManager = props => {
   };
 
   const handleUserClicks = () => {
-    setUserList("");
-    setIsEdit(false);
-    toggle();
+    console.log("hihihi");
+    
+    history.push("/new-staff");
   };
 
   const keyField = "id";
@@ -330,9 +327,6 @@ const StaffManager = props => {
                                     : false
                                 }
                               >
-                                {
-                                  console.log(validation.values.parent)
-                                }
                                 <option value={0}>NULL</option>
                                 
                                

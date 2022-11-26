@@ -13,8 +13,8 @@ import {
 
 const INIT_STATE = {
   users: [],
-  userProfile: {},
   error: {},
+  userProfile: {userDetail:{}}
 }
 
 const contacts = (state = INIT_STATE, action) => {

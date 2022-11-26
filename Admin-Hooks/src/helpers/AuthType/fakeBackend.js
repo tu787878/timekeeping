@@ -887,32 +887,32 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onGet(url.GET_USERS).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (members) {
-          console.log(members);
-          // Passing fake JSON data as response
-          resolve([200, members]);
-        } else {
-          reject([400, "Cannot get users"]);
-        }
-      });
-    });
-  });
+  // mock.onGet(url.GET_USERS).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (members) {
+  //         console.log(members);
+  //         // Passing fake JSON data as response
+  //         resolve([200, members]);
+  //       } else {
+  //         reject([400, "Cannot get users"]);
+  //       }
+  //     });
+  //   });
+  // });
 
-  mock.onGet(url.GET_USER_PROFILE).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (userProfile) {
-          // Passing fake JSON data as response
-          resolve([200, userProfile]);
-        } else {
-          reject([400, "Cannot get user profile"]);
-        }
-      });
-    });
-  });
+  // mock.onGet(url.GET_USER_PROFILE).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (userProfile) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, userProfile]);
+  //       } else {
+  //         reject([400, "Cannot get user profile"]);
+  //       }
+  //     });
+  //   });
+  // });
 
   mock.onGet(url.GET_WEEKLY_DATA).reply(() => {
     return new Promise((resolve, reject) => {

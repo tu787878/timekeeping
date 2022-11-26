@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 
 // TableContainer
-
+import {useParams} from "react-router-dom";
 import { Pdate, Ddate, Name, Idno, Budget } from "./CryptoCol";
 
 import TableContainer from "../../../components/Common/TableContainer";
@@ -37,7 +37,7 @@ const ContactsProfile = props => {
   //meta title
   document.title="Profile | Skote - React Admin & Dashboard Template";
 
-  const { userProfile, onGetUserProfile } = props;
+  const { userProfile, onGetUserProfile} = props;
   // eslint-disable-next-line no-unused-vars
   const [miniCards, setMiniCards] = useState([
     {
@@ -49,9 +49,17 @@ const ContactsProfile = props => {
     { title: "Total Revenue", iconClass: "bx-package", text: "$36,524" },
   ]);
 
+  // useEffect(() => {
+  //   onGetUserProfile();
+  // }, [onGetUserProfile]);
+  const {id} = useParams()
   useEffect(() => {
-    onGetUserProfile();
-  }, [onGetUserProfile]);
+    if (id) {
+      onGetUserProfile(id)
+    } else {
+      onGetUserProfile(-1)
+    }
+  }, [onGetUserProfile])
 
   const columns = useMemo(
     () => [
@@ -132,13 +140,13 @@ const ContactsProfile = props => {
                     <Col sm="4">
                       <div className="avatar-md profile-user-wid mb-4">
                         <img
-                          src={userProfile.img}
+                          src={userProfile.userDetail?.avatar}
                           alt=""
                           className="img-thumbnail rounded-circle"
                         />
                       </div>
                       <h5 className="font-size-15 text-truncate">
-                        {userProfile.name}
+                        {userProfile.userDetail?.firstName}
                       </h5>
                       <p className="text-muted mb-0 text-truncate">
                         {userProfile.designation}
@@ -184,19 +192,19 @@ const ContactsProfile = props => {
                       <tbody>
                         <tr>
                           <th scope="row">Full Name :</th>
-                          <td>{userProfile.name}</td>
+                          <td>{userProfile.firstName} {userProfile.userDetail?.lastName}</td>
                         </tr>
                         <tr>
                           <th scope="row">Mobile :</th>
-                          <td>{userProfile.phone}</td>
+                          <td>{userProfile.userDetail?.phone}</td>
                         </tr>
                         <tr>
                           <th scope="row">E-mail :</th>
-                          <td>{userProfile.email}</td>
+                          <td>{userProfile.userDetail?.email}</td>
                         </tr>
                         <tr>
                           <th scope="row">Location :</th>
-                          <td>{userProfile.location}</td>
+                          <td>{userProfile.userDetail?.location}</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -311,7 +319,7 @@ const mapStateToProps = ({ contacts }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onGetUserProfile: () => dispatch(getUserProfile()),
+  onGetUserProfile: (id) => dispatch(getUserProfile(id)),
 });
 
 export default connect(

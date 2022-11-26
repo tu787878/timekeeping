@@ -49,3 +49,5 @@ export * from "./demo/actions";
 //admin
 export * from "./admin/team/actions";
 export * from "./admin/staff/actions";
+export * from "./admin/capability/actions";
+export * from "./admin/scan-device/actions";
