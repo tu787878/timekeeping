@@ -1,7 +1,7 @@
 
 export const GET_DEMO_DATA =  process.env.REACT_APP_API_HOST + "/authenticate/helloWorld";
 export const LOGIN_DEMO = process.env.REACT_APP_API_HOST + "/authenticate";
-export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/8/calendar";
+export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/1/calendar";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
