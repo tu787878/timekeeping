@@ -81,7 +81,7 @@ class SocketConfig extends Component {
                     {this.displayMessages()}
                 </div>
                 <SockJsClient url='http://localhost:8080/websocket-chat/'
-                              topics={['/topic/user']}
+                              topics={['/topic/noti/1']}
                               onConnect={() => {
                                   console.log("connected");
                               }}
