@@ -27,7 +27,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
-import { editProfile, resetProfileFlag, getDemoData } from "../../store/actions";
+import { editProfile, resetProfileFlag } from "../../store/actions";
 
 const UserProfile = () => {
 
