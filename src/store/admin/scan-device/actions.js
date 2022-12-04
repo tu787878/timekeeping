@@ -28,7 +28,10 @@ import {
   ADD_WAITING_LIST_CARD_FAIL,
   DELETE_WAITING_LIST_CARD,
   DELETE_WAITING_LIST_CARD_SUCCESS,
-  DELETE_WAITING_LIST_CARD_FAIL
+  DELETE_WAITING_LIST_CARD_FAIL,
+  GET_LICENSE_SCAN_DEVICE,
+  GET_LICENSE_SCAN_DEVICE_SUCCESS,
+  GET_LICENSE_SCAN_DEVICE_FAIL
 } from "./actionTypes"
 
 export const getScanDevices = () => ({
@@ -68,6 +71,20 @@ export const updateScanDeviceSuccess = (scanDevices) => ({
 })
 export const updateScanDeviceFail = (error) => ({
   type: UPDATE_SCAN_DEVICE_FAIL,
+  payload: error
+})
+
+export const getLicenseScanDevice = (device) =>({
+  type: GET_LICENSE_SCAN_DEVICE,
+  payload: device
+})
+
+export const getLicenseScanDeviceSuccess = (link) => ({
+  type: GET_LICENSE_SCAN_DEVICE_SUCCESS,
+  payload: link
+})
+export const getLicenseScanDeviceFail = (error) => ({
+  type: GET_LICENSE_SCAN_DEVICE_FAIL,
   payload: error
 })
 

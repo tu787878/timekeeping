@@ -9,9 +9,18 @@ import {
   CardTitle,
   Collapse,
   Table,
+  Modal,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input
 } from "reactstrap"
 import { Link, withRouter } from "react-router-dom"
-
+import Select, { components } from "react-select";
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
 import classnames from "classnames"
@@ -30,13 +39,40 @@ import {
   getWaitingListCards,
   addWaitingListCard,
   deleteWaitingListCards,
+  getLicenseScanDevice,
+  getStaffs
 } from "store/actions"
+import ScanDevices from "store/admin/scan-device/reducer"
 
 const ScanDevice = props => {
+  const [modalScanDevice, setScanDeviceModal] = useState(false);
+  const [modalDeleteScanDevice, setDeleteScanDeviceModal] = useState(false);
+  const [modalUpdateScanDevice, setUpdateScanDeviceModal] = useState(false);
+  const [modalDownloadScanDevice, setDownloadScanDeviceModal] = useState(false);
+  //card
+  const [modalAddCard, setAddCardModal] = useState(false);
+  const [modalDeleteWaitingCard, setDeleteWaitingCardModal] = useState(false);
+  const [modalDeleteCard, setDeleteCardModal] = useState(false);
+
+  const [deleteScanDevice, setDeleteScanDevice] = useState(null);
+  const [updateScanDevice, setUpdateScanDevice] = useState(null);
+  const [downloadScanDevice, setDownloadScanDevice] = useState(null);
+
+  //card
+  const [deleteWaitingCard, setDeleteWaitingCard] = useState(null);
+  const [deleteCard, setDeleteCard] = useState(null);
+
+  const [deviceName, setDeviceName] = useState(null)
+  const [deviceType, setDeviceType] = useState(0)
+  const [cardDevice, setCardDevice] = useState(null)
+  const [cardAccount, setCardAccount] = useState(null)
+
   const [col1, setcol1] = useState(true)
-  const { devices, onGetDevices } = props
-  const { cards, onGetCards } = props
-  const { waitingCards, onGetWaitingCards } = props
+  const { devices, onGetDevices, onAddScanDevice, onDeleteScanDevice, onUpdateScanDevice, onGetLicenseScanDevice } = props
+  const { cards, onGetCards , onAddCard, onDeleteCard} = props
+  const { linkLicenseFile, onGetLinkLicenseFile } = props
+  const { waitingCards, onGetWaitingCards, onAddWaitingCard , onDeleteWaitingCard} = props
+  const { accounts, onGetAllAccounts } = props
   const t_col1 = () => {
     setcol1(!col1)
   }
@@ -51,10 +87,351 @@ const ScanDevice = props => {
     onGetWaitingCards(1)
   }, [onGetWaitingCards])
 
+
+  const toggleScanDevice = () => setScanDeviceModal(!modalScanDevice);
+  const toggleDeleteScanDevice = () => setDeleteScanDeviceModal(!modalDeleteScanDevice);
+  const toggleUpdateScanDevice = () => setUpdateScanDeviceModal(!modalUpdateScanDevice);
+  const toggleDownloadScanDevice = () => setDownloadScanDeviceModal(!modalDownloadScanDevice);
+  const toggleAddCard = () => setAddCardModal(!modalAddCard);
+  const toggleDeleteWaitingCard = () => setDeleteWaitingCardModal(!modalDeleteWaitingCard);
+  const toggleDeleteCard = () => setDeleteCardModal(!modalDeleteCard);
+  const groupedOptions = []
+
+  const addScanDeviceBtn = () => {
+    onAddScanDevice({
+      name: deviceName,
+      type: deviceType
+    });
+    toggleScanDevice();
+  }
+
+  const addCardBtn = () => {
+    console.log(cardAccount);
+    if(cardAccount  != null && cardDevice != null){
+      onAddWaitingCard({
+        account: cardAccount,
+        scanDevice: cardDevice
+      });
+    }
+    toggleAddCard();
+  }
+
+  const deleteScanDeviceBtn = () => {
+    if (deleteScanDevice != null) {
+      onDeleteScanDevice(deleteScanDevice);
+    }
+    toggleDeleteScanDevice();
+  }
+
+  const deleteWaitingCardBtn = () => {
+    if (deleteWaitingCard != null) {
+      onDeleteWaitingCard(deleteWaitingCard);
+    }
+    toggleDeleteWaitingCard();
+  }
+
+  const deleteCardBtn = () => {
+    if (deleteCard != null) {
+      onDeleteCard(deleteCard);
+    }
+    toggleDeleteCard();
+  }
+
+  const updateScanDeviceBtn = () => {
+    if (updateScanDevice != null) {
+      onUpdateScanDevice(updateScanDevice);
+    }
+    toggleUpdateScanDevice();
+  }
+
+  const getLinkLicense = (device) => {
+    if (device != null) {
+      onGetLicenseScanDevice(device);
+    }
+  }
+
   //meta title
   document.title = "New Page | Skote - React Admin & Dashboard Template"
   return (
     <>
+      {/* add waiting card */}
+      <Modal isOpen={modalAddCard} toggle={toggleAddCard}>
+        <ModalHeader toggle={toggleAddCard}>Register a card</ModalHeader>
+        <ModalBody>
+          <Form>
+            <FormGroup row>
+              <Label
+                for="exampleSelect1"
+                sm={4}
+              >
+                Scan Device
+              </Label>
+              {devices?.map(device => {
+                    groupedOptions.push( {
+                      label:device.label,
+                      options: device.children
+                    });
+                 })}
+              <Col sm={8}>
+                <Select
+                  isMulti={false}
+                  options={groupedOptions}
+                  getOptionLabel={option =>`${option.name}`}
+                  getOptionValue={option => option}
+                  onChange={setCardDevice}
+                >
+                </Select>
+              </Col>
+            </FormGroup>
+
+            <FormGroup row>
+              <Label
+                for="exampleSelect2"
+                sm={4}
+              >
+               Select Account
+              </Label>
+              <Col sm={8}>
+              <Select
+                  isMulti={false}
+                  options={accounts}
+                  getOptionLabel={option =>`${option.userDetail.firstName} ${option.userDetail.lastName}`}
+                  getOptionValue={option => option}
+                  onChange={setCardAccount}
+                >
+                </Select>
+              </Col>
+            </FormGroup>
+          </Form>
+
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={addCardBtn}>
+            Add
+          </Button>{' '}
+          <Button color="secondary" onClick={toggleAddCard}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+      {/* add scan device modal */}
+      <Modal isOpen={modalScanDevice} toggle={toggleScanDevice}>
+        <ModalHeader toggle={toggleScanDevice}>Add a new device</ModalHeader>
+        <ModalBody>
+          <Form>
+            <FormGroup>
+              <Label for="deviceName">
+                Device name
+              </Label>
+              <Input
+                id="deviceName"
+                name="deviceName"
+                placeholder=""
+                type="text"
+                onChange={e => { setDeviceName(e.target.value) }}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="exampleSelect">
+                Device Type
+              </Label>
+              <Input
+                id="deviceType"
+                name="select"
+                type="select"
+                onChange={e => { setDeviceType(e.target.value) }}
+              >
+                <option value={0}>
+                  RFID
+                </option>
+              </Input>
+            </FormGroup>
+          </Form>
+
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={addScanDeviceBtn}>
+            Add
+          </Button>{' '}
+          <Button color="secondary" onClick={toggleScanDevice}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* delete scan device modal */}
+      <Modal isOpen={modalDeleteScanDevice} toggle={() => toggleDeleteScanDevice()}>
+        <ModalHeader toggle={() => toggleDeleteScanDevice()}>Delete device</ModalHeader>
+        <ModalBody>
+          Do you want to device '{deleteScanDevice?.name}' ? It will delete all waiting cards of this scan device!
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={() => deleteScanDeviceBtn()}>
+            Yes
+          </Button>{' '}
+          <Button color="secondary" onClick={() => toggleDeleteScanDevice()}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+       {/* delete waiting card modal */}
+       <Modal isOpen={modalDeleteWaitingCard} toggle={() => toggleDeleteWaitingCard()}>
+        <ModalHeader toggle={() => toggleDeleteWaitingCard()}>Delete waiting card</ModalHeader>
+        <ModalBody>
+          Do you want to  delete card '{deleteWaitingCard?.is}' ? 
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={() => deleteWaitingCardBtn()}>
+            Yes
+          </Button>{' '}
+          <Button color="secondary" onClick={() => toggleDeleteWaitingCard()}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* delete card modal */}
+      <Modal isOpen={modalDeleteCard} toggle={() => toggleDeleteCard()}>
+        <ModalHeader toggle={() => toggleDeleteCard()}>Delete registered card</ModalHeader>
+        <ModalBody>
+          Do you want to card '{deleteCard?.id}' ? 
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={() => deleteCardBtn()}>
+            Yes
+          </Button>{' '}
+          <Button color="secondary" onClick={() => toggleDeleteCard()}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* download license scan device modal */}
+      <Modal isOpen={modalDownloadScanDevice} toggle={() => toggleDownloadScanDevice()}>
+        <ModalHeader toggle={() => toggleDownloadScanDevice()}>Download license for device {downloadScanDevice?.name}</ModalHeader>
+        <ModalBody>
+          <p> Instruction:</p>
+          <Card>
+            <CardBody>
+              <p> Download source code:</p>
+              <code>git clone https://github.com/tu787878/scan-device-rfid</code>
+            </CardBody>
+          </Card>
+          
+          <Card>
+            <CardBody>
+            <p> Create file license:</p>
+              <code>cd scan-device-rfid</code>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
+              <code>rm /license/RFIDLicense.txt </code>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
+              <code>nano /license/RFIDLicense.txt </code>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
+              <p>Copy the following text to file:</p>
+              <code>
+                {linkLicenseFile}
+              </code>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
+              <p>Save and exit:</p>
+              <code>
+                Ctr + x
+              </code>
+              <br></br>
+              <code>Press y to save</code>
+            </CardBody>
+          </Card>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={() => toggleDownloadScanDevice()}>
+            Ok
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* update scan device modal */}
+      <Modal isOpen={modalUpdateScanDevice} toggle={() => toggleUpdateScanDevice()}>
+        <ModalHeader toggle={() => toggleUpdateScanDevice()}>Update device
+
+        </ModalHeader>
+        <ModalBody>
+          <Form>
+            <FormGroup>
+              <Label for="deviceName">
+                Device name
+              </Label>
+              <Input
+                id="deviceName"
+                name="deviceName"
+                placeholder=""
+                type="text"
+                value={updateScanDevice?.name}
+                onChange={e => {
+                  // updateScanDevice.name = e.target.value;
+                  setUpdateScanDevice({
+                    ...updateScanDevice,
+                    name: e.target.value
+                  })
+                }}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="exampleSelect">
+                Device Type
+              </Label>
+              <Input
+                id="deviceType"
+                name="select"
+                type="select"
+              // value={updateScanDevice?.type}
+              // onChange={e=>{setUpdateDeviceName(e.target.value)}}
+              >
+                <option value={0}>
+                  RFID
+                </option>
+              </Input>
+            </FormGroup>
+            <FormGroup switch>
+              <Label check>Active</Label>
+              <Input
+                type="switch"
+                checked={updateScanDevice?.active}
+                onClick={(e) => {
+                  setUpdateScanDevice({
+                    ...updateScanDevice,
+                    active: !updateScanDevice.active
+                  })
+                }}
+                onChange={() => {
+                  console.log(updateScanDevice);
+                }}
+              />
+
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={updateScanDeviceBtn}>
+            Yes
+          </Button>{' '}
+          <Button color="secondary" onClick={() => toggleUpdateScanDevice()}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs
@@ -69,14 +446,14 @@ const ScanDevice = props => {
                   <Col lg={12}>
                     <CardTitle className="h4">
                       Scan devices &nbsp; &nbsp; &nbsp;
-                      <Link to="#" className="text-primary">
+                      <Link onClick={toggleScanDevice} to="#" className="text-primary">
                         <i className="fas fa-plus-square h4 m-0" />
                       </Link>
                     </CardTitle>
                     <p className="card-title-desc"></p>
 
                     <div className="accordion" id="accordion">
-                      {devices.map(function (device, i) {
+                      {devices?.map(function (device, i) {
                         return (
                           <div key={device.label} className="accordion-item">
                             <h2 className="accordion-header" id="headingOne">
@@ -134,6 +511,12 @@ const ScanDevice = props => {
                                             <td>
                                               <div className="text-end">
                                                 <Link
+                                                  onClick={() => {
+                                                    setDownloadScanDevice(child);
+                                                    getLinkLicense(child);
+                                                    toggleDownloadScanDevice();
+                                                  }
+                                                  }
                                                   to="#"
                                                   className="text-dark"
                                                 >
@@ -141,6 +524,11 @@ const ScanDevice = props => {
                                                 </Link>
                                                 &nbsp; &nbsp; &nbsp;
                                                 <Link
+                                                  onClick={() => {
+                                                    setUpdateScanDevice(child)
+                                                    toggleUpdateScanDevice()
+                                                  }
+                                                  }
                                                   to="#"
                                                   className="text-dark"
                                                 >
@@ -148,6 +536,11 @@ const ScanDevice = props => {
                                                 </Link>
                                                 &nbsp; &nbsp; &nbsp;
                                                 <Link
+                                                  onClick={() => {
+                                                    setDeleteScanDevice(child)
+                                                    toggleDeleteScanDevice()
+                                                  }
+                                                  }
                                                   to="#"
                                                   className="text-danger"
                                                 >
@@ -240,7 +633,11 @@ const ScanDevice = props => {
                                             </td>
                                             <td>
                                               <div className="text-end">
-                                              <Link
+                                                <Link
+                                                onClick={()=>{
+                                                  setDeleteCard(child);
+                                                  toggleDeleteCard();
+                                                }}
                                                   to="#"
                                                   className="text-danger"
                                                 >
@@ -273,7 +670,10 @@ const ScanDevice = props => {
                   <Col lg={12}>
                     <CardTitle className="h4">
                       Waiting List Cards &nbsp; &nbsp; &nbsp;
-                      <Link to="#" className="text-primary">
+                      <Link onClick={() => {
+                        onGetAllAccounts();
+                        toggleAddCard();
+                      }} to="#" className="text-primary">
                         <i className="fas fa-plus-square h4 m-0" />
                       </Link>
                     </CardTitle>
@@ -337,6 +737,10 @@ const ScanDevice = props => {
                                             <td>
                                               <div className="text-end">
                                                 <Link
+                                                onClick={()=>{
+                                                  setDeleteWaitingCard(child);
+                                                  deleteWaitingCardBtn();
+                                                }}
                                                   to="#"
                                                   className="text-danger"
                                                 >
@@ -371,12 +775,15 @@ ScanDevice.propTypes = {
   devices: PropTypes.any,
   cards: PropTypes.any,
   waitingCards: PropTypes.any,
+  linkLicenseFile: PropTypes.any,
 }
 
-const mapStateToProps = ({ ScanDevices }) => ({
+const mapStateToProps = ({ ScanDevices, Staffs }) => ({
   devices: ScanDevices.devices,
   cards: ScanDevices.cards,
   waitingCards: ScanDevices.waitingCards,
+  linkLicenseFile: ScanDevices.licenseFile,
+  accounts: Staffs.staffs
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -384,14 +791,17 @@ const mapDispatchToProps = dispatch => ({
   onAddScanDevice: device => dispatch(addScanDevice(device)),
   onUpdateScanDevice: device => dispatch(updateScanDevice(device)),
   onDeleteScanDevice: device => dispatch(deleteScanDevice(device)),
+  onGetLicenseScanDevice: device => dispatch(getLicenseScanDevice(device)),
 
   onGetCards: deviceId => dispatch(getCards(deviceId)),
   onAddCard: card => dispatch(addCard(card)),
-  onDeleteCard: () => dispatch(deleteCard(card)),
+  onDeleteCard: (card) => dispatch(deleteCard(card)),
 
   onGetWaitingCards: deviceId => dispatch(getWaitingListCards(deviceId)),
-  onAddWaitingCard: card => dispatch(addCard(card)),
+  onAddWaitingCard: card => dispatch(addWaitingListCard(card)),
   onDeleteWaitingCard: card => dispatch(deleteWaitingListCards(card)),
+
+  onGetAllAccounts: () => dispatch(getStaffs()),
 })
 
 export default connect(

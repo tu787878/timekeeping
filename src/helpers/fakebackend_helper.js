@@ -213,16 +213,18 @@ export const getCapabilities = () => get(url.GET_CAPABILITIES);
 
 export const getScanDevices = () => get(url.GET_SCAN_DEVICE);
 export const updateScanDevice = (device) => put(url.GET_SCAN_DEVICE, device);
-export const deleteScanDevice = (device) => del(url.GET_SCAN_DEVICE, device);
+export const deleteScanDevice = (device) => del( `${url.GET_SCAN_DEVICE}/${device.id}`, device);
 export const addScanDevice = (device) => post(url.GET_SCAN_DEVICE, device);
 
 export const getCards = (deviceId) => get(`${url.GET_CARDS}/${deviceId}`);
 export const addCard = (card) => post(url.GET_CARDS, card);
-export const deleteCard = (card) => del(url.GET_CARDS, card);
+export const deleteCard = (card) => del(`${url.GET_CARDS}/${card.id}`);
 
 export const getWaitingCards = (deviceId) => get(`${url.GET_WAITING_CARDS}/${deviceId}`);
 export const addWaitingCard = (card) => post(url.GET_WAITING_CARDS, card);
-export const deleteWaitingCard = (card) => del(url.GET_WAITING_CARDS, card);
+export const deleteWaitingCard = (card) => del( `${url.GET_WAITING_CARDS}/${card.id}`);
+
+export const getLicenseDevice = (device) => get(`${url.GET_SCAN_DEVICE}/${device.id}/license`);
 
 ///////////////////////////////////////////////////
 

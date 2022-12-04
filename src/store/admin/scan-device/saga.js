@@ -17,6 +17,7 @@ import {
   getWaitingCards,
   addWaitingCard,
   deleteWaitingCard,
+  getLicenseDevice
 } from "../../../helpers/fakebackend_helper"
 
 function* onGetScanDevices() {
@@ -109,6 +110,15 @@ function* onDeleteWaitingCard({payload: card}) {
   }
 }
 
+function* onGetLicenseDevice({payload: device}) {
+  try {
+    const response = yield call(getLicenseDevice, device)
+    yield put(actions.getLicenseScanDeviceSuccess(response))
+  } catch (error) {
+    yield put(actions.getLicenseScanDeviceFail(error))
+  }
+}
+
 function* scanDevicesSaga() {
   yield takeEvery(type.GET_SCAN_DEVICES, onGetScanDevices)
   yield takeEvery(type.ADD_SCAN_DEVICE, onAddScanDevice)
@@ -120,6 +130,7 @@ function* scanDevicesSaga() {
   yield takeEvery(type.GET_WAITING_LIST_CARD, onGetWaitingCard)
   yield takeEvery(type.ADD_WAITING_LIST_CARD, onAddWaitingCard)
   yield takeEvery(type.DELETE_WAITING_LIST_CARD, onDeleteWaitingCard)
+  yield takeEvery(type.GET_LICENSE_SCAN_DEVICE, onGetLicenseDevice)
 }
 
 export default scanDevicesSaga;

@@ -18,7 +18,9 @@ import {
   ADD_WAITING_LIST_CARD_SUCCESS,
   ADD_WAITING_LIST_CARD_FAIL,
   DELETE_WAITING_LIST_CARD_SUCCESS,
-  DELETE_WAITING_LIST_CARD_FAIL
+  DELETE_WAITING_LIST_CARD_FAIL,
+  GET_LICENSE_SCAN_DEVICE_SUCCESS,
+  GET_LICENSE_SCAN_DEVICE_FAIL
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -26,6 +28,7 @@ const INIT_STATE = {
   cards: [],
   waitingCards: [],
   error: {},
+  licenseFile: ""
 }
 
 const ScanDevices = (state = INIT_STATE, action) => {
@@ -63,6 +66,18 @@ const ScanDevices = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       }
+
+      case GET_LICENSE_SCAN_DEVICE_SUCCESS:
+        return {
+          ...state,
+          licenseFile: action.payload,
+        }
+  
+      case GET_LICENSE_SCAN_DEVICE_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        }
     case DELETE_SCAN_DEVICE_SUCCESS:
       return {
         ...state,
