@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.3.0",
     "@vtaits/react-color-picker": "^0.1.2",
+    "antd": "^5.0.3",
     "apexcharts": "^3.35.4",
     "autoprefixer": "^10.4.8",
     "axios": "^0.27.2",

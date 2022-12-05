@@ -21,17 +21,17 @@ const Teams = (state = INIT_STATE, action) => {
       case GET_TEAMS_FAIL:
         return {
           ...state,
-          teams: action.payload,
+          error: action.payload,
         }
       case UPDATE_TEAMS_SUCCESS:
         return {
           ...state,
-          team: action.payload,
+          teams: action.payload,
         }
       case UPDATE_TEAMS_FAIL:
         return {
           ...state,
-          team: action.payload,
+          error: action.payload,
         }
     default:
       return state

@@ -29,7 +29,11 @@ function* fetchTeams() {
 function* updateTeam({ payload: team }) {
   try {
     const response = yield call(updateTeams, team)
-    yield put(updateTeamsSuccess(response))
+    let datas = response.data
+    datas.map(data => {
+      data.tags = data.tags.split(";");
+    })
+    yield put(updateTeamsSuccess(datas))
   } catch (error) {
     yield put(updateTeamsFail(error))
   }

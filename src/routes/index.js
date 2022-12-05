@@ -55,7 +55,7 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 
 // admin
-import TeamManager from "../pages/admin/ContactList/contacts-list"
+import TeamManager from "../pages/admin/team"
 import StaffManager from "../pages/admin/Staff/contacts-list"
 import NewStaff from "../pages/admin/Staff/new-staff"
 import ScanDevice from "../pages/admin/scan-device/index"
