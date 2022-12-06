@@ -29,7 +29,10 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import { getCapabilities } from "store/actions"
 
 import { getTeams as onGetTeams } from "store/admin/team/actions"
-import { newStaff as addNewStaff, resetStaff as onResetStaff } from "store/admin/staff/actions"
+import {
+  newStaff as addNewStaff,
+  resetStaff as onResetStaff,
+} from "store/admin/staff/actions"
 
 const NewStaff = props => {
   //meta title
@@ -38,7 +41,7 @@ const NewStaff = props => {
   const dispatch = useDispatch()
 
   const { capabilities, onGetCapabilities } = props
-  const { addSuccess} = props
+  const { addSuccess } = props
 
   const { teams } = useSelector(state => ({
     teams: state.Teams.teams,
@@ -114,31 +117,28 @@ const NewStaff = props => {
       if (tab >= 1 && tab <= 4) {
         setoggleTabVertical(tab)
         setPassedStepsVertical(modifiedSteps)
-        
       }
     }
-
   }
 
   function handleClick() {
     let data = {
       firstName: firstName,
-      lastName:lastName,
-      phone:phone,
-      email:email,
+      lastName: lastName,
+      phone: phone,
+      email: email,
       role: selectedRole,
-      capabilities: selectedMulti?.map(e => e.value),
+      capabilities: selectedMulti?.map(e => "Calendar.Team." + e.id),
       jobName: jobName,
       team: selectedTeam?.id,
       minHours: minHours,
       maxHours: maxHours,
       workingType: selectedWorkingType,
       workFrom: workFrom,
-      workTo: workTo
+      workTo: workTo,
     }
-
-    console.log(data);
-    dispatch(addNewStaff(data));
+    console.log(data)
+    dispatch(addNewStaff(data))
   }
 
   function toggleNormal(e) {
@@ -253,29 +253,29 @@ const NewStaff = props => {
                             <Row>
                               <Col lg="6">
                                 <FormGroup className="mb-3">
-                                  <Label htmlFor="firstName">
-                                    First name
-                                  </Label>
+                                  <Label htmlFor="firstName">First name</Label>
                                   <Input
                                     type="text"
                                     className="form-control"
                                     id="firstName"
                                     placeholder="Enter Your First Name"
-                                    onChange={e=>{setFirstName(e.target.value)}}
+                                    onChange={e => {
+                                      setFirstName(e.target.value)
+                                    }}
                                   />
                                 </FormGroup>
                               </Col>
                               <Col lg="6">
                                 <FormGroup className="mb-3">
-                                  <Label htmlFor="lastName">
-                                    Last name
-                                  </Label>
+                                  <Label htmlFor="lastName">Last name</Label>
                                   <Input
                                     type="text"
                                     className="form-control"
                                     id="lastName"
                                     placeholder="Enter Your Last Name"
-                                    onChange={e=>{setLastName(e.target.value)}}
+                                    onChange={e => {
+                                      setLastName(e.target.value)
+                                    }}
                                   />
                                 </FormGroup>
                               </Col>
@@ -283,29 +283,29 @@ const NewStaff = props => {
                             <Row>
                               <Col lg="6">
                                 <FormGroup className="mb-3">
-                                  <Label htmlFor="phone">
-                                    Phone
-                                  </Label>
+                                  <Label htmlFor="phone">Phone</Label>
                                   <Input
                                     type="text"
                                     className="form-control"
                                     id="phone"
                                     placeholder="Enter Your Phone No."
-                                    onChange={e=>{setPhone(e.target.value)}}
+                                    onChange={e => {
+                                      setPhone(e.target.value)
+                                    }}
                                   />
                                 </FormGroup>
                               </Col>
                               <Col lg="6">
                                 <FormGroup className="mb-3">
-                                  <Label htmlFor="email">
-                                    Email
-                                  </Label>
+                                  <Label htmlFor="email">Email</Label>
                                   <Input
                                     type="email"
                                     className="form-control"
                                     id="email"
-                                    placeholder="Enter Your Email ID"
-                                    onChange={e=>{setEmail(e.target.value)}}
+                                    placeholder="Enter Your Email"
+                                    onChange={e => {
+                                      setEmail(e.target.value)
+                                    }}
                                   />
                                 </FormGroup>
                               </Col>
@@ -319,9 +319,15 @@ const NewStaff = props => {
                                 <Col lg="6">
                                   <FormGroup className="mb-3">
                                     <Label>Role</Label>
-                                    <select onChange={(selectedMulti) => {
-                                      setselectedRole(selectedMulti.target.value);
-                                    }} id="role" className="form-select">
+                                    <select
+                                      onChange={selectedMulti => {
+                                        setselectedRole(
+                                          selectedMulti.target.value
+                                        )
+                                      }}
+                                      id="role"
+                                      className="form-select"
+                                    >
                                       <option>Select Role</option>
                                       <option value="0">Admin</option>
                                       <option value="2">Employee</option>
@@ -331,36 +337,38 @@ const NewStaff = props => {
 
                                 <Col lg="6">
                                   <label className="control-label">
-                                    Capabilities
-                                    <div className="form-check mb-3">
-                                      <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value=""
-                                        id="toggleNormal"
-                                        onChange={e => {
-                                          {
-                                            toggleNormal(e)
-                                          }
-                                        }}
-                                      />
-                                      <label
-                                        className="form-check-label"
-                                        htmlFor="defaultCheck1"
-                                      >
-                                        All normal capabilities
-                                      </label>
-                                    </div>
+                                    Manager calendar of teams
                                   </label>
                                   <Select
                                     value={selectedMulti}
                                     isMulti={true}
-                                    onChange={(selectedMulti) => {
+                                    onChange={selectedMulti => {
                                       setselectedMulti(selectedMulti)
                                     }}
-                                    options={capabilities}
+                                    options={teams}
+                                    getOptionLabel={option => option.name}
+                                    getOptionValue={option =>
+                                      "Calendar.Team." + option.id
+                                    }
                                     className="select2-selection"
                                   />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg="6">
+                                  <FormGroup className="mb-3">
+                                    <Label>Team</Label>
+                                    <Select
+                                      value={selectedTeam}
+                                      onChange={selectedTeam => {
+                                        setselectedTeam(selectedTeam)
+                                      }}
+                                      options={teams}
+                                      getOptionLabel={option => option.name}
+                                      getOptionValue={option => option.id}
+                                      className="select2-selection"
+                                    />
+                                  </FormGroup>
                                 </Col>
                               </Row>
                             </Form>
@@ -380,65 +388,24 @@ const NewStaff = props => {
                                       className="form-control"
                                       id="basicpill-namecard-input112"
                                       placeholder="Enter the job name"
-                                      onChange={e=>{setJobName(e.target.value)}}
-                                    />
-                                  </FormGroup>
-                                </Col>
-
-                                <Col lg="6">
-                                  <FormGroup className="mb-3">
-                                    <Label>Team</Label>
-                                    <Select
-                                      value={selectedTeam}
-                                      onChange={(selectedTeam) => {
-                                        setselectedTeam(selectedTeam)
+                                      onChange={e => {
+                                        setJobName(e.target.value)
                                       }}
-                                      options={teams}
-                                      getOptionLabel={option => option.name}
-                                      getOptionValue={option => option.id}
-                                      className="select2-selection"
                                     />
                                   </FormGroup>
                                 </Col>
-                              </Row>
-                              <Row>
-                                <Col lg="6">
-                                  <FormGroup className="mb-3">
-                                    <Label htmlFor="minHours">
-                                      Min hours
-                                    </Label>
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      id="minHours"
-                                      placeholder="Enter min working hours"
-                                      onChange={e=>{setMinHours(e.target.value)}}
-                                    />
-                                  </FormGroup>
-                                </Col>
-
-                                <Col lg="6">
-                                  <FormGroup className="mb-3">
-                                    <Label htmlFor="maxHours">
-                                      Max hours
-                                    </Label>
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      id="maxHours"
-                                      placeholder="Enter max working hours"
-                                      onChange={e=>{setMaxHours(e.target.value)}}
-                                    />
-                                  </FormGroup>
-                                </Col>
-                              </Row>
-                              <Row>
                                 <Col lg="6">
                                   <FormGroup className="mb-3">
                                     <Label htmlFor="workingType">
                                       Working Type
                                     </Label>
-                                    <select onChange={e=>{setWorkingType(e.target.value)}} id="workingType" className="form-select">
+                                    <select
+                                      onChange={e => {
+                                        setWorkingType(e.target.value)
+                                      }}
+                                      id="workingType"
+                                      className="form-select"
+                                    >
                                       <option>Select Type</option>
                                       <option value="0">Day</option>
                                       <option value="1">Week</option>
@@ -450,38 +417,31 @@ const NewStaff = props => {
                               <Row>
                                 <Col lg="6">
                                   <FormGroup className="mb-3">
-                                    <label
-                                      htmlFor="workFrom"
-                                      className="col-md-2 col-form-label"
-                                    >
-                                      From
-                                    </label>
-                                    <div className="col-md-10">
-                                      <input
-                                        className="form-control"
-                                        type="date"
-                                        id="workFrom"
-                                        onChange={e=>{setWorkFrom(e.target.value)}}
-                                      />
-                                    </div>
+                                    <Label htmlFor="minHours">Min hours</Label>
+                                    <Input
+                                      type="text"
+                                      className="form-control"
+                                      id="minHours"
+                                      placeholder="Enter min working hours"
+                                      onChange={e => {
+                                        setMinHours(e.target.value)
+                                      }}
+                                    />
                                   </FormGroup>
                                 </Col>
+
                                 <Col lg="6">
                                   <FormGroup className="mb-3">
-                                    <label
-                                      htmlFor="workTo"
-                                      className="col-md-2 col-form-label"
-                                    >
-                                      To
-                                    </label>
-                                    <div className="col-md-10">
-                                      <input
-                                        className="form-control"
-                                        type="date"
-                                        id="workTo"
-                                        onChange={e=>{setWorkTo(e.target.value)}}
-                                      />
-                                    </div>
+                                    <Label htmlFor="maxHours">Max hours</Label>
+                                    <Input
+                                      type="text"
+                                      className="form-control"
+                                      id="maxHours"
+                                      placeholder="Enter max working hours"
+                                      onChange={e => {
+                                        setMaxHours(e.target.value)
+                                      }}
+                                    />
                                   </FormGroup>
                                 </Col>
                               </Row>
@@ -493,27 +453,49 @@ const NewStaff = props => {
                             <Col lg="6">
                               <div className="text-center">
                                 <div className="mb-4">
-                                  {addSuccess.code  ? (addSuccess.message == "success" ? <i className="mdi mdi-check-circle-outline text-success display-4" /> :
-                                  <i className="mdi mdi-check-circle-outline text-danger display-4"/>) : <i className="mdi mdi-check-circle-outline display-4" />}
+                                  {addSuccess.code ? (
+                                    addSuccess.message == "success" ? (
+                                      <i className="mdi mdi-check-circle-outline text-success display-4" />
+                                    ) : (
+                                      <i className="mdi mdi-check-circle-outline text-danger display-4" />
+                                    )
+                                  ) : (
+                                    <i className="mdi mdi-check-circle-outline display-4" />
+                                  )}
                                 </div>
                                 <div>
                                   <h5>Add a new Employee</h5>
-                                  {addSuccess.code != 0 ?  <p className="text-danger">
-                                   {addSuccess.message}
-                                  </p>: <p className="text-success">
-                                   {addSuccess.message}
-                                  </p>}
-                                  {addSuccess.code ? (addSuccess.code != 0 ?
-                                  <Button onClick={handleClick} className="btn-success">
-                                    Confirm
-                                  </Button>
-                                  :
-                                  <p className="text-success">
-                                   Reload load click back to create another employee.
-                                  </p>) : <Button onClick={handleClick} className="btn-success">
-                                  Confirm
-                                </Button>
-                                  }
+                                  {addSuccess.code != 0 ? (
+                                    <p className="text-danger">
+                                      {addSuccess.message}
+                                    </p>
+                                  ) : (
+                                    <p className="text-success">
+                                      {addSuccess.message}
+                                    </p>
+                                  )}
+                                  {addSuccess.code ? (
+                                    addSuccess.code != 0 ? (
+                                      <Button
+                                        onClick={handleClick}
+                                        className="btn-success"
+                                      >
+                                        Confirm
+                                      </Button>
+                                    ) : (
+                                      <p className="text-success">
+                                        Reload or click back to create another
+                                        employee.
+                                      </p>
+                                    )
+                                  ) : (
+                                    <Button
+                                      onClick={handleClick}
+                                      className="btn-success"
+                                    >
+                                      Confirm
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             </Col>
@@ -533,7 +515,7 @@ const NewStaff = props => {
                           <Link
                             to="#"
                             onClick={() => {
-                              dispatch(onResetStaff());
+                              dispatch(onResetStaff())
                               toggleTabVertical(activeTabVartical - 1)
                             }}
                           >

@@ -5,7 +5,6 @@ import { Link, withRouter } from "react-router-dom"
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
 import classnames from "classnames"
-
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import { Button, Table, Tag, Space, Modal, Form, Input } from "antd"
@@ -15,20 +14,21 @@ import {
   ExclamationCircleFilled,
   DeleteTwoTone,
   EditTwoTone,
+  ProfileTwoTone,
 } from "@ant-design/icons"
 import { Container } from "reactstrap"
-import { getTeams, updateTeams, deleteTeams, addTeams } from "store/actions"
+import { getStaffs, updateTeams, deleteTeams, addTeams } from "store/actions"
 
 import { Card, CardBody, Col, Row } from "reactstrap"
 
 const { confirm } = Modal
 
-const TeamManager = props => {
-  const { teams, onGetTeams, onUpdateTeam, onDeleteTeam, onAddTeam } = props
+const StaffManager = props => {
+  const { staffs, onGetStaffs, onUpdateTeam, onDeleteTeam, onAddTeam } = props
 
   useEffect(() => {
-    onGetTeams()
-  }, [onGetTeams])
+    onGetStaffs()
+  }, [onGetStaffs])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editTeam, setEditTeam] = useState(null)
@@ -86,68 +86,38 @@ const TeamManager = props => {
     setIsModalOpen(false)
   }
 
-  const formItemLayout = {
-    labelCol: {
-      xs: {
-        span: 24,
-      },
-      sm: {
-        span: 4,
-      },
-    },
-    wrapperCol: {
-      xs: {
-        span: 24,
-      },
-      sm: {
-        span: 20,
-      },
-    },
-  }
-  const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 20,
-        offset: 4,
-      },
-    },
-  }
-
   const columns = [
     {
       title: "Team",
-      dataIndex: "name",
-      key: "name",
-      defaultSortOrder: "ascend",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      dataIndex: ["job", "team", "name"],
+      key: "teamName",
+      sorter: (a, b) => a.teamName?.localeCompare(b.teamName),
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      sorter: (a, b) => a.description.localeCompare(b.description),
-    },
-    {
-      title: "Tags",
-      dataIndex: "tags",
-      key: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map(tag => {
-            let color = "blue"
+      title: "First Name",
+      dataIndex: ["userDetail", "firstName"],
+      key: "firstName",
 
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toLowerCase()}
-              </Tag>
-            )
-          })}
-        </>
-      ),
+      sorter: (a, b) => a.firstName?.localeCompare(b.firstName),
+    },
+    {
+      title: "Last Name",
+      dataIndex: ["userDetail", "lastName"],
+      key: "lastName",
+      defaultSortOrder: "ascend",
+      sorter: (a, b) => a.name?.localeCompare(b.name),
+    },
+    {
+      title: "Job",
+      dataIndex: ["job", "name"],
+      key: "jobName",
+      sorter: (a, b) => a.name?.localeCompare(b.name),
+    },
+    {
+      title: "Email",
+      dataIndex: "username",
+      key: "username",
+      sorter: (a, b) => a.name?.localeCompare(b.name),
     },
     {
       title: "Action",
@@ -163,6 +133,9 @@ const TeamManager = props => {
           >
             <EditTwoTone twoToneColor="green" />
           </a>
+          <a href={`contacts-profile/${record.id}`}>
+            <ProfileTwoTone />
+          </a>
           <a
             onClick={() => {
               showDeleteConfirm(record)
@@ -176,11 +149,11 @@ const TeamManager = props => {
   ]
 
   //meta title
-  document.title = "Team Manager | TCG - Admin & Dashboard"
+  document.title = "Staff Manager | TCG - Admin & Dashboard"
   return (
     <>
       <Modal
-        title={isEdit ? "Edit Team" : "Add new team"}
+        title={isEdit ? "Edit staff" : "Add new staff"}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -258,17 +231,11 @@ const TeamManager = props => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <Button
-                    onClick={() => {
-                      setIsEditTeam(false)
-                      setEditTeam(null)
-                      showModal()
-                    }}
-                    type="primary"
-                  >
-                    Add team
-                  </Button>
-                  <Table columns={columns} dataSource={teams} bordered />
+                  <a href={`/new-staff`}>
+                    <Button type="primary">Add team</Button>
+                  </a>
+
+                  <Table columns={columns} dataSource={staffs} bordered />
                 </CardBody>
               </Card>
             </Col>
@@ -279,14 +246,14 @@ const TeamManager = props => {
   )
 }
 
-TeamManager.propTypes = { devices: PropTypes.any }
+StaffManager.propTypes = { devices: PropTypes.any }
 
-const mapStateToProps = ({ Teams }) => ({
-  teams: Teams.teams,
+const mapStateToProps = ({ Staffs }) => ({
+  staffs: Staffs.staffs,
 })
 
 const mapDispatchToProps = dispatch => ({
-  onGetTeams: () => dispatch(getTeams()),
+  onGetStaffs: () => dispatch(getStaffs()),
   onUpdateTeam: team => dispatch(updateTeams(team)),
   onDeleteTeam: team => dispatch(deleteTeams(team)),
   onAddTeam: team => dispatch(addTeams(team)),
@@ -295,4 +262,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(TeamManager))
+)(withRouter(StaffManager))
