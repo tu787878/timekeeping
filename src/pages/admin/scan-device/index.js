@@ -323,19 +323,13 @@ const ScanDevice = props => {
             <CardBody>
             <p> Create file license:</p>
               <code>cd scan-device-rfid</code>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
+              <br></br>
               <code>rm /license/RFIDLicense.txt </code>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
+              <br></br>
               <code>nano /license/RFIDLicense.txt </code>
             </CardBody>
           </Card>
-          <Card>
+            <Card>
             <CardBody>
               <p>Copy the following text to file:</p>
               <code>

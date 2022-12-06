@@ -203,7 +203,9 @@ export const getTasks = () => get(url.GET_TASKS);
 
 // get teams
 export const getTeams = () => get(url.GET_TEAMS);
+export const addTeams = (team) => post(url.GET_TEAMS, team);
 export const updateTeams = team => put(`${url.GET_TEAMS}/${team.id}`, team);
+export const deleteTeams = team => del(`${url.GET_TEAMS}/${team.id}`);
 
 export const getCapabilities = () => get(url.GET_CAPABILITIES);
 

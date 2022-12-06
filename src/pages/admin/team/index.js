@@ -8,13 +8,22 @@ import classnames from "classnames"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
-import { Table, Tag, Space, Modal, Form, Input } from "antd"
-import type { ColumnsType, TableProps } from "antd/es/table"
+import { Button, Table, Tag, Space, Modal, Form, Input } from "antd"
+import { MinusCircleOutlined, PlusOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import { Container } from "reactstrap"
-import { getTeams, updateTeams } from "store/actions"
+import { getTeams, updateTeams, deleteTeams, addTeams } from "store/actions"
+
+import {
+  Card,
+  CardBody,
+  Col,
+  Row,
+} from "reactstrap";
+
+const { confirm } = Modal;
 
 const TeamManager = props => {
-  const { teams, onGetTeams } = props
+  const { teams, onGetTeams, onUpdateTeam, onDeleteTeam, onAddTeam } = props
 
   useEffect(() => {
     onGetTeams()
@@ -22,50 +31,99 @@ const TeamManager = props => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editTeam, setEditTeam] = useState(null)
+  const [isEdit, setIsEditTeam] = useState(true)
   const [form] = Form.useForm()
 
-  const onFinish = (values: any) => {
-    console.log(values)
+  useEffect(() => {
+    form.setFieldsValue(editTeam)
+  }, [form, editTeam])
+
+  const onFinish = (value) => {
+    value.tags = value.tags.join(";");
+    if (isEdit)
+      onUpdateTeam(value);
+    else
+      onAddTeam(value);
   }
+
+  const showDeleteConfirm = (team) => {
+    confirm({
+      title: `Are you sure delete team '${team.name}'?`,
+      icon: <ExclamationCircleFilled />,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        onDeleteTeam(team);
+      },
+      onCancel() {
+      },
+    });
+  };
 
   const showModal = () => {
     setIsModalOpen(true)
   }
 
   const handleOk = () => {
+    form.submit();
     setIsModalOpen(false)
   }
 
   const handleCancel = () => {
+    // form.resetFields();
+    form.setFieldsValue({
+      id: undefined,
+      name: undefined,
+      description: undefined,
+      tags:undefined
+    });
     setIsModalOpen(false)
   }
 
-  interface DataType {
-    key: React.Key;
-    parent: any;
-    team_name: string;
-    team_manager: string;
-    tags: string[];
-  }
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "Parent Team",
-      dataIndex: "parent.name",
-      key: "parent",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+  const formItemLayout = {
+    labelCol: {
+      xs: {
+        span: 24,
+      },
+      sm: {
+        span: 4,
+      },
     },
+    wrapperCol: {
+      xs: {
+        span: 24,
+      },
+      sm: {
+        span: 20,
+      },
+    },
+  };
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 20,
+        offset: 4,
+      },
+    },
+  };
+
+  const columns = [
     {
       title: "Team",
       dataIndex: "name",
-      key: "team_name",
+      key: "name",
       defaultSortOrder: "ascend",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "Team Manager",
-      dataIndex: "team_manager",
-      key: "team_manager",
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
@@ -93,13 +151,17 @@ const TeamManager = props => {
         <Space size="middle">
           <a
             onClick={() => {
-              setEditTeam(record)
-              showModal()
+              setIsEditTeam(true);
+              setEditTeam(record);
+              showModal();
             }}
           >
             Edit{" "}
           </a>
-          <a>Delete</a>
+          <a onClick={() => {
+            showDeleteConfirm(record);
+          }}
+          >Delete</a>
         </Space>
       ),
     },
@@ -110,26 +172,95 @@ const TeamManager = props => {
   return (
     <>
       <Modal
-        title="Edit Team"
+        title={isEdit ? "Edit Team" : "Add new team"}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+
       >
         <Form
           form={form}
-          initialValues={editTeam}
+          initialValues={isEdit ? editTeam : null}
           name="control-hooks"
           onFinish={onFinish}
         >
-          <Form.Item label="Name">
-            <Input name="name" />
+          <Form.Item hidden={true} name="id" label="Id">
+            <Input />
           </Form.Item>
+          <Form.Item name="name" label="Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea />
+          </Form.Item>
+          <Form.List name="tags" label="Tags">
+
+            {(fields, { add, remove }, { errors }) => (
+              <>
+                Tags<br /><br />
+                {fields.map((field, index) => (
+                  <Form.Item
+                    {...formItemLayout}
+                    label={index === 0 ? '' : ''}
+                    required={false}
+                    key={field.key}
+                  >
+                    <Form.Item
+                      {...field}
+                      validateTrigger={['onChange', 'onBlur']}
+                      noStyle
+                    >
+                      <Input
+                        placeholder="tag name"
+                        style={{
+                          width: '20%',
+                        }}
+                      />
+                    </Form.Item>
+                    {" "}
+                    {fields.length > 0 ? (
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button"
+                        onClick={() => remove(field.name)}
+                      />
+                    ) : null}
+                  </Form.Item>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    style={{
+                      width: '20%',
+                    }}
+                    icon={<PlusOutlined />}
+                  >
+                    Add tag
+                  </Button>
+                  <Form.ErrorList errors={errors} />
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
         </Form>
       </Modal>
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs title="Staff Manager" breadcrumbItem="Team" />
-          <Table columns={columns} dataSource={teams} />
+          <Row>
+            <Col lg="12">
+              <Card>
+                <CardBody>
+                  <Button onClick={() => {
+                    setIsEditTeam(false);
+                    setEditTeam(null);
+                    showModal();
+                  }} type="primary">Add team</Button>
+                  <Table columns={columns} dataSource={teams} bordered />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
         </Container>
       </div>
     </>
@@ -144,6 +275,9 @@ const mapStateToProps = ({ Teams }) => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetTeams: () => dispatch(getTeams()),
+  onUpdateTeam: (team) => dispatch(updateTeams(team)),
+  onDeleteTeam: (team) => dispatch(deleteTeams(team)),
+  onAddTeam: (team) => dispatch(addTeams(team))
 })
 
 export default connect(
