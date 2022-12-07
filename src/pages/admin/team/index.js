@@ -44,12 +44,6 @@ const TeamManager = props => {
     if (isEdit) onUpdateTeam(value)
     else onAddTeam(value)
 
-    form.setFieldsValue({
-      id: undefined,
-      name: undefined,
-      description: undefined,
-      tags: undefined,
-    })
   }
 
   const showDeleteConfirm = team => {
@@ -77,12 +71,7 @@ const TeamManager = props => {
 
   const handleCancel = () => {
     // form.resetFields();
-    form.setFieldsValue({
-      id: undefined,
-      name: undefined,
-      description: undefined,
-      tags: undefined,
-    })
+
     setIsModalOpen(false)
   }
 
@@ -158,6 +147,7 @@ const TeamManager = props => {
             onClick={() => {
               setIsEditTeam(true)
               setEditTeam(record)
+              form.setFieldsValue(record)
               showModal()
             }}
           >
@@ -262,6 +252,12 @@ const TeamManager = props => {
                     onClick={() => {
                       setIsEditTeam(false)
                       setEditTeam(null)
+                      form.setFieldsValue({
+                        id: undefined,
+                        name: undefined,
+                        description: undefined,
+                        tags: undefined,
+                      })
                       showModal()
                     }}
                     type="primary"

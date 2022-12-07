@@ -5,6 +5,9 @@ import {
   UPDATE_STAFFS,
   UPDATE_STAFFS_SUCCESS,
   UPDATE_STAFFS_FAIL,
+  DELETE_STAFFS,
+  DELETE_STAFFS_SUCCESS,
+  DELETE_STAFFS_FAIL,
   NEW_STAFF,
   NEW_STAFF_FAIL,
   NEW_STAFF_SUCCESS,
@@ -38,6 +41,21 @@ export const updateStaffsSuccess = staff => ({
 
 export const updateStaffsFail = error => ({
   type: UPDATE_STAFFS_FAIL,
+  payload: error,
+})
+
+export const deleteStaffs = staff => ({
+  type: DELETE_STAFFS,
+  payload: staff,
+})
+
+export const deleteStaffsSuccess = staff => ({
+  type: DELETE_STAFFS_SUCCESS,
+  payload: staff,
+})
+
+export const deleteStaffsFail = error => ({
+  type: DELETE_STAFFS_FAIL,
   payload: error,
 })
 

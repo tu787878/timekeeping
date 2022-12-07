@@ -77,28 +77,6 @@ const NewStaff = props => {
       dispatch(onGetTeams())
     }
   }, [dispatch, teams])
-  const optionGroup = [
-    {
-      label: "Picnic",
-      options: [
-        { label: "Mustard", value: "Mustard" },
-        { label: "Ketchup", value: "Ketchup" },
-        { label: "Relish", value: "Relish" },
-      ],
-    },
-    {
-      label: "Camping",
-      options: [
-        { label: "Tent", value: "Tent" },
-        { label: "Flashlight", value: "Flashlight" },
-        { label: "Toilet Paper", value: "Toilet Paper" },
-        { label: "Toilet Paper", value: "Toilet Paper" },
-        { label: "Toilet Paper", value: "Toilet Paper" },
-        { label: "Toilet Paper", value: "Toilet Paper" },
-        { label: "Toilet Paper", value: "Toilet Paper" },
-      ],
-    },
-  ]
 
   function toggleTab(tab) {
     if (activeTab !== tab) {
@@ -329,8 +307,8 @@ const NewStaff = props => {
                                       className="form-select"
                                     >
                                       <option>Select Role</option>
-                                      <option value="0">Admin</option>
-                                      <option value="2">Employee</option>
+                                      <option value="ADMIN">Admin</option>
+                                      <option value="EMPLOYEE">Employee</option>
                                     </select>
                                   </FormGroup>
                                 </Col>
@@ -407,9 +385,9 @@ const NewStaff = props => {
                                       className="form-select"
                                     >
                                       <option>Select Type</option>
-                                      <option value="0">Day</option>
-                                      <option value="1">Week</option>
-                                      <option value="2">Month</option>
+                                      <option value="FULLTIME">Fulltime</option>
+                                      <option value="PARTTIME">Parttime</option>
+                                      <option value="MINIJOB">Minijob</option>
                                     </select>
                                   </FormGroup>
                                 </Col>

@@ -232,6 +232,7 @@ export const getLicenseDevice = (device) => get(`${url.GET_SCAN_DEVICE}/${device
 
 export const getStaffs = () => get(url.GET_STAFFS);
 export const updateStaffs = staff => put(`${url.GET_STAFFS}/${staff.id}`, staff);
+export const deleteStaffs = staff => del(`${url.GET_STAFFS}/${staff}`);
 export const newStaff = staff => post(`${url.GET_STAFFS}`, staff);
 
 // get contacts
