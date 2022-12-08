@@ -111,6 +111,8 @@ export const GET_STAFFS = process.env.REACT_APP_API_HOST + "/account";
 export const UPDATE_STAFFS = process.env.REACT_APP_API_HOST + "/account";
 
 
+export const GET_NOTIFICATIONS = process.env.REACT_APP_API_HOST + "/notifications";
+
 ///////////////////////////////////////////////////////////// 
 // scan devices, cards
 export const GET_SCAN_DEVICE = process.env.REACT_APP_API_HOST + "/admin/scan-device";

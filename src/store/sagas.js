@@ -17,6 +17,7 @@ import teamsSaga from "./admin/team/saga";
 import staffsSaga from "./admin/staff/saga";
 import capabilitiesSaga from "./admin/capability/saga";
 import scanDevicesSaga from "./admin/scan-device/saga";
+import notificationsSaga from "./notifications/saga";
 
 
 export default function* rootSaga() {
@@ -37,6 +38,7 @@ export default function* rootSaga() {
     fork(teamsSaga),
     fork(staffsSaga),
     fork(capabilitiesSaga),
-    fork(scanDevicesSaga)
+    fork(scanDevicesSaga),
+    fork(notificationsSaga)
   ])
 }

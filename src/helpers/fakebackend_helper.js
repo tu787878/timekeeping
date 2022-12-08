@@ -2,7 +2,6 @@ import axios from "axios";
 import { del, get, post, put } from "./api_helper";
 import * as url from "./url_helper";
 
-
 const getDemoData = () => get(url.GET_DEMO_DATA);
                 
 export { getDemoData };
@@ -210,6 +209,16 @@ export const deleteTeams = team => del(`${url.GET_TEAMS}/${team.id}`);
 export const getCapabilities = () => get(url.GET_CAPABILITIES);
 
 
+
+// NOTIFICATIONS
+export const getAllNotifications = (paging) => get(`${url.GET_NOTIFICATIONS}?total=${paging.size}&page=${paging.page}`);
+export const getNewestNotifications = () => get(`${url.GET_NOTIFICATIONS}`);
+export const mardReadNotification = (noti) => put(`${url.GET_NOTIFICATIONS}/${noti}`);
+export const getTotalNotifications = (noti) => get(`${url.GET_NOTIFICATIONS}/size`);
+
+
+
+///
 //////////////////////////////////////////////////// 
 //  scan-device, cards
 

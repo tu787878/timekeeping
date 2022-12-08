@@ -35,6 +35,9 @@ import Staffs from "./admin/staff/reducer";
 import Capabilities from "./admin/capability/reducer";
 import ScanDevices from "./admin/scan-device/reducer";
 
+
+import Notifications from "./notifications/reducer";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -52,7 +55,8 @@ const rootReducer = combineReducers({
   Teams,
   Staffs,
   Capabilities,
-  ScanDevices
+  ScanDevices,
+  Notifications
 })
 
 export default rootReducer

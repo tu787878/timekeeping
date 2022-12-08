@@ -61,49 +61,56 @@ import NewStaff from "../pages/admin/Staff/new-staff"
 import ScanDevice from "../pages/admin/scan-device/index"
 import SocketConfig from "../components/socket/socket"
 
+// notification
+import Notifications from "pages/Notifications"
+
 
 const authProtectedRoutes = [
-  { path: "/dashboard", component: Dashboard , id:"Dashboard", allowedPermissions:["view"], className:"", contextId:"Dashboard"},
+  { path: "/dashboard", component: Dashboard , id:"Dashboard", allowedPermissions:[], className:"", contextId:"Dashboard"},
 
   //chat
-  { path: "/chat", component: Chat, id:"Chat", allowedPermissions:["view"], className:"bx-chat", contextId:"Chat"},
+  { path: "/chat", component: Chat, id:"Chat", allowedPermissions:[], className:"bx-chat", contextId:"Chat"},
 
   // //calendar
-  { path: "/calendar", component: Calendar, id:"Calendar", allowedPermissions: ["view"], className:"bx-calendar", contextId:"Calendar"},
+  { path: "/calendar", component: Calendar, id:"Calendar", allowedPermissions: [], className:"bx-calendar", contextId:"Calendar"},
 
   // //profile
-  { path: "/profile", component: UserProfile, id:"Profile", allowedPermissions: ["view"]},
+  { path: "/profile", component: UserProfile, id:"Profile", allowedPermissions: []},
 
   // Tasks
-  { path: "/tasks-list", component: TasksList, id:"Task", allowedPermissions: ["view"]},
-  { path: "/tasks-create", component: TasksCreate, id:"Task", allowedPermissions: ["edit"]},
+  { path: "/tasks-list", component: TasksList, id:"Task", allowedPermissions: []},
+  { path: "/tasks-create", component: TasksCreate, id:"Task", allowedPermissions: []},
 
   //Projects
-  { path: "/projects-grid", component: ProjectsGrid, id:"Project", allowedPermissions: ["view"] },
-  { path: "/projects-list", component: ProjectsList, id:"Project", allowedPermissions: ["view"] },
-  { path: "/projects-overview", component: ProjectsOverview, id:"Project", allowedPermissions: ["view"] },
-  { path: "/projects-overview/:id", component: ProjectsOverview, id:"Project", allowedPermissions: ["view"] },
-  { path: "/projects-create", component: ProjectsCreate, id:"Project", allowedPermissions: ["edit"] },
+  { path: "/projects-grid", component: ProjectsGrid, id:"Project", allowedPermissions: [] },
+  { path: "/projects-list", component: ProjectsList, id:"Project", allowedPermissions: [] },
+  { path: "/projects-overview", component: ProjectsOverview, id:"Project", allowedPermissions: [] },
+  { path: "/projects-overview/:id", component: ProjectsOverview, id:"Project", allowedPermissions: [] },
+  { path: "/projects-create", component: ProjectsCreate, id:"Project", allowedPermissions: [] },
 
   //Blog
-  { path: "/blog-list", component: BlogList, id:"Blog", allowedPermissions: ["view"] },
-  { path: "/blog-grid", component: BlogGrid, id:"Blog", allowedPermissions: ["view"] },
-  { path: "/blog-details", component: BlogDetails, id:"Blog", allowedPermissions: ["view"] },
+  { path: "/blog-list", component: BlogList, id:"Blog", allowedPermissions: []},
+  { path: "/blog-grid", component: BlogGrid, id:"Blog", allowedPermissions: [] },
+  { path: "/blog-details", component: BlogDetails, id:"Blog", allowedPermissions: [] },
 
   // Contacts
-  { path: "/contacts-grid", component: ContactsGrid, id:"Contact", allowedPermissions: ["view"] },
-  { path: "/contacts-list", component: ContactsList, id:"Contact", allowedPermissions: ["view"] },
-  { path: "/contacts-profile", component: ContactsProfile, id:"Contact", allowedPermissions: ["view"] },
-  { path: "/contacts-profile/:id", component: ContactsProfile, id:"Contact", allowedPermissions: ["view"] },
+  { path: "/contacts-grid", component: ContactsGrid, id:"Contact", allowedPermissions: [] },
+  { path: "/contacts-list", component: ContactsList, id:"Contact", allowedPermissions: [] },
+  { path: "/contacts-profile", component: ContactsProfile, id:"Contact", allowedPermissions: [] },
+  { path: "/contacts-profile/:id", component: ContactsProfile, id:"Contact", allowedPermissions: [] },
 
   // admin
-  { path: "/team-manager", component: TeamManager, id:"Team", allowedPermissions: ["edit"] },
-  { path: "/staff-manager", component: StaffManager, id:"Staff", allowedPermissions: ["edit"] },
-  { path: "/new-staff", component: NewStaff, id:"Staff", allowedPermissions: ["edit"] },
+  { path: "/team-manager", component: TeamManager, id:"Team", allowedPermissions: ["admin"] },
+  { path: "/staff-manager", component: StaffManager, id:"Staff", allowedPermissions: ["admin"] },
+  { path: "/new-staff", component: NewStaff, id:"Staff", allowedPermissions: ["admin"] },
 
   // scan device
-  { path: "/scan-device", component: ScanDevice, id:"ScanDevice", allowedPermissions: ["edit"] },
-  { path: "/card-id", component: SocketConfig, id:"CardId", allowedPermissions: ["edit"] },
+  { path: "/scan-device", component: ScanDevice, id:"ScanDevice", allowedPermissions: ["admin"] },
+  { path: "/card-id", component: SocketConfig, id:"CardId", allowedPermissions: ["admin"] },
+
+  // notifications
+  { path: "/notifications", component: Notifications, id:"Notiification", allowedPermissions: [] },
+
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
