@@ -26,7 +26,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 const TasksCreate = () => {
 
   //meta title
-  document.title="Create Task | Skote - React Admin & Dashboard Template";
+  document.title = "Create Task | Skote - React Admin & Dashboard Template";
 
   const inpRow = [{ name: "", file: "" }]
   const [startDate, setstartDate] = useState(new Date())
@@ -94,114 +94,15 @@ const TasksCreate = () => {
                               wrapperClassName="wrapperClassName"
                               editorClassName="editorClassName"
                               placeholder="Place Your Content Here..."
+                              toolbar={{
+                                inline: { inDropdown: true },
+                                list: { inDropdown: true },
+                                textAlign: { inDropdown: true },
+                                link: { inDropdown: true },
+                                inputAccept: 'application/pdf,text/plain,application/vnd.openxmlformatsofficedocument.wordprocessingml.document,application/msword,application/vnd.ms-excel'
+                              }}
                             />
                           </Col>
-                        </FormGroup>
-
-                        <FormGroup className="mb-4" row>
-                          <Label className="col-form-label col-lg-2">
-                            Task Date
-                          </Label>
-                          <Col lg="10">
-                            <Row>
-                              <Col md={6} className="pr-0">
-                                <DatePicker
-                                  className="form-control"
-                                  selected={startDate}
-                                  onChange={startDateChange}
-                                />
-                              </Col>
-                              <Col md={6} className="pl-0">
-                                <DatePicker
-                                  className="form-control"
-                                  selected={endDate}
-                                  onChange={endDateChange}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </FormGroup>
-
-                        <div className="inner-repeater mb-4">
-                          <div className="inner form-group mb-0 row">
-                            <Label className="col-form-label col-lg-2">
-                              Add Team Member
-                            </Label>
-                            <div
-                              className="inner col-lg-10 ml-md-auto"
-                              id="repeater"
-                            >
-                              {inputFields.map((field, key) => (
-                                <div
-                                  key={key}
-                                  id={"nested" + key}
-                                  className="mb-3 row align-items-center"
-                                >
-                                  <Col md="6">
-                                    <input
-                                      type="text"
-                                      className="inner form-control"
-                                      defaultValue={field.name}
-                                      placeholder="Enter Name..."
-                                    />
-                                  </Col>
-                                  <Col md="4">
-                                    <div className="mt-4 mt-md-0">
-                                      <Input
-                                        type="file"
-                                        className="form-control"
-                                        defaultValue={field.file}
-                                      />
-                                    </div>
-                                  </Col>
-                                  <Col md="2">
-                                    <div className="mt-2 mt-md-0 d-grid">
-                                      <Button
-                                        color="primary"
-                                        className="inner"
-                                        onClick={() => {
-                                          handleRemoveFields(key)
-                                        }}
-                                        block
-                                      >
-                                        Delete
-                                      </Button>
-                                    </div>
-                                  </Col>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          <Row className="justify-content-end">
-                            <Col lg="10">
-                              <Button
-                                color="success"
-                                className="inner"
-                                onClick={() => {
-                                  handleAddFields()
-                                }}
-                              >
-                                Add Number
-                              </Button>
-                            </Col>
-                          </Row>
-                        </div>
-                        <FormGroup className="mb-4" row>
-                          <label
-                            htmlFor="taskbudget"
-                            className="col-form-label col-lg-2"
-                          >
-                            Budget
-                          </label>
-                          <div className="col-lg-10">
-                            <Input
-                              id="taskbudget"
-                              name="taskbudget"
-                              type="text"
-                              placeholder="Enter Task Budget..."
-                              className="form-control"
-                            />
-                          </div>
                         </FormGroup>
                       </div>
                     </div>

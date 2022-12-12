@@ -15,6 +15,7 @@ import {
   TabContent,
   TabPane,
   Button,
+  Spinner
 } from "reactstrap"
 import Select from "react-select"
 import classnames from "classnames"
@@ -34,6 +35,8 @@ import {
   resetStaff as onResetStaff,
 } from "store/admin/staff/actions"
 
+import { post } from "../../../helpers/api_helper";
+import { GET_STAFFS } from "../../../helpers/url_helper";
 const NewStaff = props => {
   //meta title
   document.title = "Form Wizard | Skote - React Admin & Dashboard Template"
@@ -57,6 +60,11 @@ const NewStaff = props => {
   const [selectedTeam, setselectedTeam] = useState(null)
   const [selectedRole, setselectedRole] = useState(null)
   const [selectedWorkingType, setWorkingType] = useState(null)
+
+  const [message, setMessage] = useState("Click comfirm to add a new staff!")
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isSubmit, setIsSubmit] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [firstName, setFirstName] = useState(null)
   const [lastName, setLastName] = useState(null)
@@ -116,7 +124,21 @@ const NewStaff = props => {
       workTo: workTo,
     }
     console.log(data)
-    dispatch(addNewStaff(data))
+    setIsLoading(true)
+    setIsSubmit(true)
+    post(`${GET_STAFFS}`, data).then((res) => {
+      console.log(res);
+      if(res.code != 0 ){
+        setIsSuccess(false)
+        setMessage(res.message);
+      }else{
+        setIsSuccess(true)
+        setMessage("Success");
+      }
+    }).catch((error)=>{
+      setIsSuccess(false)
+      setMessage("something wrong!")
+    }).finally(()=>{setIsLoading(false)});
   }
 
   function toggleNormal(e) {
@@ -189,7 +211,7 @@ const NewStaff = props => {
                               (classnames({
                                 active: activeTabVartical === 3,
                               }),
-                              "done")
+                                "done")
                             }
                             onClick={() => {
                               toggleTabVertical(3)
@@ -209,7 +231,7 @@ const NewStaff = props => {
                               (classnames({
                                 active: activeTabVartical === 4,
                               }),
-                              "done")
+                                "done")
                             }
                             onClick={() => {
                               toggleTabVertical(4)
@@ -431,49 +453,34 @@ const NewStaff = props => {
                             <Col lg="6">
                               <div className="text-center">
                                 <div className="mb-4">
-                                  {addSuccess.code ? (
-                                    addSuccess.message == "success" ? (
-                                      <i className="mdi mdi-check-circle-outline text-success display-4" />
-                                    ) : (
-                                      <i className="mdi mdi-check-circle-outline text-danger display-4" />
-                                    )
+                                  {isSubmit ? (isSuccess && isSubmit ? (
+                                    <i className="mdi mdi-check-circle-outline text-success display-4" />
                                   ) : (
-                                    <i className="mdi mdi-check-circle-outline display-4" />
-                                  )}
+                                    <i className="mdi mdi-check-circle-outline text-danger display-4" />
+                                  )) : null}
+
                                 </div>
                                 <div>
                                   <h5>Add a new Employee</h5>
-                                  {addSuccess.code != 0 ? (
-                                    <p className="text-danger">
-                                      {addSuccess.message}
-                                    </p>
-                                  ) : (
-                                    <p className="text-success">
-                                      {addSuccess.message}
-                                    </p>
-                                  )}
-                                  {addSuccess.code ? (
-                                    addSuccess.code != 0 ? (
-                                      <Button
-                                        onClick={handleClick}
-                                        className="btn-success"
-                                      >
-                                        Confirm
-                                      </Button>
-                                    ) : (
-                                      <p className="text-success">
-                                        Reload or click back to create another
-                                        employee.
-                                      </p>
-                                    )
-                                  ) : (
-                                    <Button
-                                      onClick={handleClick}
-                                      className="btn-success"
-                                    >
-                                      Confirm
-                                    </Button>
-                                  )}
+                                  <p className="text-info">
+                                    {message}
+                                  </p>
+                                  {isSuccess ? <Button
+                                    onClick={()=>window.location.reload()}
+                                    className="btn-success"
+                                  >
+                                    Add more
+                                  </Button> : <Button
+                                    onClick={handleClick}
+                                    className="btn-success"
+                                  >
+                                    Confirm
+                                    {" "}
+                                    {isLoading ? <Spinner size="sm">
+                                      Loading...
+                                    </Spinner> : null}
+                                  </Button>}
+
                                 </div>
                               </div>
                             </Col>
@@ -493,7 +500,6 @@ const NewStaff = props => {
                           <Link
                             to="#"
                             onClick={() => {
-                              dispatch(onResetStaff())
                               toggleTabVertical(activeTabVartical - 1)
                             }}
                           >

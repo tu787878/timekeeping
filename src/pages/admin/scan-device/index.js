@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
+import SockJsClient from 'react-stomp';
 import {
   Container,
   Row,
@@ -17,7 +18,8 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  Alert
 } from "reactstrap"
 import { Link, withRouter } from "react-router-dom"
 import Select, { components } from "react-select";
@@ -150,10 +152,34 @@ const ScanDevice = props => {
     }
   }
 
+  const [visible, setVisible] = useState(true);
+
+  const onDismiss = () => setVisible(false);
+
   //meta title
   document.title = "New Page | Skote - React Admin & Dashboard Template"
   return (
     <>
+     <Alert color="info" isOpen={visible} toggle={onDismiss}>
+      New card is registered!
+    </Alert>
+    <SockJsClient url='http://localhost:8080/websocket-chat/'
+        topics={[`/topic/scan-device`]}
+        onConnect={() => {
+          console.log("connected");
+        }}
+        onDisconnect={() => {
+          console.log("Disconnected");
+        }}
+        onMessage={(msg) => {
+          console.log(msg);
+          setVisible(true)
+          onGetCards(2)
+          onGetWaitingCards(2)
+        }}
+        ref={(client) => {
+          // this.clientRef = client
+        }} />
       {/* add waiting card */}
       <Modal isOpen={modalAddCard} toggle={toggleAddCard}>
         <ModalHeader toggle={toggleAddCard}>Register a card</ModalHeader>

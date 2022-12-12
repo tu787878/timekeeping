@@ -1,7 +1,7 @@
 
 export const GET_DEMO_DATA =  process.env.REACT_APP_API_HOST + "/authenticate/helloWorld";
 export const LOGIN_DEMO = process.env.REACT_APP_API_HOST + "/authenticate";
-export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/1/calendar";
+export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/6/calendar";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
@@ -92,7 +92,7 @@ export const GET_APPLY_JOB = "/jobApply";
 export const DELETE_APPLY_JOB = "add/applyjob";
 
 //PROJECTS
-export const GET_PROJECTS = "/projects";
+export const GET_PROJECTS = "/project";
 export const GET_PROJECT_DETAIL = "/project";
 export const ADD_NEW_PROJECT = "/add/project";
 export const UPDATE_PROJECT = "/update/project";

@@ -51,6 +51,7 @@ function* onDeleteScanDevice({payload: device}) {
   try {
     const response = yield call(deleteScanDevice, device)
     yield put(actions.deleteScanDeviceSuccess(response))
+    yield put(actions.getWaitingListCards(2))
   } catch (error) {
     yield put(actions.deleteScanDeviceFail(error))
   }
