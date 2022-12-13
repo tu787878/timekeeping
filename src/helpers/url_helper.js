@@ -1,5 +1,5 @@
 
-export const GET_DEMO_DATA =  process.env.REACT_APP_API_HOST + "/authenticate/helloWorld";
+export const GET_DEMO_DATA = process.env.REACT_APP_API_HOST + "/authenticate/helloWorld";
 export const LOGIN_DEMO = process.env.REACT_APP_API_HOST + "/authenticate";
 export const GET_EVENT_DEMO = process.env.REACT_APP_API_HOST + "/account/6/calendar";
 
@@ -93,14 +93,14 @@ export const GET_APPLY_JOB = "/jobApply"
 export const DELETE_APPLY_JOB = "add/applyjob"
 
 //PROJECTS
-export const GET_PROJECTS = "/project";
+export const GET_PROJECTS = process.env.REACT_APP_API_HOST + "/project";
 export const GET_PROJECT_DETAIL = "/project";
 export const ADD_NEW_PROJECT = "/add/project";
 export const UPDATE_PROJECT = "/update/project";
 export const DELETE_PROJECT = "/delete/project";
 
 //TASKS
-export const GET_TASKS = "/tasks"
+export const GET_TASKS =  process.env.REACT_APP_API_HOST + "/task"
 
 //admin
 export const GET_TEAMS = process.env.REACT_APP_API_HOST + "/team"
@@ -114,6 +114,12 @@ export const UPDATE_STAFFS = process.env.REACT_APP_API_HOST + "/account"
 
 export const GET_NOTIFICATIONS =
   process.env.REACT_APP_API_HOST + "/notifications"
+
+export const UPLOAD_FILE =
+  process.env.REACT_APP_API_HOST + "/media/upload"
+
+  export const UPLOAD_FILE_MULTI =
+  process.env.REACT_APP_API_HOST + "/media/multi-upload"
 
 /////////////////////////////////////////////////////////////
 // scan devices, cards

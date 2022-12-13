@@ -35,7 +35,7 @@ const TasksList = () => {
     dispatch(onGetTasks())
   }, [dispatch])
 
-  const recentTasks = tasks.find(task => task.title === "Recent Tasks")
+  // const recentTasks = tasks.find(task => task.title === "Recent Tasks")
 
   return (
     <React.Fragment>
