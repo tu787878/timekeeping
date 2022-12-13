@@ -16,12 +16,37 @@ const authProtectedContent = [
 
   // //calendar
   {
-    path: "/calendar",
+    path: "/#",
     id: "Calendar",
     allowedPermissions: ["view"],
     className: "bx-calendar",
     contextId: "Calendar",
-    children: [],
+    children: [
+      {
+        path: "/calendar",
+        id: "Calendar",
+        contextId: "Calendar",
+        allowedPermissions: ["view"],
+        className: "",
+        children: [],
+      },
+      {
+        path: "/calendar-admin-request",
+        id: "CalendarAdminRequest",
+        contextId: "CalendarAdminRequest",
+        allowedPermissions: ["view"],
+        className: "",
+        children: [],
+      },
+      {
+        path: "/calendar-user-request",
+        id: "CalendarUserRequest",
+        contextId: "CalendarUserRequest",
+        allowedPermissions: ["view"],
+        className: "",
+        children: [],
+      },
+    ],
   },
 
   // //profile
