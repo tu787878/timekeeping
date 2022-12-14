@@ -156,9 +156,7 @@ const ProjectsCreate = () => {
                 >
                   <Input />
                 </Form.Item>
-                <Form.Item name={['description']} label="Description">
-                  <Input.TextArea />
-                </Form.Item>
+
                 <Form.Item label="Assign to Team" >
                   <Select
                     style={{
@@ -192,6 +190,9 @@ const ProjectsCreate = () => {
                     })}
 
                   </Select>
+                </Form.Item>
+                <Form.Item name={['description']} label="Description">
+                  <Input.TextArea rows={6} />
                 </Form.Item>
                 <Form.Item label="Documents">
                   <Upload {...props} multiple>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { GET_STAFFS, GET_PROJECTS, UPLOAD_FILE_MULTI ,GET_TASKS} from "../../helpers/url_helper";
+import { GET_STAFFS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_TASKS } from "../../helpers/url_helper";
 import { del, get, post, put } from "../../helpers/api_helper";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -98,15 +98,15 @@ const TasksCreate = () => {
                 link: r
               }
             }),
-            type:type,
+            type: type,
             severity: severity,
             project: project ? { id: project } : null,
             accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null
           }
           post(GET_TASKS, data)
             .then((res) => {
-                console.log(res);
-                success()
+              console.log(res);
+              success()
             });
           console.log(data);
         })
@@ -120,17 +120,17 @@ const TasksCreate = () => {
     else {
       let data = {
         name: values.name,
-            description: values.description,
-            project: project ? { id: project } : null,
-            accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null,
-            severity: severity,
-            type:type
+        description: values.description,
+        project: project ? { id: project } : null,
+        accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null,
+        severity: severity,
+        type: type
       }
       post(GET_TASKS, data)
-            .then((res) => {
-                console.log(res);
-                success()
-            });
+        .then((res) => {
+          console.log(res);
+          success()
+        });
       console.log(data);
     }
 
@@ -141,7 +141,7 @@ const TasksCreate = () => {
 
   return (
     <React.Fragment>
-       {contextHolder}
+      {contextHolder}
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
@@ -155,9 +155,7 @@ const TasksCreate = () => {
                 >
                   <Input />
                 </Form.Item>
-                <Form.Item name={['description']} label="Description">
-                  <Input.TextArea />
-                </Form.Item>
+
                 <Form.Item label="Type" >
                   <Select
                     style={{
@@ -218,6 +216,9 @@ const TasksCreate = () => {
                     })}
 
                   </Select>
+                </Form.Item>
+                <Form.Item name={['description']} label="Description">
+                  <Input.TextArea rows={6}/>
                 </Form.Item>
                 <Form.Item label="Documents">
                   <Upload {...props} multiple>
