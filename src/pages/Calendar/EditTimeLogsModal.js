@@ -102,9 +102,7 @@ const EditTimeLogModal = ({
                         </Form.Item>
                       </Col>
                       <Col span={2}>
-                        <MinusCircleOutlined
-                          onClick={() => remove(field.name)}
-                        />
+                        <MinusCircleOutlined onClick={() => remove(name)} />
                       </Col>
                     </Row>
                   </>
