@@ -65,7 +65,7 @@ const NotificationDropdown = props => {
 
   return (
     <React.Fragment>
-      <SockJsClient url='http://localhost:8080/websocket-chat/'
+      <SockJsClient url={`${process.env.REACT_APP_API_HOST}/websocket-chat/`}
         topics={[`/topic/noti/${accountId}`]}
         onConnect={() => {
           console.log("connected");

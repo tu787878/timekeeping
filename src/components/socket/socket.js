@@ -80,7 +80,7 @@ class SocketConfig extends Component {
                 <div className="align-center">
                     {this.displayMessages()}
                 </div>
-                <SockJsClient url='http://localhost:8080/websocket-chat/'
+                <SockJsClient url={`${process.env.REACT_APP_API_HOST}/websocket-chat/`}
                               topics={['/topic/noti/1']}
                               onConnect={() => {
                                   console.log("connected");

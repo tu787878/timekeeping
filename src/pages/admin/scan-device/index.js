@@ -163,7 +163,7 @@ const ScanDevice = props => {
      <Alert color="info" isOpen={visible} toggle={onDismiss}>
       New card is registered!
     </Alert>
-    <SockJsClient url='http://localhost:8080/websocket-chat/'
+    <SockJsClient url={`${process.env.REACT_APP_API_HOST}/websocket-chat/`}
         topics={[`/topic/scan-device`]}
         onConnect={() => {
           console.log("connected");
