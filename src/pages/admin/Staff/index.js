@@ -10,7 +10,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import { Button, Table, Space, Modal, Form, Input, Select, } from "antd"
 import {
   MinusCircleOutlined,
-  PlusOutlined,
+  CalendarTwoTone,
   ExclamationCircleFilled,
   DeleteTwoTone,
   EditTwoTone,
@@ -24,7 +24,7 @@ import { Card, CardBody, Col, Row } from "reactstrap"
 const { confirm } = Modal
 
 const StaffManager = props => {
-  const { staffs, teams, onGetStaffs, onGetTeams, onUpdateStaff, onDeleteStaff, onAddTeam} = props
+  const { staffs, teams, onGetStaffs, onGetTeams, onUpdateStaff, onDeleteStaff, onAddTeam } = props
 
   useEffect(() => {
     onGetStaffs()
@@ -58,14 +58,14 @@ const StaffManager = props => {
       workingType: value.job.workingTimeType,
       // workFrom: workFrom,
       // workTo: workTo,
-      id:value.id
+      id: value.id
     }
     onUpdateStaff(data);
   }
 
   const showDeleteConfirm = staff => {
     confirm({
-      title: `Are you sure delete staff '${staff.name}'?`,
+      title: `Are you sure delete staff '${staff.userDetail.firstName}'?`,
       icon: <ExclamationCircleFilled />,
       okText: "Yes",
       okType: "danger",
@@ -151,6 +151,11 @@ const StaffManager = props => {
             <ProfileTwoTone />
           </a>
           <a
+            href={`calendar/${record.id}`}
+          >
+            <CalendarTwoTone />
+          </a>
+          <a
             onClick={() => {
               showDeleteConfirm(record)
             }}
@@ -228,15 +233,15 @@ const StaffManager = props => {
           </Form.Item>
           <Form.Item name={["accountRole", "capabilities"]} label="Manage Calendar">
             <Select
-             mode="multiple"
-             allowClear
-             value={()=>{
-              getFieldValue(["accountRole", "capabilities"]).map(e => {e.capabilityId})
-             }}
+              mode="multiple"
+              allowClear
+              value={() => {
+                getFieldValue(["accountRole", "capabilities"]).map(e => { e.capabilityId })
+              }}
             >
               {teams.map(team => {
                 return (
-                  <Select.Option key={team.id} value={"Calendar.Team." +team.id}>{team.name}</Select.Option>
+                  <Select.Option key={team.id} value={"Calendar.Team." + team.id}>{team.name}</Select.Option>
                 );
               })}
             </Select>
@@ -251,7 +256,7 @@ const StaffManager = props => {
               <Card>
                 <CardBody>
                   <a href={`/new-staff`}>
-                    <Button type="primary">Add team</Button>
+                    <Button type="primary">Add Staff</Button>
                   </a>
 
                   <Table columns={columns} dataSource={staffs} bordered />

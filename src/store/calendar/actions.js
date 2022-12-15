@@ -16,8 +16,9 @@ import {
   GET_CATEGORIES_FAIL,
 } from "./actionTypes";
 
-export const getEvents = () => ({
+export const getEvents = (id) => ({
   type: GET_EVENTS,
+  payload: id
 });
 
 export const getEventsSuccess = events => ({

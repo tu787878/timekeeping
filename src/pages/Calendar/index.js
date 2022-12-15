@@ -2,6 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import "flatpickr/dist/themes/material_blue.css"
 import Flatpickr from "react-flatpickr"
+import { useState, useEffect } from "react"
+import { get } from "../../helpers/api_helper"
+import * as url from "../../helpers/url_helper"
 import {
   Card,
   CardBody,
@@ -15,10 +18,26 @@ import {
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
-
+import {useParams} from "react-router-dom";
 const Calender = () => {
   //meta title
   document.title = "Full Calendar | Skote - React Admin & Dashboard Template"
+  const {id} = useParams()
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if(id === undefined){
+      const obj = JSON.parse(localStorage.getItem("authUser"))
+      get(url.GET_STAFFS + "/" + obj.account.id).then(data=>{
+        setUser(data.data);
+      })
+    }else{
+      get(url.GET_STAFFS + "/" + id).then(data=>{
+        setUser(data.data);
+      })
+    }
+
+  }, [])
 
   return (
     <React.Fragment>
@@ -52,9 +71,9 @@ const Calender = () => {
                         />
                       </div>
                       <h5 className="font-size-15 text-truncate">
-                        Van Tu Nguyen
+                        {user?.userDetail?.firstName} {" "} {user?.userDetail?.lastName}
                       </h5>
-                      <p className="text-muted mb-0 text-truncate">Coder</p>
+                      <p className="text-muted mb-0 text-truncate">{user?.job?.name}</p>
                     </Col>
                     <Col>
                       <FormGroup className="mb-4">
@@ -93,40 +112,19 @@ const Calender = () => {
                     <Col>
                       <div className="rounded overflow-hidden">
                         <div className="bg-info p-4 bg-soft">
-                          <h5 className="my-2 text-info">Work hours: 35</h5>
+                          <h5 className="my-2 text-info">Type: {user?.job?.workingTimeType}</h5>
                         </div>
                       </div>
                     </Col>
                     <Col>
                       <div className="rounded overflow-hidden">
                         <div className="bg-warning p-4 bg-soft">
-                          <h5 className="my-2 text-warning">Paid absence: 7</h5>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col>
-                      <div className="rounded overflow-hidden">
-                        <div className="bg-success p-4 bg-soft">
-                          <h5 className="my-2 text-success">Total: 42</h5>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col>
-                      <div className="rounded overflow-hidden">
-                        <div className="bg-danger p-4 bg-soft">
-                          <h5 className="my-2 text-danger">Regular: 40</h5>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col>
-                      <div className="rounded overflow-hidden">
-                        <div className="bg-primary p-4 bg-soft">
-                          <h5 className="my-2 text-primary">Overtime: 2</h5>
+                          <h5 className="my-2 text-warning">Min: {user?.job?.workingTimeType === "FULLTIME" ? "8h/day" : (user?.job?.minHours + "h/month")}</h5>
                         </div>
                       </div>
                     </Col>
                   </Row>
-                  <TimeLogsTable />
+                  <TimeLogsTable id={id} />
                 </CardBody>
               </Card>
             </Col>

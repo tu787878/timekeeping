@@ -1,7 +1,19 @@
 import React from "react"
 import { Button } from "reactstrap"
+import {
+  CarTwoTone
+} from "@ant-design/icons"
+const toTime = (minutes) => {
+  let negative = false;
+  if (minutes < 0) negative = true;
 
-export const tableColumns = handleOpenEditModal => [
+  minutes = Math.abs(minutes);
+  var m = minutes % 60;
+  var h = (minutes - m) / 60;
+  return (negative ? "-" : "") + h + ":" + m + ((m < 10) ? "0" : "");
+}
+
+export const tableColumns = (handleOpenEditModal, id) => [
   {
     title: "DW",
     key: "dayOfWeek",
@@ -21,11 +33,12 @@ export const tableColumns = handleOpenEditModal => [
     align: "center",
     render: timeLogs => (
       <>
-        {timeLogs.map(time => (
-          <div key={time.id}>
-            {time.timeFrom} - {time.timeTo}
-          </div>
-        ))}
+          {timeLogs.map(time => (
+            <div style={{color: time.status === "VALID" ? "black" : "red"}} key={time.id}>
+              {time.timeFrom} - {time.timeTo} {time.type !== "WORK" ? <CarTwoTone /> : ""}
+            </div>
+          ))}
+
       </>
     ),
   },
@@ -34,27 +47,42 @@ export const tableColumns = handleOpenEditModal => [
     key: "total",
     dataIndex: "total",
     align: "center",
+    render: total => (
+      <>
+        {toTime(total)}
+      </>
+    ),
   },
   {
     title: "Regular time",
     key: "regularTime",
     dataIndex: "regularTime",
     align: "center",
+    render: regularTime => (
+      <>
+        {toTime(regularTime)}
+      </>
+    ),
   },
   {
     title: "Overtime",
     key: "balance",
     dataIndex: "balance",
     align: "center",
+    render: balance => (
+      <>
+        <div style={{ color: balance < 0 ? "red" : "green" }}>{toTime(balance)}</div>
+      </>
+    ),
   },
   {
     title: "Action",
     key: "Action",
     align: "center",
     render: item => (
-      <Button color="warning" outline onClick={() => handleOpenEditModal(item)}>
+      !id ? <Button color="warning" outline onClick={() => handleOpenEditModal(item)}>
         Edit
-      </Button>
+      </Button> : null
     ),
   },
 ]

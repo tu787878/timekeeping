@@ -1,6 +1,11 @@
 import React from "react"
-
-export const columns = () => [
+import {
+  CarTwoTone,
+  CloseSquareTwoTone
+} from "@ant-design/icons"
+import { Button, Table, Space, Modal, Form, Input, Select, } from "antd"
+import Moment from 'react-moment';
+export const columns = (doCancel) => [
   {
     title: <b>User</b>,
     dataIndex: "createdBy",
@@ -22,7 +27,7 @@ export const columns = () => [
       <div>
         {
           timeLogs.map(time => (
-            <div key={time.id}>{time.timeFrom} - {time.timeTo}</div>
+            <div key={time.id}>{time.timeFrom} - {time.timeTo} {time.type !== "WORK" ? <CarTwoTone /> : ""}</div>
           ))
         }
       </div>
@@ -33,10 +38,24 @@ export const columns = () => [
     dataIndex: "createdTime",
     key: "createdTime",
     align: "center",
+    render: (_,record) => (
+      <Moment toNow>{record.createdTime}</Moment>
+    ),
   },
   {
     title: <b>Action</b>,
     key: "action",
     align: "center",
+    render: (_, record) => {
+      return record.status ? (record.accept ? "accepted" : "denied") : <Space size="middle">
+        <a
+          onClick={() => {
+            doCancel(record.id)
+          }}
+        >
+          <CloseSquareTwoTone twoToneColor="red" />
+        </a>
+      </Space>;
+    },
   },
 ]

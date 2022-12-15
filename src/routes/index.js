@@ -95,6 +95,14 @@ const authProtectedRoutes = [
     contextId: "Calendar",
   },
   {
+    path: "/calendar/:id",
+    component: Calendar,
+    id: "Calendar",
+    allowedPermissions: [],
+    className: "bx-calendar",
+    contextId: "Calendar",
+  },
+  {
     path: "/calendar-admin-request",
     component: CalendarAdminRequest,
     id: "CalendarAdminRequest",

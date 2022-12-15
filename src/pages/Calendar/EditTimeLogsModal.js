@@ -12,7 +12,7 @@ const { Option } = Select
 const EditTimeLogModal = ({
   openEditModal,
   setOpenEditModal,
-  // selectedItem,
+  selectedItem,
 }) => {
   const [form] = Form.useForm()
   const user = JSON.parse(localStorage.getItem("authUser"))
@@ -20,10 +20,10 @@ const EditTimeLogModal = ({
   const handleCloseModal = () => {
     setOpenEditModal(false)
   }
-
   const handleEdit = values => {
+    
     const payload = { ...values }
-    const date = moment(payload.timeLogs[0].date[0]).format("DD/MM/YYYY")
+    const date = selectedItem?.date
     payload.onDate = date
     const formatTimeLogs = payload.timeLogs.map(time => {
       return {
@@ -33,6 +33,8 @@ const EditTimeLogModal = ({
       }
     })
     payload.timeLogs = formatTimeLogs
+
+    console.log(payload);
     post(`${url.GET_STAFFS}/${user.account.id}/calendar/request`, payload).then(
       res => {
         handleCloseModal()

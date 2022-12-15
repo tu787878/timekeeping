@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getEvents as onGetEvents } from "../../../store/actions"
 import EditTimeLogModal from "../EditTimeLogsModal"
 
-const TimeLogsTable = () => {
+const TimeLogsTable = (id) => {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
   const dispatch = useDispatch()
@@ -16,7 +16,14 @@ const TimeLogsTable = () => {
   }))
 
   useEffect(() => {
-    dispatch(onGetEvents())
+    if(id.id === undefined){
+      const obj = JSON.parse(localStorage.getItem("authUser"))
+      dispatch(onGetEvents(obj.account.id))
+    }
+    else{
+      dispatch(onGetEvents(id.id))
+    }
+    
   }, [dispatch])
 
   const handleOpenEditModal = item => {
@@ -33,9 +40,10 @@ const TimeLogsTable = () => {
       }}
     >
       <Table
-        columns={tableColumns(handleOpenEditModal)}
+        columns={tableColumns(handleOpenEditModal, id.id)}
         dataSource={events || []}
         scroll={{ y: 500 }}
+        pagination={false}
       />
       <EditTimeLogModal
         openEditModal={openEditModal}
