@@ -39,7 +39,7 @@ export const columns = (doCancel) => [
     key: "createdTime",
     align: "center",
     render: (_,record) => (
-      <Moment toNow>{record.createdTime}</Moment>
+      <Moment fromNow>{record.createdTime}</Moment>
     ),
   },
   {

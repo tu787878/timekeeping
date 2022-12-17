@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
-import { GET_STAFFS, GET_TEAMS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_COMMENT, GET_TASKS } from "../../../helpers/url_helper";
-import { del, get, post, put } from "../../../helpers/api_helper";
+import { GET_STAFFS, GET_TEAMS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_COMMENT, GET_TASKS } from "../../helpers/url_helper";
+import { del, get, post, put } from "../../helpers/api_helper";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { Card } from 'antd';
@@ -16,7 +16,7 @@ import Moment from 'react-moment';
 import { InboxOutlined, UploadOutlined, DeleteTwoTone } from '@ant-design/icons';
 import { useParams } from "react-router-dom";
 const { Option } = Select;
-const ProjectsOverview = () => {
+const TasksOverview = () => {
   const [teams, setTeams] = useState([])
   const [staffs, setStaffs] = useState([])
   const [project, setProject] = useState(null)
@@ -55,7 +55,7 @@ const ProjectsOverview = () => {
 
 
   const onGetTeams = () => {
-    get(GET_TEAMS).then(data => {
+    get(GET_PROJECTS + "/all").then(data => {
       setTeams(data.data);
     })
   }
@@ -67,7 +67,7 @@ const ProjectsOverview = () => {
   }
 
   const onGetProject = () => {
-    get(GET_PROJECTS + "/" + id).then(data => {
+    get(GET_TASKS + "/" + id).then(data => {
       console.log(data.data);
       setProject(data.data)
 
@@ -76,7 +76,7 @@ const ProjectsOverview = () => {
       });
       setAccounts(acc);
       setOldMedia(data.data.media);
-      setTeam(data.data.team.id);
+      setTeam(data.data.project.id);
     })
   }
 
@@ -91,7 +91,6 @@ const ProjectsOverview = () => {
   }, [])
   useEffect(() => {
     onGetProject()
-    onGetNewTask()
   }, [id])
 
   useEffect(() => {
@@ -131,12 +130,14 @@ const ProjectsOverview = () => {
             name: values.name,
             description: values.description,
             media: res,
-            team: team ? { id: team } : null,
+            project: team ? { id: team } : null,
             accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null,
             status: values.status,
+            type: values.type,
+            severity: values.severity
           }
           console.log(data);
-          put(GET_PROJECTS + "/" + id, data)
+          put(GET_TASKS + "/" + id, data)
             .then((res) => {
               console.log(res);
               success()
@@ -157,12 +158,14 @@ const ProjectsOverview = () => {
         name: values.name,
         description: values.description,
         media: oldMedia,
-        team: team ? { id: team } : null,
+        project: team ? { id: team } : null,
         accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null,
         status: values.status,
+        type: values.type,
+        severity: values.severity
       }
       console.log(data);
-      put(GET_PROJECTS + "/" + id, data)
+      put(GET_TASKS + "/" + id, data)
         .then((res) => {
           console.log(res);
           success()
@@ -173,28 +176,6 @@ const ProjectsOverview = () => {
 
     console.log(values);
   };
-
-  const data3 = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
-  ];
-  const data2 = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
 
   const handleClose = (media) => {
     setOldMedia(oldMedia.filter(obj => {
@@ -211,7 +192,7 @@ const ProjectsOverview = () => {
     let dt = {
       "content": comment
     }
-    post(GET_PROJECTS + "/" + id + "/comments", dt)
+    post(GET_TASKS + "/" + id + "/comments", dt)
       .then((res) => {
         console.log(res);
         onGetProject()
@@ -239,14 +220,14 @@ const ProjectsOverview = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Projects" breadcrumbItem="Project Overview" />
+          <Breadcrumbs title="Tasks" breadcrumbItem="Task Overview" />
           <Row>
             <Col lg="8">
               <Row>
                 <Badge.Ribbon text={project?.status} color={project?.status === "DONE" ? "cyan" : (project?.status === "TODO" ? "" : "red")}>
 
                   <Card
-                    title="Project"
+                    title="Task"
 
                   >
                     <Form form={form} name="nest-messages" onFinish={onFinish} initialValues={project}>
@@ -262,15 +243,36 @@ const ProjectsOverview = () => {
                           style={{
                             width: 120,
                           }}
-                          defaultValue={"TODO"}
                         >
                           <Option key={"TODO"}>{"Todo"}</Option>
                           <Option key={"PROCESSING"}>{"Processing"}</Option>
                           <Option key={"DONE"}>{"Done"}</Option>
                         </Select>
                       </Form.Item>
-
-                      <Form.Item name={['team', 'id']} label="Assign to Team" >
+                      <Form.Item name={"type"} label="Type" >
+                        <Select
+                          style={{
+                            width: 120,
+                          }}
+                        >
+                          <Option key="BUGS">Bugs</Option>
+                          <Option key="FEATURES">Features</Option>
+                          <Option key="TODO">Todo</Option>
+                          <Option key="OTHERS">Others</Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item name={"severity"} label="Severity" >
+                        <Select
+                          style={{
+                            width: 120,
+                          }}
+                        >
+                          <Option key="LOW">Low</Option>
+                          <Option key="MEDIUM">Medium</Option>
+                          <Option key="HIGH">High</Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item name={['project', 'id']} label="Assign to Project" >
                         <Select
                           style={{
                             width: 120,
@@ -401,30 +403,6 @@ const ProjectsOverview = () => {
                 </Card>
 
               </Row>
-              <br></br>
-              <Row>
-                <Card
-                  title={"Tasks "  + "(" + tasks?.data?.length + "/" +tasks?.total +")"}
-                  extra={(
-                    <>
-                      <a href="/tasks-create">New Task</a>
-                    </>
-                  )}
-                >
-                  {tasks?.data?.map((task) => {
-                    return (
-                      <>
-                        <a href={"/tasks-overview/" + task.id} key={task.id}>{task.status === "TODO" ? <Tag color="purple">TODO</Tag> : (task.status === "DONE" ? <Tag color="cyan">DONE</Tag> : <Tag color="red">PROCESSING</Tag>)}<Tag color="geekblue">{task.type}</Tag><Tag color="orange">{task.severity}</Tag>{task.name}</a>
-                        <br></br>
-                        <br></br>
-                      </>
-                    )
-                  })}
-                  <br></br>
-                  <a href="/tasks-list">View all</a>
-                </Card>
-              </Row>
-
             </Col>
           </Row>
           <br />
@@ -435,8 +413,8 @@ const ProjectsOverview = () => {
   );
 };
 
-ProjectsOverview.propTypes = {
+TasksOverview.propTypes = {
   match: PropTypes.object,
 };
 
-export default withRouter(ProjectsOverview);
+export default withRouter(TasksOverview);

@@ -128,7 +128,7 @@ const NotificationDropdown = props => {
                         </p>
                         <p className="mb-0">
                           <i className="mdi mdi-clock-outline" />{" "}
-                          {<Moment toNow>{item.createdTime}</Moment>}{" "}
+                          {<Moment fromNow>{item.createdTime}</Moment>}{" "}
                         </p>
                       </div>
                     </div>

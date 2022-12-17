@@ -15,6 +15,7 @@ import CalendarAdminRequest from "../pages/CalendarAdminrequest"
 // //Tasks
 import TasksList from "../pages/Tasks/tasks-list"
 import TasksCreate from "../pages/Tasks/tasks-create"
+import TasksOverview from "../pages/Tasks/tasks-overview"
 
 // //Projects
 import ProjectsGrid from "../pages/Projects/projects-grid"
@@ -155,15 +156,15 @@ const authProtectedRoutes = [
     allowedPermissions: [],
   },
   {
-    path: "/projects-overview",
+    path: "/projects-overview/:id",
     component: ProjectsOverview,
     id: "Project",
     allowedPermissions: [],
   },
   {
-    path: "/projects-overview/:id",
-    component: ProjectsOverview,
-    id: "Project",
+    path: "/tasks-overview/:id",
+    component: TasksOverview,
+    id: "Task",
     allowedPermissions: [],
   },
   {

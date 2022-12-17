@@ -57,6 +57,7 @@ const UserRequestTable = () => {
   }, [filter])
 
   const onPageChange = (page, size) => {
+    console.log(page);
     setFilter({
       page,
       size

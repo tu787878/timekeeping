@@ -40,7 +40,7 @@ const NotiItem = ({ item }) => {
                     }}>{`${item.notification?.sender.userDetail.firstName} ${item.notification?.sender.userDetail.lastName}`}</div>}
                     description={<a href={item.notification?.link}>{item.notification?.message}</a>}
                 />
-                <div>{<Moment toNow>{item.createdTime}</Moment>}</div>
+                <div>{<Moment fromNow>{item.createdTime}</Moment>}</div>
             </Skeleton>
         </List.Item>
     )

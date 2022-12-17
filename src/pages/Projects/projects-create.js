@@ -97,11 +97,7 @@ const ProjectsCreate = () => {
           let data = {
             name: values.name,
             description: values.description,
-            media: res.map(r => {
-              return {
-                link: r
-              }
-            }),
+            media: res,
             team: team ? { id: team } : null,
             accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null
           }

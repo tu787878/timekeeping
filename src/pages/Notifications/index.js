@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 
-import {  withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-import {  Button, List } from 'antd';
+import { Button, List, Card } from 'antd';
 import {
   getAllNotifications,
   getTotalNotifications
@@ -14,7 +14,6 @@ import {
 import {
   Container,
   Row,
-  Card,
   CardBody,
 } from "reactstrap"
 
@@ -37,13 +36,17 @@ const Notification = props => {
   const [size, setSize] = useState(10);
   const [page, setPage] = useState(0);
 
-  useEffect(() => {
+  const onGetNotis  = () => {
     get(GET_NOTIFICATIONS + "?total=" + size + "&page=" + page)
-      .then((res) => {
-        setInitLoading(false);
-        setData(res.data);
-        setList(res.data);
-      });
+    .then((res) => {
+      setInitLoading(false);
+      setData(res.data);
+      setList(res.data);
+    });
+  }
+
+  useEffect(() => {
+    onGetNotis();
   }, []);
 
   // useEffect(() => {
@@ -53,6 +56,14 @@ const Notification = props => {
   // useEffect(() => {
   //   onGetTotalNotis()
   // }, [onGetTotalNotis])
+
+  const doReadAll = () => {
+    get(GET_NOTIFICATIONS + "/doReadAll")
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      });
+  }
 
   const onLoadMore = () => {
 
@@ -101,12 +112,19 @@ const Notification = props => {
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs
-            title="Notifications"
+            title={
+              (
+                <>
+                  Notifications
+                </>
+              )
+            }
+
             breadcrumbItem="Notifications"
           />
 
           <Row>
-            <Card>
+            <Card title={<Button onClick={doReadAll} type="primary">Mark Read all</Button>} >
               <CardBody>
                 <Row>
                   <List
@@ -116,7 +134,7 @@ const Notification = props => {
                     loadMore={loadMore}
                     dataSource={list}
                     renderItem={(item) => (
-                      <NotiItem item={item}/>
+                      <NotiItem item={item} />
                     )}
                   />
                 </Row>

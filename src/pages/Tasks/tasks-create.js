@@ -53,7 +53,7 @@ const TasksCreate = () => {
   };
 
   const onGetProjects = () => {
-    get(GET_PROJECTS).then(data => {
+    get(GET_PROJECTS + "/all").then(data => {
       setProjects(data.data);
     })
   }

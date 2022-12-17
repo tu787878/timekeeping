@@ -41,7 +41,7 @@ export const columns = (doAccept, doDenied) => [
     key: "createdTime",
     align: "center",
     render: (_,record) => (
-      <Moment toNow>{record.createdTime}</Moment>
+      <Moment fromNow>{record.createdTime}</Moment>
     ),
   },
   {

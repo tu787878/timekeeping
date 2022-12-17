@@ -183,7 +183,8 @@ const StaffManager = props => {
           onFinish={onFinish}
         >
           <Form.Item name={["job", "team", "id"]} label="Team">
-            <Select>
+            <Select allowClear>
+              
               {teams.map(team => {
                 return (
                   <Select.Option key={team.id} value={team.id}>{team.name}</Select.Option>

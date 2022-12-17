@@ -94,6 +94,7 @@ export const GET_APPLY_JOB = "/jobApply"
 export const DELETE_APPLY_JOB = "add/applyjob"
 
 //PROJECTS
+export const GET_COMMENT = process.env.REACT_APP_API_HOST + "/comment";
 export const GET_PROJECTS = process.env.REACT_APP_API_HOST + "/project";
 export const GET_PROJECT_DETAIL = "/project";
 export const ADD_NEW_PROJECT = "/add/project";
