@@ -1,39 +1,26 @@
-#### Stage 1: Build the react application
-FROM node:12.4.0-alpine as build
+# Multi-stage
+# 1) Node image for building frontend assets
+# 2) nginx stage to serve frontend assets
 
-# Configure the main working directory inside the docker image. 
-# This is the base directory used in any further RUN, COPY, and ENTRYPOINT 
-# commands.
+# Name the node stage "builder"
+FROM node:latest AS builder
+# Set working directory
 WORKDIR /app
+# Copy all files from current directory to working dir in image
+COPY . .
+ARG REACT_APP_API_HOST
+ENV REACT_APP_API_HOST=${REACT_APP_API_HOST}
+# install node modules and build assets
+RUN yarn install && yarn build
 
-# Copy the package.json as well as the package-lock.json and install 
-# the dependencies. This is a separate step so the dependencies 
-# will be cached unless changes to one of those two files 
-# are made.
-COPY package.json ./
-RUN npm install
-
-# Copy the main application
-COPY . ./
-
-# Arguments
-ARG REACT_APP_API_BASE_URL
-ENV REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
-
-# Build the application
-RUN npm start build
-
-#### Stage 2: Serve the React application from Nginx 
-FROM nginx:1.17.0-alpine
-
-# Copy the react build from Stage 1
-COPY --from=build /app/build /var/www
-
-# Copy our custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80 to the Docker host, so we can access it 
-# from the outside.
-EXPOSE 80
-
-ENTRYPOINT ["nginx","-g","daemon off;"]
+# nginx state for serving content
+FROM nginx:alpine
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+# Remove default nginx static assets
+RUN rm -rf ./*
+# Copy static assets from builder stage
+COPY --from=builder /app/build .
+COPY conf /etc/nginx
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
