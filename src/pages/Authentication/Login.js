@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 
@@ -7,13 +7,12 @@ import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, 
 import { useSelector, useDispatch } from "react-redux";
 
 import { withRouter, Link } from "react-router-dom";
-
+import { get, post } from "../../helpers/api_helper"
+import * as url from "../../helpers/url_helper"
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
 // actions
-import { loginUser, socialLogin } from "../../store/actions";
 
 // import images
 import profile from "assets/images/profile-img.png";
@@ -22,7 +21,7 @@ import logo from "assets/images/logo.svg";
 const Login = props => {
 
   //meta title
-  document.title = "Login | Skote - React Admin & Dashboard Template";
+  document.title = "Login | TCG Web & Marketing";
 
   const dispatch = useDispatch();
 
@@ -39,46 +38,26 @@ const Login = props => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      dispatch(loginUser(values, props.history));
+      // dispatch(loginUser(values, props.history));
+      onLogIn(values);
     }
   });
 
-  const { error } = useSelector(state => ({
-    error: state.Login.error,
-  }));
+  const [error, setError] = useState(null);
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
+  const onLogIn = (values) => {
+    let d = {
+      username: values.email,
+      password: values.password
     }
-  };
-
-  //handleGoogleLoginResponse
-  const googleResponse = response => {
-    signIn(response, "google");
-  };
-
-  //handleTwitterLoginResponse
-  // const twitterResponse = e => {}
-
-  //handleFacebookLoginResponse
-  const facebookResponse = response => {
-    signIn(response, "facebook");
-  };
+    post(url.LOGIN_DEMO, d).then((data) => {
+      localStorage.setItem("authUser", JSON.stringify(data.data));
+      props.history.push("/dashboard")
+    }).catch(error => {
+      let mess = JSON.parse(error.request.response).message;
+      setError(mess)
+    })
+  }
 
   return (
     <React.Fragment>

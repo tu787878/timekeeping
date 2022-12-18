@@ -68,7 +68,6 @@ const ProjectsOverview = () => {
 
   const onGetProject = () => {
     get(GET_PROJECTS + "/" + id).then(data => {
-      console.log(data.data);
       setProject(data.data)
 
       let acc = data.data.accounts.map((a) => {
@@ -76,7 +75,7 @@ const ProjectsOverview = () => {
       });
       setAccounts(acc);
       setOldMedia(data.data.media);
-      setTeam(data.data.team.id);
+      setTeam(data.data.team?.id);
     })
   }
 
@@ -174,28 +173,6 @@ const ProjectsOverview = () => {
     console.log(values);
   };
 
-  const data3 = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
-  ];
-  const data2 = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
-
   const handleClose = (media) => {
     setOldMedia(oldMedia.filter(obj => {
       return obj.id != media.id;
@@ -253,7 +230,6 @@ const ProjectsOverview = () => {
                       <Form.Item
                         name={['name']}
                         label="Name"
-
                       >
                         <Input />
                       </Form.Item>

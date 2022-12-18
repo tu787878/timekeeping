@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { map } from "lodash";
 import {
   Card,
   CardBody,
@@ -14,30 +13,25 @@ import {
 } from "reactstrap";
 
 // TableContainer
-import {useParams} from "react-router-dom";
-import { Pdate, Ddate, Name, Idno, Budget } from "./CryptoCol";
-
-import TableContainer from "../../../components/Common/TableContainer";
+import { useParams } from "react-router-dom";
+import { Avatar } from "antd";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-
-//Import mini card widgets
-import MiniCards from "./mini-card";
 
 //Import Images
 import profile1 from "assets/images/profile-img.png";
 
 // import charts
-import ApexRevenue from "../ApexRevenue";
 import { getUserProfile } from "store/actions";
-
+import { get, del } from "../../../helpers/api_helper"
+import * as url from "../../../helpers/url_helper"
 const ContactsProfile = props => {
 
   //meta title
-  document.title="Profile | Skote - React Admin & Dashboard Template";
+  document.title = "Profile | TCG Web & Marketing";
 
-  const { userProfile, onGetUserProfile} = props;
+  const { userProfile, onGetUserProfile } = props;
   // eslint-disable-next-line no-unused-vars
   const [miniCards, setMiniCards] = useState([
     {
@@ -49,84 +43,42 @@ const ContactsProfile = props => {
     { title: "Total Revenue", iconClass: "bx-package", text: "$36,524" },
   ]);
 
+  const [info, setInfo] = useState(null);
+
   // useEffect(() => {
   //   onGetUserProfile();
   // }, [onGetUserProfile]);
-  const {id} = useParams()
-  useEffect(() => {
-    if (id) {
-      onGetUserProfile(id)
-    } else {
-      onGetUserProfile(-1)
-    }
-  }, [onGetUserProfile])
+  const { id } = useParams()
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "#",
-        accessor: "id",
-        disableFilters: true,
-        filterable: true,
-        Cell: cellProps => {
-          return <Idno {...cellProps} />;
-        },
-      },
-      {
-        Header: "Project",
-        accessor: "name",
-        disableFilters: true,
-        filterable: true,
-        Cell: cellProps => {
-          return <Name {...cellProps} />;
-        },
-      },
-      {
-        Header: "Start Date",
-        accessor: "startDate",
-        disableFilters: true,
-        filterable: true,
-        Cell: cellProps => {
-          return <Pdate {...cellProps} />;
-        },
-      },
-      {
-        Header: "Deadline",
-        accessor: "deadline",
-        disableFilters: true,
-        filterable: true,
-        Cell: cellProps => {
-          return <Ddate {...cellProps} />;
-        },
-      },
-      {
-        Header: "Budget",
-        accessor: "budget",
-        disableFilters: true,
-        filterable: true,
-        Cell: cellProps => {
-          return <Budget {...cellProps} />;
-        },
-      },
-    ],
-    []
-  );
+
+  const getUser = () => {
+    let u = url.GET_STAFFS + "/" + (id ? id : -1);
+    get(u).then((data) => {
+      console.log(data.data);
+      setInfo(data.data)
+    })
+  }
+
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Contacts" breadcrumbItem="Profile" />
+          <Breadcrumbs title="Staffs" breadcrumbItem="Profile" />
 
           <Row>
-            <Col xl="4">
+            <Col xl="12">
               <Card className="overflow-hidden">
                 <div className="bg-primary bg-soft">
                   <Row>
                     <Col xs="7">
                       <div className="text-primary p-3">
-                        <h5 className="text-primary">Welcome Back !</h5>
+                        <h5 className="text-primary">Hi, What's up!</h5>
                         <p>It will seem like simplified</p>
                       </div>
                     </Col>
@@ -139,42 +91,39 @@ const ContactsProfile = props => {
                   <Row>
                     <Col sm="4">
                       <div className="avatar-md profile-user-wid mb-4">
-                        <img
-                          src={userProfile.userDetail?.avatar}
-                          alt=""
-                          className="img-thumbnail rounded-circle"
-                        />
+                        {(info?.userDetail.avatar !== "") ? <Avatar src={info?.userDetail.avatar} /> : <div className="avatar-md">
+                          <span className="avatar-title rounded-circle bg-info text-white font-size-24">
+                            {info?.userDetail.lastName.charAt(0)}
+                          </span>
+                        </div>}
                       </div>
                       <h5 className="font-size-15 text-truncate">
-                        {userProfile.userDetail?.firstName}
+                        {info?.userDetail?.firstName} {info?.userDetail?.lastName}
                       </h5>
                       <p className="text-muted mb-0 text-truncate">
-                        {userProfile.designation}
+                        {info?.designation}
                       </p>
                     </Col>
 
                     <Col sm={8}>
                       <div className="pt-4">
                         <Row>
-                          <Col xs="6">
-                            <h5 className="font-size-15">
-                              {userProfile.projectCount}
+                          <Col xs="8">
+                          <p className="text-muted mb-0">Email</p>
+                            <h5 className="font-size-12">
+                              {info?.userDetail.email}
                             </h5>
-                            <p className="text-muted mb-0">Projects</p>
+                            
                           </Col>
-                          <Col xs="6">
-                            <h5 className="font-size-15">
-                              ${userProfile.revenue}
-                            </h5>
-                            <p className="text-muted mb-0">Revenue</p>
-                          </Col>
+                          
                         </Row>
-                        <div className="mt-4">
-                          <Link to="" className="btn btn-primary  btn-sm">
-                            View Profile{" "}
+                        {!id ? <div className="mt-4">
+                          <Link to="/edit-profile" className="btn btn-primary  btn-sm">
+                            Edit Profile{" "}
                             <i className="mdi mdi-arrow-right ms-1" />
                           </Link>
-                        </div>
+                        </div> : null}
+
                       </div>
                     </Col>
                   </Row>
@@ -192,113 +141,23 @@ const ContactsProfile = props => {
                       <tbody>
                         <tr>
                           <th scope="row">Full Name :</th>
-                          <td>{userProfile.firstName} {userProfile.userDetail?.lastName}</td>
+                          <td>{info?.userDetail.firstName} {info?.userDetail?.lastName}</td>
                         </tr>
                         <tr>
                           <th scope="row">Mobile :</th>
-                          <td>{userProfile.userDetail?.phone}</td>
+                          <td>{info?.userDetail?.phone}</td>
                         </tr>
                         <tr>
                           <th scope="row">E-mail :</th>
-                          <td>{userProfile.userDetail?.email}</td>
+                          <td>{info?.userDetail?.email}</td>
                         </tr>
                         <tr>
                           <th scope="row">Location :</th>
-                          <td>{userProfile.userDetail?.location}</td>
+                          <td>{info?.userDetail?.address}</td>
                         </tr>
                       </tbody>
                     </Table>
                   </div>
-                </CardBody>
-              </Card>
-
-              <Card>
-                <CardBody>
-                  <CardTitle className="mb-5">Experience</CardTitle>
-                  <div >
-                    <ul className="verti-timeline list-unstyled">
-                      {map(userProfile.experiences, (experience, i) => (
-                        <li
-                          className={
-                            experience.id === 1
-                              ? "event-list active"
-                              : "event-list"
-                          }
-                          key={"_exp_" + i}
-                        >
-                          <div className="event-timeline-dot">
-                            <i
-                              className={
-                                experience.id === 1
-                                  ? "bx bx-right-arrow-circle bx-fade-right"
-                                  : "bx bx-right-arrow-circle"
-                              }
-                            />
-                          </div>
-                          <div className="d-flex">
-                            <div className="me-3">
-                              <i
-                                className={
-                                  "bx " +
-                                  experience.iconClass +
-                                  " h4 text-primary"
-                                }
-                              />
-                            </div>
-                            <div className="flex-grow-1">
-                              <div>
-                                <h5 className="font-size-15">
-                                  <Link
-                                    to={experience.link}
-                                    className="text-dark"
-                                  >
-                                    {experience.designation}
-                                  </Link>
-                                </h5>
-                                <span className="text-primary">
-                                  {experience.timeDuration}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-
-            <Col xl="8">
-              <Row>
-                {map(miniCards, (card, key) => (
-                  <MiniCards
-                    title={card.title}
-                    text={card.text}
-                    iconClass={card.iconClass}
-                    key={"_card_" + key}
-                  />
-                ))}
-              </Row>
-              <Card>
-                <CardBody>
-                  <CardTitle className="mb-4">Revenue</CardTitle>
-                  <div id="revenue-chart">
-                    <ApexRevenue dataColors='["--bs-primary"]'/>
-                  </div>
-                </CardBody>
-              </Card>
-              <Card>
-                <CardBody>
-                  <CardTitle className="mb-4">My Projects</CardTitle>
-
-                  <TableContainer
-                    columns={columns}
-                    data={userProfile.projects || []}
-                    isGlobalFilter={false}
-                    customPageSize={5}
-                    customPageSizeOptions={true}
-                  />
                 </CardBody>
               </Card>
             </Col>

@@ -68,7 +68,7 @@ const ProjectsCreate = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {
-    messageApi.success('Add a team success!');
+    messageApi.success('Add a project success!');
   };
   const error = () => {
     messageApi.open({

@@ -55,6 +55,7 @@ import PermissionDenied from "../pages/Utility/permission-denied"
 import ContactsGrid from "../pages/Contacts/contacts-grid"
 import ContactsList from "../pages/Contacts/ContactList/contacts-list"
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
+import EditProfile from "../pages/Contacts/ContactsProfile/edit-profile"
 
 // admin
 import TeamManager from "../pages/admin/team"
@@ -65,6 +66,7 @@ import SocketConfig from "../components/socket/socket"
 
 // notification
 import Notifications from "pages/Notifications"
+import ResetPassword from "pages/Authentication/ResetPassword"
 
 const authProtectedRoutes = [
   {
@@ -127,6 +129,13 @@ const authProtectedRoutes = [
     id: "Profile",
     allowedPermissions: [],
   },
+    // //profile
+    {
+      path: "/edit-profile",
+      component: EditProfile,
+      id: "EditProfile",
+      allowedPermissions: [],
+    },
 
   // Tasks
   {
@@ -277,6 +286,7 @@ const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
+  { path: "/reset-password", component: ResetPassword },
   { path: "/register", component: Register },
 
   { path: "/pages-maintenance", component: PagesMaintenance },

@@ -128,7 +128,7 @@ const StaffManager = props => {
     },
     {
       title: "Email",
-      dataIndex: "username",
+      dataIndex: ["userDetail", "email"],
       key: "username",
       sorter: (a, b) => a.name?.localeCompare(b.name),
     },

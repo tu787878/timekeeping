@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Alert, Card, CardBody, Container, FormFeedback, Input, Label, Form } from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
 import { withRouter, Link } from "react-router-dom";
-
+import { get, post } from "../../helpers/api_helper"
+import * as url from "../../helpers/url_helper"
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -21,9 +22,13 @@ import logo from "../../assets/images/logo.svg";
 const ForgetPasswordPage = props => {
 
   //meta title
-  document.title="Forget Password | Skote - React Admin & Dashboard Template";
+  document.title = "Forget Password | Skote - React Admin & Dashboard Template";
 
   const dispatch = useDispatch();
+
+  const [success, setSuccess] = useState(false)
+  const [forgetSuccessMsg, setForgetSuccess] = useState(null)
+  const [forgetFailMsg, setForgetFail] = useState(null)
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -36,20 +41,30 @@ const ForgetPasswordPage = props => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
-      dispatch(userForgetPassword(values, props.history));
+      console.log(values.email);
+      post(url.LOGIN_DEMO + "/reset-password?email=" + values.email).then(data => {
+        console.log(data);
+        setSuccess(true)
+        setForgetSuccess("Nice! You will receive a email in minutes.");
+        setForgetFail(null)
+      }).catch(err => {
+        console.log(err);
+        setSuccess(false)
+        setForgetFail("Can not find email")
+        setForgetSuccess(null);
+      })
     }
   });
 
-  const { forgetError, forgetSuccessMsg } = useSelector(state => ({
+  const { forgetError,  } = useSelector(state => ({
     forgetError: state.ForgetPassword.forgetError,
-    forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
   }));
 
   return (
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
-        <i className="bx bx-home h2" />
+          <i className="bx bx-home h2" />
         </Link>
       </div>
       <div className="account-pages my-5 pt-sm-5">
@@ -86,15 +101,15 @@ const ForgetPasswordPage = props => {
                     </Link>
                   </div>
                   <div className="p-2">
-                    {forgetError && forgetError ? (
+                    {forgetFailMsg && forgetFailMsg ? (
                       <Alert color="danger" style={{ marginTop: "13px" }}>
-                        {forgetError}
+                        {forgetFailMsg}
                       </Alert>
                     ) : null}
                     {forgetSuccessMsg ? (
                       <Alert color="success" style={{ marginTop: "13px" }}>
                         {forgetSuccessMsg}
-                      </Alert>
+                      </Alert>  
                     ) : null}
 
                     <Form
@@ -132,6 +147,7 @@ const ForgetPasswordPage = props => {
                             Reset
                           </button>
                         </Col>
+
                       </Row>
                     </Form>
                   </div>
