@@ -42,13 +42,13 @@ const TasksList = () => {
           <Breadcrumbs title="Tasks" breadcrumbItem="Task List" />
           {/* Render Breadcrumbs */}
           <Row>
-            <Col lg={8}>
+            <Col lg={12}>
               <TaskBoard boardName="Upcoming" />
-              <TaskBoard boardName="In Progress" />
-              <TaskBoard boardName="Done" />
+              {/* <TaskBoard boardName="In Progress" />
+              <TaskBoard boardName="Done" /> */}
             </Col>
 
-            <Col lg={4}>
+            {/* <Col lg={4}>
               <Card>
                 <CardBody>
                   <h4 className="card-title mb-4">Recent Tasks</h4>
@@ -181,7 +181,7 @@ const TasksList = () => {
                   </div>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </div>
