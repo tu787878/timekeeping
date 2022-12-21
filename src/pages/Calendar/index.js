@@ -19,46 +19,35 @@ import {
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { DatePicker } from 'antd';
 const Calender = () => {
   //meta title
   document.title = "Full Calendar | Skote - React Admin & Dashboard Template"
-  const {id} = useParams()
+  const { id } = useParams()
   const [user, setUser] = useState(null);
   const [vacation, setVacation] = useState(0);
   const [month, setmonth] = useState(dayjs(new Date()));
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
-  const toTime = (minutes) => {
-    let negative = false;
-    if (minutes < 0) negative = true;
-  
-    minutes = Math.abs(minutes);
-    var m = minutes % 60;
-    var h = (minutes - m) / 60;
-    return (negative ? "-" : "") + h + ":" + m + ((m < 10) ? "0" : "");
-  }
-
-  
-  const onGetVacation = () => {
-    get(url.BASE + "/account/" + obj.account.id + "/total-vacation?month=" + month.format("DD/MM/YYYY"))
-    .then(data => {
-      console.log(data);
-      setVacation(data.data/60/8);
-    }).catch(err => {
-      console.log(err);
-    })
+  const onGetVacation = (id) => {
+    get(url.BASE + "/account/" + id + "/total-vacation?month=" + month.format("DD/MM/YYYY"))
+      .then(data => {
+        console.log(data);
+        setVacation(data.data / 60 / 8);
+      }).catch(err => {
+        console.log(err);
+      })
   }
 
 
   useEffect(() => {
-    if(id === undefined){
-      get(url.GET_STAFFS + "/" + obj.account.id).then(data=>{
+    if (id === undefined) {
+      get(url.GET_STAFFS + "/" + obj.account.id).then(data => {
         setUser(data.data);
       })
-    }else{
-      get(url.GET_STAFFS + "/" + id).then(data=>{
+    } else {
+      get(url.GET_STAFFS + "/" + id).then(data => {
         setUser(data.data);
       })
     }
@@ -66,7 +55,12 @@ const Calender = () => {
   }, [])
 
   useEffect(() => {
-    onGetVacation()
+    if (id === undefined) {
+      onGetVacation(obj.account.id)
+    } else {
+      onGetVacation(id)
+    }
+
   }, [month])
 
 
@@ -135,21 +129,21 @@ const Calender = () => {
                     style={{ marginTop: 15 }}
                     className="d-flex justify-content-end"
                   >
-                    <Col>
+                    <Col sm="3">
                       <div className="rounded overflow-hidden">
                         <div className="bg-info p-4 bg-soft">
                           <h5 className="my-2 text-info">Type: {user?.job?.workingTimeType}</h5>
                         </div>
                       </div>
                     </Col>
-                    <Col>
+                    <Col sm="3">
                       <div className="rounded overflow-hidden">
                         <div className="bg-warning p-4 bg-soft">
                           <h5 className="my-2 text-warning">Min: {user?.job?.workingTimeType === "FULLTIME" ? "8h/day" : (user?.job?.minHours + "h/month")}</h5>
                         </div>
                       </div>
                     </Col>
-                    <Col>
+                    <Col sm="3">
                       <div className="rounded overflow-hidden">
                         <div className="bg-success p-4 bg-soft">
                           <h5 className="my-2 text-success">Vacation: {vacation} days (max {user?.job?.maxHours} days)</h5>
@@ -157,7 +151,13 @@ const Calender = () => {
                       </div>
                     </Col>
                   </Row>
-                  <TimeLogsTable id={id} month={month}/>
+                  <Row>
+                    <Col>
+                      <TimeLogsTable id={id} month={month} />
+                    </Col>
+
+                  </Row>
+
                 </CardBody>
               </Card>
             </Col>

@@ -10,7 +10,7 @@ import { Card } from 'antd';
 //redux
 import { useSelector, useDispatch } from "react-redux";
 export const EDIT_PROFILE = "EDIT_PROFILE"
-import { Button, Form, Input, Select, Upload, message, Avatar, List, Timeline, Badge, Tag, Layout } from 'antd';
+import { Button, Form, Input, Select, Upload, message, Avatar, List, Timeline, Badge, Tag, Layout, Divider } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 import Moment from 'react-moment';
 import { InboxOutlined, UploadOutlined, DeleteTwoTone } from '@ant-design/icons';
@@ -396,8 +396,7 @@ const ProjectsOverview = () => {
                     return (
                       <>
                         <a href={"/tasks-overview/" + task.id} key={task.id}>{task.status === "TODO" ? <Tag color="purple">TODO</Tag> : (task.status === "DONE" ? <Tag color="cyan">DONE</Tag> : <Tag color="red">PROCESSING</Tag>)}<Tag color="geekblue">{task.type}</Tag><Tag color="orange">{task.severity}</Tag>{task.name}</a>
-                        <br></br>
-                        <br></br>
+                        <Divider />
                       </>
                     )
                   })}

@@ -68,15 +68,15 @@ const Notification = props => {
   const onLoadMore = () => {
 
     setLoading(true);
-    setList(
-      data.concat(
-        [...new Array(count)].map(() => ({
-          loading: true,
-          name: {},
-          picture: {},
-        })),
-      ),
-    );
+    // setList(
+    //   data.concat(
+    //     [...new Array(count)].map(() => ({
+    //       loading: true,
+    //       name: {},
+    //       picture: {},
+    //     })),
+    //   ),
+    // );
     get(GET_NOTIFICATIONS + "?total=" + size + "&page=" + page + 1)
       .then((res) => {
         if (res.data.length == 0) setMore(false);

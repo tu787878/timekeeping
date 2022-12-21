@@ -253,19 +253,13 @@ const StaffManager = props => {
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs title="Staff Manager" breadcrumbItem="Team" />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
+            <Col lg="12" style={{ overflowX: 'scroll' }}>
                   <a href={`/new-staff`}>
                     <Button type="primary">Add Staff</Button>
                   </a>
 
                   <Table columns={columns} dataSource={staffs} bordered />
-                </CardBody>
-              </Card>
             </Col>
-          </Row>
         </Container>
       </div>
     </>

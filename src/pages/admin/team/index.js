@@ -244,10 +244,7 @@ const TeamManager = props => {
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs title="Staff Manager" breadcrumbItem="Team" />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
+            <Col lg="12" style={{ overflowX: 'scroll' }}>
                   <Button
                     onClick={() => {
                       setIsEditTeam(false)
@@ -265,10 +262,7 @@ const TeamManager = props => {
                     Add team
                   </Button>
                   <Table columns={columns} dataSource={teams} bordered />
-                </CardBody>
-              </Card>
             </Col>
-          </Row>
         </Container>
       </div>
     </>

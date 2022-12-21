@@ -61,26 +61,10 @@ const authProtectedContent = [
     className: "bx-briefcase-alt-2",
     children: [
       {
-        path: "/projects-grid",
-        id: "Project",
-        allowedPermissions: ["view"],
-        contextId: "Projects Grid",
-        className: "",
-        children: [],
-      },
-      {
         path: "/projects-list",
         id: "Project",
         allowedPermissions: ["view"],
         contextId: "Projects List",
-        className: "",
-        children: [],
-      },
-      {
-        path: "/projects-overview",
-        id: "Project",
-        allowedPermissions: ["view"],
-        contextId: "Project Overview",
         className: "",
         children: [],
       },

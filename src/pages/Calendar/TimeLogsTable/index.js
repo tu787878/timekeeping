@@ -15,12 +15,12 @@ const TimeLogsTable = ({id, month}) => {
     events: state.calendar.events,
   }))
   useEffect(() => {
-    if(id?.id === undefined){
+    if(id === undefined){
       const obj = JSON.parse(localStorage.getItem("authUser"))
       dispatch(onGetEvents({id:obj.account.id, month:month.format('DD/MM/YYYY')}))
     }
     else{
-      dispatch(onGetEvents({id:id?.id,month:month.format('DD/MM/YYYY')}))
+      dispatch(onGetEvents({id:id,month:month.format('DD/MM/YYYY')}))
     }
     
   }, [dispatch, month])
@@ -36,12 +36,13 @@ const TimeLogsTable = ({id, month}) => {
         marginTop: 15,
         maxHeight: "700px",
         overflowY: "auto",
+        overflowX: "auto"
       }}
     >
       <Table
-        columns={tableColumns(handleOpenEditModal, id?.id)}
+        columns={tableColumns(handleOpenEditModal, id)}
         dataSource={events || []}
-        scroll={{ y: 500 }}
+        scroll={{ }}
         pagination={false}
       />
       <EditTimeLogModal
