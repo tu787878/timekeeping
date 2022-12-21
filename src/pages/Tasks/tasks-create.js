@@ -93,11 +93,7 @@ const TasksCreate = () => {
           let data = {
             name: values.name,
             description: values.description,
-            media: res.map(r => {
-              return {
-                link: r
-              }
-            }),
+            media: res,
             type: type,
             severity: severity,
             project: project ? { id: project } : null,

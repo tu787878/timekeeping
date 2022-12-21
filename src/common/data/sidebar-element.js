@@ -6,7 +6,7 @@ const authProtectedContent = [
     path: "/dashboard",
     id: "Dashboard",
     allowedPermissions: ["view"],
-    className: "",
+    className: "bx bx-home-circle",
     contextId: "Dashboard",
     children: [],
   },
@@ -182,6 +182,24 @@ const adminContent = [
         allowedPermissions: ["edit"],
         className: "",
         contextId: "Scan Device",
+        children: [],
+      },
+    ],
+  },
+
+  {
+    path: "/#",
+    id: "CalendarAdmin",
+    allowedPermissions: ["view"],
+    className: "bx bx-calendar",
+    contextId: "Calendar",
+    children: [
+      {
+        path: "/edit-holiday",
+        id: "Holiday",
+        allowedPermissions: ["edit"],
+        className: "",
+        contextId: "Holiday",
         children: [],
       },
     ],

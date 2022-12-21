@@ -432,12 +432,12 @@ const NewStaff = props => {
 
                                 <Col lg="6">
                                   <FormGroup className="mb-3">
-                                    <Label htmlFor="maxHours">Max hours</Label>
+                                    <Label htmlFor="maxHours">Vacation in year (days)</Label>
                                     <Input
                                       type="text"
                                       className="form-control"
                                       id="maxHours"
-                                      placeholder="Enter max working hours"
+                                      placeholder="Enter the vacation days"
                                       onChange={e => {
                                         setMaxHours(e.target.value)
                                       }}

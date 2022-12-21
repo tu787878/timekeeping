@@ -30,9 +30,9 @@ import {
   getCategories,
 } from "../../helpers/fakebackend_helper"
 
-function* fetchEvents({ payload: id }) {
+function* fetchEvents({ payload: param }) {
   try {
-    const response = yield call(getEvents, id)
+    const response = yield call(getEvents, param)
     yield put(getEventsSuccess(response.data))
   } catch (error) {
     yield put(getEventsFail(error))

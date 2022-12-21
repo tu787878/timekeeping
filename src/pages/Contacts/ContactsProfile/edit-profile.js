@@ -50,7 +50,9 @@ const EditProfile = props => {
     document.title = "Edit Profile | TCG Web & Marketing";
 
     const [info, setInfo] = useState(null);
+    const [changePasswordErr, setChangePasswordErr] = useState(null);
     const [form] = Form.useForm()
+    const [form2] = Form.useForm()
     // useEffect(() => {
     //   onGetUserProfile();
     // }, [onGetUserProfile]);
@@ -76,6 +78,22 @@ const EditProfile = props => {
                 console.log(err);
             })
     };
+
+    const onFinish2 = (values) => {
+        console.log('Success:', {oldPassword:values.oldPassword,password:values.password});
+        put(url.GET_STAFFS + "/change-password", {oldPassword:values.oldPassword,password:values.password})
+            .then((data) => {
+                console.log(data);
+                setTimeout(()=>{
+                    window.location.href = "/login";
+                }, 1000)
+            }).catch(err => {
+                console.log(JSON.parse(err.request.response).message);
+                setChangePasswordErr(JSON.parse(err.request.response).message)
+                messageApi.error(JSON.parse(err.request.response).message);
+            })
+    };
+
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
@@ -192,17 +210,20 @@ const EditProfile = props => {
                                     </Row>
                                 </CardBody>
                             </Card>
-
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md="6">
                             <Card>
                                 <CardBody>
                                     <CardTitle className="mb-4">Personal Information</CardTitle>
                                     <Form form={form}
                                         name="basic"
                                         labelCol={{
-                                            span: 2,
+                                            span: 4,
                                         }}
                                         wrapperCol={{
-                                            span: 8,
+                                            span: 12,
                                         }}
                                         onFinish={onFinish}
                                         onFinishFailed={onFinishFailed}
@@ -253,6 +274,74 @@ const EditProfile = props => {
                                     </Form>
                                 </CardBody>
                             </Card>
+                        </Col>
+                        <Col>
+                            <Card>
+                                <CardBody>
+                                    <CardTitle className="mb-4">Change password</CardTitle>
+                                    <Form
+                                        form={form2}
+                                        name="register"
+                                        onFinish={onFinish2}
+                                        scrollToFirstError
+                                    >
+                                        <Form.Item
+                                            name="oldPassword"
+                                            label="Old Password"
+                                        >
+                                            <Input.Password />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name="password"
+                                            label="Password"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: 'Please input your password!',
+                                                },
+                                            ]}
+                                            hasFeedback
+                                        >
+                                            <Input.Password />
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            name="confirm"
+                                            label="Confirm Password"
+                                            dependencies={['password']}
+                                            hasFeedback
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: 'Please confirm your password!',
+                                                },
+                                                ({ getFieldValue }) => ({
+                                                    validator(_, value) {
+                                                        if (!value || getFieldValue('password') === value) {
+                                                            return Promise.resolve();
+                                                        }
+                                                        return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                                    },
+                                                }),
+                                            ]}
+                                        >
+                                            <Input.Password />
+                                        </Form.Item>
+                                        {/* {changePasswordErr ? <p color="red">{changePasswordErr}</p> : null} */}
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 10,
+                                                span: 16,
+                                            }}
+                                        >
+                                            <Button type="primary" htmlType="submit">
+                                                Do it
+                                            </Button>
+                                        </Form.Item>
+                                    </Form>
+                                </CardBody>
+                            </Card>
+
                         </Col>
                     </Row>
                 </Container>

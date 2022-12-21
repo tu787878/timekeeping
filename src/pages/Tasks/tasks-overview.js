@@ -374,12 +374,17 @@ const TasksOverview = () => {
                             </div>}
                             title={
                               <>
-                                <Layout>
-                                  <Content style={{ backgroundColor: "white" }}><a>{item.createdBy.userDetail.firstName} {item.createdBy.userDetail.lastName}</a></Content>
-                                  <Sider style={{ backgroundColor: "white" }}><Moment style={{ alignItems: "left", fontSize: "13px" }} format="HH:mm DD/MM/YYYY">{item.createdTime}</Moment></Sider>
-                                  {item.createdBy.id === accountId ? <DeleteTwoTone onClick={() => { deleteComment(item) }} style={{ backgroundColor: "white" }} twoToneColor="red" /> : null}
-                                </Layout>
+                                <Row>
+                                  <Col md="6">
+                                    <a>{item.createdBy.userDetail.firstName} {item.createdBy.userDetail.lastName}</a>
+                                  </Col>
 
+                                  <Col md="6">
+                                    <Moment style={{ fontWeight: "300", fontSize: "12px" }} format="HH:mm DD/MM/YYYY">{item.createdTime}</Moment>
+                                    {" "}
+                                    {item.createdBy.id === accountId ? <DeleteTwoTone onClick={() => { deleteComment(item) }} style={{ backgroundColor: "white" }} twoToneColor="red" /> : null}
+                                  </Col>
+                                </Row>
                               </>
                             }
                             description={item.content}

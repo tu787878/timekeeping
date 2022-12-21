@@ -5,6 +5,7 @@ import Flatpickr from "react-flatpickr"
 import { useState, useEffect } from "react"
 import { get } from "../../helpers/api_helper"
 import * as url from "../../helpers/url_helper"
+import dayjs from 'dayjs';
 import {
   Card,
   CardBody,
@@ -19,15 +20,40 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
 import {useParams} from "react-router-dom";
+import { DatePicker } from 'antd';
 const Calender = () => {
   //meta title
   document.title = "Full Calendar | Skote - React Admin & Dashboard Template"
   const {id} = useParams()
   const [user, setUser] = useState(null);
+  const [vacation, setVacation] = useState(0);
+  const [month, setmonth] = useState(dayjs(new Date()));
+  const obj = JSON.parse(localStorage.getItem("authUser"))
+
+  const toTime = (minutes) => {
+    let negative = false;
+    if (minutes < 0) negative = true;
+  
+    minutes = Math.abs(minutes);
+    var m = minutes % 60;
+    var h = (minutes - m) / 60;
+    return (negative ? "-" : "") + h + ":" + m + ((m < 10) ? "0" : "");
+  }
+
+  
+  const onGetVacation = () => {
+    get(url.BASE + "/account/" + obj.account.id + "/total-vacation?month=" + month.format("DD/MM/YYYY"))
+    .then(data => {
+      console.log(data);
+      setVacation(data.data/60/8);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
 
   useEffect(() => {
     if(id === undefined){
-      const obj = JSON.parse(localStorage.getItem("authUser"))
       get(url.GET_STAFFS + "/" + obj.account.id).then(data=>{
         setUser(data.data);
       })
@@ -38,6 +64,18 @@ const Calender = () => {
     }
 
   }, [])
+
+  useEffect(() => {
+    onGetVacation()
+  }, [month])
+
+
+
+  const onChange = (values) => {
+    console.log(values);
+    setmonth(values);
+    // dispatch(onGetEvents({id:obj.account.id, month:month.format('DD/MM/YYYY')}))
+  }
 
   return (
     <React.Fragment>
@@ -76,19 +114,7 @@ const Calender = () => {
                       <p className="text-muted mb-0 text-truncate">{user?.job?.name}</p>
                     </Col>
                     <Col>
-                      <FormGroup className="mb-4">
-                        <Label>Date Range</Label>
-                        <InputGroup>
-                          <Flatpickr
-                            className="form-control d-block"
-                            placeholder="Select range"
-                            options={{
-                              mode: "range",
-                              dateFormat: "Y-m-d",
-                            }}
-                          />
-                        </InputGroup>
-                      </FormGroup>
+                      <DatePicker onChange={onChange} defaultValue={dayjs} size={"large"} picker="month" format={"MM/YYYY"} />
                     </Col>
                     <Col className="d-flex justify-content-end">
                       {/* <Dropdown
@@ -123,8 +149,15 @@ const Calender = () => {
                         </div>
                       </div>
                     </Col>
+                    <Col>
+                      <div className="rounded overflow-hidden">
+                        <div className="bg-success p-4 bg-soft">
+                          <h5 className="my-2 text-success">Vacation: {vacation} days (max {user?.job?.maxHours} days)</h5>
+                        </div>
+                      </div>
+                    </Col>
                   </Row>
-                  <TimeLogsTable id={id} />
+                  <TimeLogsTable id={id} month={month}/>
                 </CardBody>
               </Card>
             </Col>

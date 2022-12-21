@@ -62,6 +62,7 @@ import TeamManager from "../pages/admin/team"
 import StaffManager from "../pages/admin/Staff"
 import NewStaff from "../pages/admin/Staff/new-staff"
 import ScanDevice from "../pages/admin/scan-device/index"
+import EditHoliday from "../pages/admin/calendar/holiday"
 import SocketConfig from "../components/socket/socket"
 
 // notification
@@ -254,6 +255,12 @@ const authProtectedRoutes = [
     path: "/scan-device",
     component: ScanDevice,
     id: "ScanDevice",
+    allowedPermissions: ["admin"],
+  },
+  {
+    path: "/edit-holiday",
+    component: EditHoliday,
+    id: "EditHoliday",
     allowedPermissions: ["admin"],
   },
   {

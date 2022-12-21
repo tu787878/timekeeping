@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
-
+import { Alert } from 'antd';
+import Marquee from 'react-fast-marquee';
 // Reactstrap
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 
@@ -120,46 +121,19 @@ const Header = props => {
             </form> */}
 
           </div>
+          <div className="d-flex" style={{ width: "80%" }}>
+            <Alert
+              banner
+              message={
+                <>
+                  <Marquee pauseOnHover gradient={false} speed="40">
+                    <span>Server will be unavailable at 20:00 to 21:00 on every Sunday as the IT team will be performing scheduled maintenance at this time.</span>
+                  </Marquee>
+                </>
+              }
+            />
+          </div>
           <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
-                onClick={() => {
-                  setsearch(!search);
-                }}
-                type="button"
-                className="btn header-item noti-icon "
-                id="page-header-search-dropdown"
-              >
-                <i className="mdi mdi-magnify" />
-              </button>
-              <div
-                className={
-                  search
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
-              >
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search ..."
-                        aria-label="Recipient's username"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-
             <LanguageDropdown />
 
             <div className="dropdown d-none d-lg-inline-block ms-1">

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getEvents as onGetEvents } from "../../../store/actions"
 import EditTimeLogModal from "../EditTimeLogsModal"
 
-const TimeLogsTable = (id) => {
+const TimeLogsTable = ({id, month}) => {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
   const dispatch = useDispatch()
@@ -14,17 +14,16 @@ const TimeLogsTable = (id) => {
   const { events } = useSelector(state => ({
     events: state.calendar.events,
   }))
-
   useEffect(() => {
-    if(id.id === undefined){
+    if(id?.id === undefined){
       const obj = JSON.parse(localStorage.getItem("authUser"))
-      dispatch(onGetEvents(obj.account.id))
+      dispatch(onGetEvents({id:obj.account.id, month:month.format('DD/MM/YYYY')}))
     }
     else{
-      dispatch(onGetEvents(id.id))
+      dispatch(onGetEvents({id:id?.id,month:month.format('DD/MM/YYYY')}))
     }
     
-  }, [dispatch])
+  }, [dispatch, month])
 
   const handleOpenEditModal = item => {
     setOpenEditModal(true)
@@ -40,7 +39,7 @@ const TimeLogsTable = (id) => {
       }}
     >
       <Table
-        columns={tableColumns(handleOpenEditModal, id.id)}
+        columns={tableColumns(handleOpenEditModal, id?.id)}
         dataSource={events || []}
         scroll={{ y: 500 }}
         pagination={false}

@@ -52,7 +52,10 @@ const Login = props => {
     }
     post(url.LOGIN_DEMO, d).then((data) => {
       localStorage.setItem("authUser", JSON.stringify(data.data));
-      props.history.push("/dashboard")
+      // props.history.push("/dashboard")
+      setTimeout(()=>{
+        window.location.href = "/dashboard";
+    }, 1000)
     }).catch(error => {
       let mess = JSON.parse(error.request.response).message;
       setError(mess)

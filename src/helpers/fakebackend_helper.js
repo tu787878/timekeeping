@@ -108,7 +108,7 @@ export const getProductDetail = id =>
   get(`${url.GET_PRODUCTS_DETAIL}/${id}`, { params: { id } });
 
 // get Events
-export const getEvents = (id) => get(`${url.BASE}/account/${id}/calendar`);
+export const getEvents = (param) => get(`${url.BASE}/account/${param.id}/calendar?month=${param.month}`);
 
 // add Events
 export const addNewEvent = event => post(url.ADD_NEW_EVENT, event);

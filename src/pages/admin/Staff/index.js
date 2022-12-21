@@ -184,7 +184,7 @@ const StaffManager = props => {
         >
           <Form.Item name={["job", "team", "id"]} label="Team">
             <Select allowClear>
-              
+
               {teams.map(team => {
                 return (
                   <Select.Option key={team.id} value={team.id}>{team.name}</Select.Option>
@@ -226,12 +226,13 @@ const StaffManager = props => {
                 <Form.Item name={["job", "minHours"]} label="Min Hours (in month)">
                   <Input />
                 </Form.Item>
-                <Form.Item name={["job", "maxHours"]} label="Max Hours (in month)">
-                  <Input />
-                </Form.Item>
+
               </>
             )}
           </Form.Item>
+          <Form.Item name={["job", "maxHours"]} label="Vacation days (in year)">
+              <Input />
+            </Form.Item>
           <Form.Item name={["accountRole", "capabilities"]} label="Manage Calendar">
             <Select
               mode="multiple"

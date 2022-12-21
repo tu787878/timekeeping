@@ -42,7 +42,10 @@ function* logoutUser({ payload: { history } }) {
       const response = yield call(fireBaseBackend.logout);
       yield put(logoutUserSuccess(response));
     }
-    history.push("/login");
+    // history.push("/login");
+    setTimeout(()=>{
+      window.location.href = "/login";
+  }, 1000)
   } catch (error) {
     yield put(apiError(error));
   }
