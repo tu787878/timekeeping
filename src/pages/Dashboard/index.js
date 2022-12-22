@@ -88,7 +88,17 @@ const Dashboard = props => {
                             })}
                           </Avatar.Group>
                         </Col>
-                        <Col md={"3"}>
+                       <Col md={"3"}>
+                       {project.team ? <Tooltip title={`${project.team.name}`} placement="top"><Avatar
+                            style={{
+                              backgroundColor: '#87d068',
+                            }}
+                          >
+                            {project.team?.name.charAt(0)}
+                          </Avatar></Tooltip>: null}
+                        </Col>
+                          
+                        <Col md={"2"}>
                           <Moment style={{ marginLeft: "10px" }} fromNow>{project.createdTime}</Moment>
                         </Col>
                       </Row>
@@ -99,7 +109,7 @@ const Dashboard = props => {
                   )
                 })}
                 <br></br>
-                <a href="/tasks-list">View all</a>
+                <a href="/projects-list">View all</a>
               </Card>
             </Col>
             <Col md="6">
@@ -143,7 +153,9 @@ const Dashboard = props => {
                             })}
                           </Avatar.Group>
                         </Col>
-
+                        <Col md={"3"}>
+                          {task.project ? <a href={`/projects-overview/${task.project.id}`}><Tag color="volcano">{task.project.name}</Tag></a> : null}
+                        </Col>
                       </Row>
 
 

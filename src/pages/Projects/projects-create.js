@@ -179,7 +179,7 @@ const ProjectsCreate = () => {
                       return (
                         <Option key={staff.id} value={staff.id}>
                           <div className="demo-option-label-item">
-                            {staff.userDetail.firstName} {staff.userDetail.lastName} ({staff.username})
+                            {staff.userDetail?.firstName} {staff.userDetail?.lastName} ({staff.username})
                           </div>
                         </Option>
                       )

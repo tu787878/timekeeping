@@ -27,7 +27,7 @@ const columns = [
     title: 'Created Date',
     dataIndex: 'createdTime',
     render: time => (
-      <Moment format="HH:mm DD-MM-YYYY">{time}</Moment>
+      <Moment format="HH:mm DD/MM/YYYY">{time}</Moment>
     ),
     width: '20%',
   },

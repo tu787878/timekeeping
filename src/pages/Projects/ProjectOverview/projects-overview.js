@@ -318,7 +318,7 @@ const ProjectsOverview = () => {
                   <Timeline>
                     {project?.histories.map((history) => {
                       return (
-                        <Timeline.Item key={history.id}>{history.message} at {<Moment format="HH:mm DD-MM-YYYY">{history.createdTime}</Moment>}.</Timeline.Item>
+                        <Timeline.Item key={history.id}>{history.message} at {<Moment format="HH:mm DD/MM/YYYY">{history.createdTime}</Moment>}.</Timeline.Item>
                       )
                     })}
 
