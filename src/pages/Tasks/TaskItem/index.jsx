@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom"
 import avatar4 from "../../../assets/images/users/avatar-4.jpg"
 import avatar5 from "../../../assets/images/users/avatar-5.jpg"
 
-const TaskItem = () => {
+const TaskItem = ({ task }) => {
   return (
     <tr>
       <td style={{ width: "40px" }}>
@@ -23,7 +23,7 @@ const TaskItem = () => {
       <td>
         <h5 className="text-truncate font-size-14 m-0">
           <Link to="#" className="text-dark">
-            Create a Skote Dashboard UI
+            {task.name}
           </Link>
         </h5>
       </td>
@@ -44,7 +44,7 @@ const TaskItem = () => {
       <td>
         <div className="text-center">
           <span className="badge rounded-pill badge-soft-secondary font-size-11">
-            Waiting
+            {task.status}
           </span>
         </div>
       </td>
