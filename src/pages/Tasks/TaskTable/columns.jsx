@@ -1,7 +1,7 @@
 import React from "react"
 import moment from "moment"
 import { Link } from "react-router-dom"
-import { Tag } from "antd"
+import { Tag, Avatar, Tooltip } from "antd"
 
 import avatar4 from "../../../assets/images/users/avatar-4.jpg"
 
@@ -17,49 +17,62 @@ export const columns = () => [
     key: "project",
     dataIndex: "project",
     align: "center",
-    render: project => project.name,
+    render: project => project?.name,
   },
   {
-    title: <b>Members</b>,
-    key: "members",
-    dataIndex: "members",
+    title: <b>User</b>,
+    key: "accounts",
+    dataIndex: "accounts",
     align: "center",
-    render: members => (
-      <div className="avatar-group">
-        {members?.length &&
-          members.map(member => (
-            <div key={member.id} className="avatar-group-item">
-              <Link to="#" className="d-inline-block">
-                <img
-                  src={avatar4}
-                  alt=""
-                  className="rounded-circle avatar-xs"
-                />
-              </Link>
-            </div>
-          ))}
-      </div>
-    ),
+    render: accounts => (
+      <>
+        <Avatar.Group
+          // maxCount={2}
+          size="small"
+          maxStyle={{
+            color: '#f56a00',
+            backgroundColor: '#fde3cf',
+            marginLeft: '10px'
+          }}
+        >
+          {accounts.map(account => {
+            return (
+              <Tooltip key={account.id} title={`${account.userDetail.firstName} ${account.userDetail.lastName}`} placement="top">
+                {(account.userDetail.avatar !== "") ? <Avatar src={account.userDetail.avatar} /> : <Avatar
+                  style={{
+                    backgroundColor: '#386087',
+                  }}
+                >
+                  {account.userDetail.lastName.charAt(0)}
+                </Avatar>}
+              </Tooltip>
+            )
+          })}
+        </Avatar.Group>
+
+      </>
+    )
   },
   {
     title: <b>Status</b>,
     key: "status",
     dataIndex: "status",
     align: "center",
-    render: status => <Tag>status</Tag>,
+    render: status => (status === "TODO" ? <Tag color="purple">TODO</Tag> : (status === "DONE" ? <Tag color="cyan">DONE</Tag> : <Tag color="red">PROCESSING</Tag>))
   },
   {
     title: <b>Type</b>,
     key: "type",
     dataIndex: "type",
     align: "center",
+    render: type => (<Tag color="geekblue">{type}</Tag>)
   },
   {
     title: <b>Severity</b>,
     key: "severity",
     dataIndex: "severity",
     align: "center",
-    render: severity => <Tag>severity</Tag>,
+    render: severity => (<Tag color="orange">{severity}</Tag>),
   },
   {
     title: <b>Created Date</b>,

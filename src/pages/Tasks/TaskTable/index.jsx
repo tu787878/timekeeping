@@ -41,6 +41,7 @@ const TaskTable = ({ filter, setFilter }) => {
           pageSizeOptions: ["10", "20", "50"],
           showSizeChanger: true,
         }}
+        loading={loading}
       />
     </Spin>
   )

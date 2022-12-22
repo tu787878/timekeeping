@@ -121,18 +121,21 @@ const Header = props => {
             </form> */}
 
           </div>
-          <div className="d-flex" style={{ width: "80%" }}>
+          {console.log(window.innerWidth)}
+          {window.innerWidth > 600 ? <div className="d-flex" style={{ width: "80%" }}>
             <Alert
               banner
               message={
                 <>
                   <Marquee pauseOnHover gradient={false} speed="40">
                     <span>Server will be unavailable at 20:00 to 21:00 on every Sunday as the IT team will be performing scheduled maintenance at this time.</span>
+                    {/* <span>Notifications ...</span> */}
                   </Marquee>
                 </>
               }
             />
-          </div>
+          </div>: null }
+         
           <div className="d-flex">
             <LanguageDropdown />
 

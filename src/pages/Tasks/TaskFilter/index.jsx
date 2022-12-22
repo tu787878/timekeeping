@@ -40,7 +40,7 @@ const TaskFilter = ({ setFilter, t }) => {
       <Row gutter={16}>
         <Col span={4}>
           <Form.Item name="accountId" valuePropName="checked">
-            <Checkbox style={{ lineHeight: "32px" }}>My tasks</Checkbox>
+            <Checkbox style={{ lineHeight: "32px" }} >My tasks</Checkbox>
           </Form.Item>
         </Col>
         <Col span={5}>
@@ -67,18 +67,19 @@ const TaskFilter = ({ setFilter, t }) => {
         <Col span={5}>
           <Form.Item name="type" label="Type">
             <Select allowClear>
-              <Option value="TODO">To do</Option>
-              <Option value="PROCESSING">In Progess</Option>
-              <Option value="DONE">Done</Option>
+              <Option key="BUGS">Bugs</Option>
+              <Option key="FEATURES">Features</Option>
+              <Option key="TODO">Todo</Option>
+              <Option key="OTHERS">Others</Option>
             </Select>
           </Form.Item>
         </Col>
         <Col span={5}>
           <Form.Item name="severity" label="Severity">
             <Select allowClear>
-              <Option value="TODO">To do</Option>
-              <Option value="PROCESSING">In Progess</Option>
-              <Option value="DONE">Done</Option>
+              <Option key="LOW">Low</Option>
+              <Option key="MEDIUM">Medium</Option>
+              <Option key="HIGH">High</Option>
             </Select>
           </Form.Item>
         </Col>

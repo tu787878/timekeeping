@@ -288,6 +288,12 @@ const EditProfile = props => {
                                         <Form.Item
                                             name="oldPassword"
                                             label="Old Password"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: 'Please input your old password!',
+                                                },
+                                            ]}
                                         >
                                             <Input.Password />
                                         </Form.Item>
@@ -297,7 +303,7 @@ const EditProfile = props => {
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: 'Please input your password!',
+                                                    message: 'Please input your new password!',
                                                 },
                                             ]}
                                             hasFeedback

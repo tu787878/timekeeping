@@ -24,14 +24,6 @@ const columns = [
     sorter: (a, b) => a.name.length - b.name.length,
   },
   {
-    title: 'Created Date',
-    dataIndex: 'createdTime',
-    render: time => (
-      <Moment format="HH:mm DD/MM/YYYY">{time}</Moment>
-    ),
-    width: '20%',
-  },
-  {
     title: 'Status',
     dataIndex: 'status',
     render: status => (
@@ -101,6 +93,14 @@ const columns = [
       </>
     )
   },
+  {
+    title: 'Created Date',
+    dataIndex: 'createdTime',
+    render: time => (
+      <Moment format="HH:mm DD/MM/YYYY">{time}</Moment>
+    ),
+    width: '20%',
+  },
 ];
 const getRandomuserParams = (params) => ({
   results: params.pagination?.pageSize,
@@ -151,7 +151,10 @@ const ProjectsList = () => {
             // total: data.totalCount,
           },
         });
-      });
+      }).catch(err => {
+        setData([]);
+        setLoading(false);
+      });;
   };
 
   useEffect(() => {
@@ -175,7 +178,7 @@ const ProjectsList = () => {
     <React.Fragment>
 
       <div className="page-content">
-        <Container fluid>
+        <Container fluid style={{overflowX:"scroll"}}>
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Projects" breadcrumbItem="Projects List" />
           <Row>
