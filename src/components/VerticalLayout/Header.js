@@ -80,8 +80,8 @@ const Header = props => {
 
   return (
     <React.Fragment>
-      <header id="page-topbar" style={{ overflowX: 'scroll' }}>
-        <div className="navbar-header">
+      <header id="page-topbar">
+        <div className="navbar-header"> 
           <div className="d-flex">
 
             <div className="navbar-brand-box d-lg-none d-md-block">

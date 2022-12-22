@@ -220,7 +220,7 @@ const StaffManager = props => {
               <Select.Option value="MINIJOB">Minijob</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item noStyle shouldUpdate={(prev, cur) => prev.job.workingTimeType !== cur.job.workingTimeType}>
+          <Form.Item noStyle shouldUpdate={(prev, cur) => prev?.job?.workingTimeType !== cur?.job?.workingTimeType}>
             {({ getFieldValue }) => getFieldValue(["job", "workingTimeType"]) !== "FULLTIME" && (
               <>
                 <Form.Item name={["job", "minHours"]} label="Min Hours (in month)">
