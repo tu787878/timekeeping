@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
-import { GET_STAFFS, GET_TEAMS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_COMMENT, GET_TASKS } from "../../../helpers/url_helper";
+import { GET_STAFFS, GET_TEAMS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_COMMENT, GET_TASKS, BASE } from "../../../helpers/url_helper";
 import { del, get, post, put } from "../../../helpers/api_helper";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -23,6 +23,7 @@ const ProjectsOverview = () => {
   const [tasks, setTasks] = useState([])
 
   const [fileList, setFileList] = useState([]);
+  const [shouldRemoveMedia, setShouldRemoveMedia] = useState([]);
   const [uploading, setUploading] = useState(false);
 
   const [team, setTeam] = useState(null)
@@ -76,6 +77,8 @@ const ProjectsOverview = () => {
       setAccounts(acc);
       setOldMedia(data.data.media);
       setTeam(data.data.team?.id);
+      setFileList([]);
+      setShouldRemoveMedia([])
     })
   }
 
@@ -114,7 +117,6 @@ const ProjectsOverview = () => {
       fileList.forEach((file) => {
         formData.append('files', file);
       });
-      console.log(formData);
       setUploading(true);
       // You can use any AJAX library you like
       fetch(UPLOAD_FILE_MULTI, {
@@ -141,6 +143,14 @@ const ProjectsOverview = () => {
               success()
               onGetProject()
             });
+          shouldRemoveMedia.map(m => {
+            del(BASE + "/edit-media/" + m.id).then(data => {
+              console.log(data);
+            }).catch(err => {
+              console.log(err);
+            })
+          })
+          
 
         })
         .catch(() => {
@@ -167,7 +177,13 @@ const ProjectsOverview = () => {
           success()
           onGetProject()
         });
-
+          shouldRemoveMedia.map(m => {
+          del(BASE + "/edit-media/" + m.id).then(data => {
+            console.log(data);
+          }).catch(err => {
+            console.log(err);
+          })
+        })
     }
 
     console.log(values);
@@ -177,6 +193,7 @@ const ProjectsOverview = () => {
     setOldMedia(oldMedia.filter(obj => {
       return obj.id != media.id;
     }));
+    setShouldRemoveMedia([...shouldRemoveMedia, media]);
   };
 
   const onChangeComment = (ev) => {
