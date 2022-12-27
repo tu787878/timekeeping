@@ -32,7 +32,7 @@ export const tableColumns = (handleOpenEditModal, id) => [
     dataIndex: "timeLogs",
     align: "center",
     render: (timeLogs, record) => {
-      record.dateType !== "HOLIDAY" ? (  
+      return record.dateType !== "HOLIDAY" ? (  
       <> 
           {timeLogs.map(time => (
             <div style={{color: time.status === "VALID" ? "black" : "red"}} key={time.id}>
