@@ -31,8 +31,9 @@ export const tableColumns = (handleOpenEditModal, id) => [
     key: "timeLogs",
     dataIndex: "timeLogs",
     align: "center",
-    render: timeLogs => (
-      <>
+    render: (timeLogs, record) => {
+      record.dateType !== "HOLIDAY" ? (  
+      <> 
           {timeLogs.map(time => (
             <div style={{color: time.status === "VALID" ? "black" : "red"}} key={time.id}>
               {time.timeFrom} - {time.timeTo} {time.type !== "WORK" ? <CarTwoTone /> : ""}
@@ -40,7 +41,7 @@ export const tableColumns = (handleOpenEditModal, id) => [
           ))}
 
       </>
-    ),
+    ) : (<div>Holiday</div>)},
   },
   {
     title: "Total time",
