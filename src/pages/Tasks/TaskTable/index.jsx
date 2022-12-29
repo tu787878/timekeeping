@@ -32,6 +32,7 @@ const TaskTable = ({ filter, setFilter }) => {
       <Table
         columns={columns() || []}
         dataSource={data || []}
+        scroll={{ y: 500 }}
         pagination={{
           total: total,
           current: filter.page,
