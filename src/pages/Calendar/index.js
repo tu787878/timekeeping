@@ -5,7 +5,7 @@ import Flatpickr from "react-flatpickr"
 import { useState, useEffect } from "react"
 import { get } from "../../helpers/api_helper"
 import * as url from "../../helpers/url_helper"
-import dayjs from 'dayjs';
+import dayjs from "dayjs"
 import {
   Card,
   CardBody,
@@ -19,39 +19,44 @@ import {
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
-import { useParams } from "react-router-dom";
-import { DatePicker } from 'antd';
+import { useParams } from "react-router-dom"
+import { Avatar, DatePicker } from "antd"
 const Calender = () => {
   //meta title
   document.title = "Full Calendar | Skote - React Admin & Dashboard Template"
   const { id } = useParams()
-  const [user, setUser] = useState(null);
-  const [vacation, setVacation] = useState(0);
-  const [month, setmonth] = useState(dayjs(new Date()));
+  const [user, setUser] = useState(null)
+  const [vacation, setVacation] = useState(0)
+  const [month, setmonth] = useState(dayjs(new Date()))
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
-  const onGetVacation = (id) => {
-    get(url.BASE + "/account/" + id + "/total-vacation?month=" + month.format("DD/MM/YYYY"))
+  const onGetVacation = id => {
+    get(
+      url.BASE +
+        "/account/" +
+        id +
+        "/total-vacation?month=" +
+        month.format("DD/MM/YYYY")
+    )
       .then(data => {
-        console.log(data);
-        setVacation(data.data / 60 / 8);
-      }).catch(err => {
-        console.log(err);
+        console.log(data)
+        setVacation(data.data / 60 / 8)
+      })
+      .catch(err => {
+        console.log(err)
       })
   }
-
 
   useEffect(() => {
     if (id === undefined) {
       get(url.GET_STAFFS + "/" + obj.account.id).then(data => {
-        setUser(data.data);
+        setUser(data.data)
       })
     } else {
       get(url.GET_STAFFS + "/" + id).then(data => {
-        setUser(data.data);
+        setUser(data.data)
       })
     }
-
   }, [])
 
   useEffect(() => {
@@ -60,14 +65,11 @@ const Calender = () => {
     } else {
       onGetVacation(id)
     }
-
   }, [month])
 
-
-
-  const onChange = (values) => {
-    console.log(values);
-    setmonth(values);
+  const onChange = values => {
+    console.log(values)
+    setmonth(values)
     // dispatch(onGetEvents({id:obj.account.id, month:month.format('DD/MM/YYYY')}))
   }
 
@@ -96,19 +98,32 @@ const Calender = () => {
                   <Row className="align-items-center">
                     <Col sm="4">
                       <div className="avatar-md profile-user-wid mb-4">
-                        <img
-                          src="/static/media/avatar-1.3921191a8acf79d3e907.jpg"
-                          alt=""
-                          className="img-thumbnail rounded-circle"
-                        />
+                        {user?.userDetail.avatar !== "" ? (
+                          <Avatar src={user?.userDetail.avatar} />
+                        ) : (
+                          <div className="avatar-md">
+                            <span className="avatar-title rounded-circle bg-info text-white font-size-24">
+                              {user?.userDetail.lastName.charAt(0)}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <h5 className="font-size-15 text-truncate">
-                        {user?.userDetail?.firstName} {" "} {user?.userDetail?.lastName}
+                        {user?.userDetail?.firstName}{" "}
+                        {user?.userDetail?.lastName}
                       </h5>
-                      <p className="text-muted mb-0 text-truncate">{user?.job?.name}</p>
+                      <p className="text-muted mb-0 text-truncate">
+                        {user?.job?.name}
+                      </p>
                     </Col>
                     <Col>
-                      <DatePicker onChange={onChange} defaultValue={dayjs} size={"large"} picker="month" format={"MM/YYYY"} />
+                      <DatePicker
+                        onChange={onChange}
+                        defaultValue={dayjs}
+                        size={"large"}
+                        picker="month"
+                        format={"MM/YYYY"}
+                      />
                     </Col>
                     <Col className="d-flex justify-content-end">
                       {/* <Dropdown
@@ -132,21 +147,31 @@ const Calender = () => {
                     <Col sm="3">
                       <div className="rounded overflow-hidden">
                         <div className="bg-info p-4 bg-soft">
-                          <h5 className="my-2 text-info">Type: {user?.job?.workingTimeType}</h5>
+                          <h5 className="my-2 text-info">
+                            Type: {user?.job?.workingTimeType}
+                          </h5>
                         </div>
                       </div>
                     </Col>
                     <Col sm="3">
                       <div className="rounded overflow-hidden">
                         <div className="bg-warning p-4 bg-soft">
-                          <h5 className="my-2 text-warning">Min: {user?.job?.workingTimeType === "FULLTIME" ? "8h/day" : (user?.job?.minHours + "h/month")}</h5>
+                          <h5 className="my-2 text-warning">
+                            Min:{" "}
+                            {user?.job?.workingTimeType === "FULLTIME"
+                              ? "8h/day"
+                              : user?.job?.minHours + "h/month"}
+                          </h5>
                         </div>
                       </div>
                     </Col>
                     <Col sm="3">
                       <div className="rounded overflow-hidden">
                         <div className="bg-success p-4 bg-soft">
-                          <h5 className="my-2 text-success">Vacation: {vacation} days (max {user?.job?.maxHours} days)</h5>
+                          <h5 className="my-2 text-success">
+                            Vacation: {vacation} days (max {user?.job?.maxHours}{" "}
+                            days)
+                          </h5>
                         </div>
                       </div>
                     </Col>
@@ -155,9 +180,7 @@ const Calender = () => {
                     <Col>
                       <TimeLogsTable id={id} month={month} />
                     </Col>
-
                   </Row>
-
                 </CardBody>
               </Card>
             </Col>
