@@ -111,12 +111,12 @@ const EditHoliday = props => {
   }
 
   //meta title
-  document.title = "Team Manager | TCG - Admin & Dashboard"
+  document.title = "Holiday Manager | TCG - Admin & Dashboard"
   return (
     <>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Staff Manager" breadcrumbItem="Team" />
+          <Breadcrumbs title="Holiday" breadcrumbItem="Holiday" />
           <Row>
             <Col lg="12">
               <Card>
