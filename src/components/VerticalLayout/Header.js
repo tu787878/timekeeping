@@ -128,7 +128,7 @@ const Header = props => {
               message={
                 <>
                   <Marquee pauseOnHover gradient={false} speed="40">
-                    <span>Server will be unavailable at 20:00 to 21:00 on every Sunday as the IT team will be performing scheduled maintenance at this time.</span>
+                    <span>Server will be unavailable from 20:00 to 21:00 on every Sunday as the IT team will be performing scheduled maintenance at this time.</span>
                     {/* <span>Notifications ...</span> */}
                   </Marquee>
                 </>

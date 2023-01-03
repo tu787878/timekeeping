@@ -10,7 +10,7 @@ const toTime = (minutes) => {
   minutes = Math.abs(minutes);
   var m = minutes % 60;
   var h = (minutes - m) / 60;
-  return (negative ? "-" : "") + h + ":" + m + ((m < 10) ? "0" : "");
+  return (negative ? "-" : "") + h + ":" + ((m < 10) ? "0" : "") + m;
 }
 
 export const tableColumns = (handleOpenEditModal, id) => [
