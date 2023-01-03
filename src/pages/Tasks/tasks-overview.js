@@ -1,29 +1,49 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { Col, Container, Row } from "reactstrap";
-import { GET_STAFFS, GET_TEAMS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_COMMENT, GET_TASKS } from "../../helpers/url_helper";
-import { del, get, post, put } from "../../helpers/api_helper";
+import React, { useState, useEffect } from "react"
+import PropTypes from "prop-types"
+import { withRouter } from "react-router-dom"
+import { Col, Container, Row } from "reactstrap"
+import {
+  GET_STAFFS,
+  GET_TEAMS,
+  GET_PROJECTS,
+  UPLOAD_FILE_MULTI,
+  GET_COMMENT,
+  GET_TASKS,
+} from "../../helpers/url_helper"
+import { del, get, post, put } from "../../helpers/api_helper"
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb";
-import { Card } from 'antd';
+import Breadcrumbs from "components/Common/Breadcrumb"
+import { Card } from "antd"
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"
 export const EDIT_PROFILE = "EDIT_PROFILE"
-import { Button, Form, Input, Select, Upload, message, Avatar, List, Timeline, Badge, Tag, Layout } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
-import Moment from 'react-moment';
-import { InboxOutlined, UploadOutlined, DeleteTwoTone } from '@ant-design/icons';
-import { useParams } from "react-router-dom";
-const { Option } = Select;
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Upload,
+  message,
+  Avatar,
+  List,
+  Timeline,
+  Badge,
+  Tag,
+  Layout,
+} from "antd"
+const { Header, Footer, Sider, Content } = Layout
+import Moment from "react-moment"
+import { InboxOutlined, UploadOutlined, DeleteTwoTone } from "@ant-design/icons"
+import { useParams } from "react-router-dom"
+const { Option } = Select
 const TasksOverview = () => {
   const [teams, setTeams] = useState([])
   const [staffs, setStaffs] = useState([])
   const [project, setProject] = useState(null)
   const [tasks, setTasks] = useState([])
 
-  const [fileList, setFileList] = useState([]);
-  const [uploading, setUploading] = useState(false);
+  const [fileList, setFileList] = useState([])
+  const [uploading, setUploading] = useState(false)
 
   const [team, setTeam] = useState(null)
   const [accounts, setAccounts] = useState(null)
@@ -37,52 +57,51 @@ const TasksOverview = () => {
   const [form2] = Form.useForm()
 
   const obj = JSON.parse(localStorage.getItem("authUser"))
-  const accountId = obj.account.id;
+  const accountId = obj.account.id
 
   const props = {
-    onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
+    onRemove: file => {
+      const index = fileList.indexOf(file)
+      const newFileList = fileList.slice()
+      newFileList.splice(index, 1)
+      setFileList(newFileList)
     },
-    beforeUpload: (file) => {
-      setFileList([...fileList, file]);
-      return false;
+    beforeUpload: file => {
+      setFileList([...fileList, file])
+      return false
     },
     fileList,
-  };
-
+  }
 
   const onGetTeams = () => {
     get(GET_PROJECTS + "/all").then(data => {
-      setTeams(data.data);
+      setTeams(data.data)
     })
   }
 
   const onGetNewTask = () => {
     get(GET_TASKS + "?page=0&size=5&projectId=" + id).then(data => {
-      setTasks(data.data);
+      setTasks(data.data)
     })
   }
 
   const onGetProject = () => {
     get(GET_TASKS + "/" + id).then(data => {
-      console.log(data.data);
+      console.log(data.data)
       setProject(data.data)
 
-      let acc = data.data.accounts.map((a) => {
-        return a.id;
-      });
-      setAccounts(acc);
-      setOldMedia(data.data.media);
-      setTeam(data.data.project.id);
+      let acc = data.data.accounts.map(a => {
+        return a.id
+      })
+      setAccounts(acc)
+      setOldMedia(data.data.media)
+      setTeam(data.data.project.id)
     })
   }
 
   const onGetStaffs = () => {
     get(GET_STAFFS).then(data => {
-      setStaffs(data.data);
+      setStaffs(data.data)
     })
   }
   useEffect(() => {
@@ -97,123 +116,126 @@ const TasksOverview = () => {
     form.setFieldsValue(project)
   }, [form, project])
 
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage()
   const success = () => {
-    messageApi.success('Add a team success!');
-  };
+    messageApi.success("Add a team success!")
+  }
   const error = () => {
     messageApi.open({
-      type: 'error',
-      content: 'Upload failed',
-    });
-  };
+      type: "error",
+      content: "Upload failed",
+    })
+  }
 
-  const onFinish = (values) => {
-    const formData = new FormData();
+  const onFinish = values => {
+    const formData = new FormData()
     if (fileList.length > 0) {
-      fileList.forEach((file) => {
-        formData.append('files', file);
-      });
-      console.log(formData);
-      setUploading(true);
+      fileList.forEach(file => {
+        formData.append("files", file)
+      })
+      console.log(formData)
+      setUploading(true)
       // You can use any AJAX library you like
       fetch(UPLOAD_FILE_MULTI, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          setFileList([]);
-          res = res.concat(oldMedia);
+        .then(res => res.json())
+        .then(res => {
+          console.log(res)
+          setFileList([])
+          res = res.concat(oldMedia)
           let data = {
             name: values.name,
             description: values.description,
             media: res,
             project: team ? { id: team } : null,
-            accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null,
+            accounts: accounts
+              ? accounts.map(acc => {
+                  return { id: acc }
+                })
+              : null,
             status: values.status,
             type: values.type,
-            severity: values.severity
+            severity: values.severity,
           }
-          console.log(data);
-          put(GET_TASKS + "/" + id, data)
-            .then((res) => {
-              console.log(res);
-              success()
-              onGetProject()
-            });
-
+          console.log(data)
+          put(GET_TASKS + "/" + id, data).then(res => {
+            console.log(res)
+            success()
+            onGetProject()
+          })
         })
         .catch(() => {
-          error();
+          error()
           // message.error('upload failed.');
         })
         .finally(() => {
-          setUploading(false);
-        });
-    }
-    else {
+          setUploading(false)
+        })
+    } else {
       let data = {
         name: values.name,
         description: values.description,
         media: oldMedia,
         project: team ? { id: team } : null,
-        accounts: accounts ? accounts.map(acc => { return { id: acc } }) : null,
+        accounts: accounts
+          ? accounts.map(acc => {
+              return { id: acc }
+            })
+          : null,
         status: values.status,
         type: values.type,
-        severity: values.severity
+        severity: values.severity,
       }
-      console.log(data);
-      put(GET_TASKS + "/" + id, data)
-        .then((res) => {
-          console.log(res);
-          success()
-          onGetProject()
-        });
-
+      console.log(data)
+      put(GET_TASKS + "/" + id, data).then(res => {
+        console.log(res)
+        success()
+        onGetProject()
+      })
     }
 
-    console.log(values);
-  };
+    console.log(values)
+  }
 
-  const handleClose = (media) => {
-    setOldMedia(oldMedia.filter(obj => {
-      return obj.id != media.id;
-    }));
-  };
+  const handleClose = media => {
+    setOldMedia(
+      oldMedia.filter(obj => {
+        return obj.id != media.id
+      })
+    )
+  }
 
-  const onChangeComment = (ev) => {
-    setComment(ev.target.value);
+  const onChangeComment = ev => {
+    setComment(ev.target.value)
   }
 
   const doComment = () => {
-    console.log(comment);
+    console.log(comment)
     let dt = {
-      "content": comment
+      content: comment,
     }
-    post(GET_TASKS + "/" + id + "/comments", dt)
-      .then((res) => {
-        console.log(res);
-        onGetProject()
-      });
+    post(GET_TASKS + "/" + id + "/comments", dt).then(res => {
+      console.log(res)
+      onGetProject()
+    })
 
     setComment(null)
-    form2.resetFields();
+    form2.resetFields()
   }
 
-  const deleteComment = (item) => {
-    del(GET_COMMENT + "/" + item.id)
-      .then((res) => {
-        console.log(res);
-        onGetProject()
-      });
+  const deleteComment = item => {
+    del(GET_COMMENT + "/" + item.id).then(res => {
+      console.log(res)
+      onGetProject()
+    })
   }
 
   //meta title
-  document.title = "Project Overview | Skote - React Admin & Dashboard Template";
+  document.title = "Project Overview | Skote - React Admin & Dashboard Template"
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   return (
     <React.Fragment>
@@ -224,21 +246,27 @@ const TasksOverview = () => {
           <Row>
             <Col lg="8">
               <Row>
-                <Badge.Ribbon text={project?.status} color={project?.status === "DONE" ? "cyan" : (project?.status === "TODO" ? "" : "red")}>
-
-                  <Card
-                    title="Task"
-
-                  >
-                    <Form form={form} name="nest-messages" onFinish={onFinish} initialValues={project}>
-                      <Form.Item
-                        name={['name']}
-                        label="Name"
-
-                      >
+                <Badge.Ribbon
+                  text={project?.status}
+                  color={
+                    project?.status === "DONE"
+                      ? "cyan"
+                      : project?.status === "TODO"
+                      ? ""
+                      : "red"
+                  }
+                >
+                  <Card title="Task">
+                    <Form
+                      form={form}
+                      name="nest-messages"
+                      onFinish={onFinish}
+                      initialValues={project}
+                    >
+                      <Form.Item name={["name"]} label="Name">
                         <Input />
                       </Form.Item>
-                      <Form.Item name={"status"} label="Status" >
+                      <Form.Item name={"status"} label="Status">
                         <Select
                           style={{
                             width: 120,
@@ -249,7 +277,7 @@ const TasksOverview = () => {
                           <Option key={"DONE"}>{"Done"}</Option>
                         </Select>
                       </Form.Item>
-                      <Form.Item name={"type"} label="Type" >
+                      <Form.Item name={"type"} label="Type">
                         <Select
                           style={{
                             width: 120,
@@ -261,7 +289,7 @@ const TasksOverview = () => {
                           <Option key="OTHERS">Others</Option>
                         </Select>
                       </Form.Item>
-                      <Form.Item name={"severity"} label="Severity" >
+                      <Form.Item name={"severity"} label="Severity">
                         <Select
                           style={{
                             width: 120,
@@ -272,48 +300,65 @@ const TasksOverview = () => {
                           <Option key="HIGH">High</Option>
                         </Select>
                       </Form.Item>
-                      <Form.Item name={['project', 'id']} label="Assign to Project" >
+                      <Form.Item
+                        name={["project", "id"]}
+                        label="Assign to Project"
+                      >
                         <Select
                           style={{
                             width: 120,
                           }}
                           allowClear
-                          onChange={(team) => { setTeam(team) }}
+                          onChange={team => {
+                            setTeam(team)
+                          }}
                         >
                           {teams.map(option => (
-                            <Option key={option.id} value={option.id}>{option.name}</Option>
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
                           ))}
                         </Select>
                       </Form.Item>
-                      <Form.Item label="Assign to Users" >
+                      <Form.Item label="Assign to Users">
                         <Select
                           value={accounts}
                           mode="multiple"
                           style={{
-                            width: '100%',
+                            width: "100%",
                           }}
                           allowClear
-                          onChange={(accounts) => { setAccounts(accounts) }}
+                          onChange={accounts => {
+                            setAccounts(accounts)
+                          }}
                         >
                           {staffs.map(staff => {
                             return (
                               <Option key={staff.id} value={staff.id}>
                                 <div className="demo-option-label-item">
-                                  {staff.userDetail.firstName} {staff.userDetail.lastName} ({staff.username})
+                                  {staff.userDetail.firstName}{" "}
+                                  {staff.userDetail.lastName} ({staff.username})
                                 </div>
                               </Option>
                             )
                           })}
-
                         </Select>
                       </Form.Item>
-                      <Form.Item name={['description']} label="Description">
+                      <Form.Item name={["description"]} label="Description">
                         <Input.TextArea rows={6} />
                       </Form.Item>
-                      {oldMedia?.map((med) => {
+                      {oldMedia?.map(med => {
                         return (
                           <>
-                            <a key={"link" + med.id} href={med.link}><Tag>{med.title}</Tag></a><a key={"icon" + med.id} onClick={() => handleClose(med)}><DeleteTwoTone twoToneColor={"red"} /></a>
+                            <a key={"link" + med.id} href={med.link}>
+                              <Tag>{med.title}</Tag>
+                            </a>
+                            <a
+                              key={"icon" + med.id}
+                              onClick={() => handleClose(med)}
+                            >
+                              <DeleteTwoTone twoToneColor={"red"} />
+                            </a>
                             <br></br>
                             <br></br>
                           </>
@@ -340,86 +385,117 @@ const TasksOverview = () => {
               </Row>
               <br></br>
               <Row>
-                <Col lg="8">
+                <Col lg="8" style={{ maxHeight: 400, overflow: "scroll" }}>
                   <Timeline>
-                    {project?.histories.map((history) => {
+                    {project?.histories.map(history => {
                       return (
-                        <Timeline.Item key={history.id}>{history.message} at {<Moment format="HH:mm DD/MM/YYYY">{history.createdTime}</Moment>}.</Timeline.Item>
+                        <Timeline.Item key={history.id}>
+                          {history.message} at{" "}
+                          {
+                            <Moment format="HH:mm DD/MM/YYYY">
+                              {history.createdTime}
+                            </Moment>
+                          }
+                          .
+                        </Timeline.Item>
                       )
                     })}
-
                   </Timeline>
                 </Col>
-
               </Row>
             </Col>
 
             <Col lg="4">
               <Row>
-
-                <Card
-                  title="Comments"
-                >
+                <Card title="Comments">
                   <List
                     itemLayout="horizontal"
                     dataSource={project?.comments}
-                    renderItem={(item) => (
+                    renderItem={item => (
                       <>
                         <List.Item>
                           <List.Item.Meta
-                            avatar={(item.createdBy.userDetail.avatar !== "") ? <Avatar src={item.createdBy.userDetail.avatar} /> : <div className="avatar-xs">
-                              <span className="avatar-title rounded-circle bg-info text-white font-size-16">
-                                {item.createdBy.userDetail.lastName.charAt(0)}
-                              </span>
-                            </div>}
+                            avatar={
+                              item.createdBy.userDetail.avatar !== "" ? (
+                                <Avatar
+                                  src={item.createdBy.userDetail.avatar}
+                                />
+                              ) : (
+                                <div className="avatar-xs">
+                                  <span className="avatar-title rounded-circle bg-info text-white font-size-16">
+                                    {item.createdBy.userDetail.lastName.charAt(
+                                      0
+                                    )}
+                                  </span>
+                                </div>
+                              )
+                            }
                             title={
                               <>
                                 <Row>
                                   <Col md="6">
-                                    <a>{item.createdBy.userDetail.firstName} {item.createdBy.userDetail.lastName}</a>
+                                    <a>
+                                      {item.createdBy.userDetail.firstName}{" "}
+                                      {item.createdBy.userDetail.lastName}
+                                    </a>
                                   </Col>
 
                                   <Col md="6">
-                                    <Moment style={{ fontWeight: "300", fontSize: "12px" }} format="HH:mm DD/MM/YYYY">{item.createdTime}</Moment>
-                                    {" "}
-                                    {item.createdBy.id === accountId ? <DeleteTwoTone onClick={() => { deleteComment(item) }} style={{ backgroundColor: "white" }} twoToneColor="red" /> : null}
+                                    <Moment
+                                      style={{
+                                        fontWeight: "300",
+                                        fontSize: "12px",
+                                      }}
+                                      format="HH:mm DD/MM/YYYY"
+                                    >
+                                      {item.createdTime}
+                                    </Moment>{" "}
+                                    {item.createdBy.id === accountId ? (
+                                      <DeleteTwoTone
+                                        onClick={() => {
+                                          deleteComment(item)
+                                        }}
+                                        style={{ backgroundColor: "white" }}
+                                        twoToneColor="red"
+                                      />
+                                    ) : null}
                                   </Col>
                                 </Row>
                               </>
                             }
                             description={item.content}
                           />
-
                         </List.Item>
-
                       </>
                     )}
                   />
                   <br />
-                  <Form form={form2} initialValues={{ "chat": "ssd" }}>
+                  <Form form={form2} initialValues={{ chat: "ssd" }}>
                     <Form.Item name="chat">
                       <Input.Group compact>
-                        <Input onChange={onChangeComment} style={{ width: 'calc(100% - 100px)', }} />
-                        <Button onClick={doComment} type="primary">Send</Button>
+                        <Input
+                          onChange={onChangeComment}
+                          style={{ width: "calc(100% - 100px)" }}
+                        />
+                        <Button onClick={doComment} type="primary">
+                          Send
+                        </Button>
                       </Input.Group>
                     </Form.Item>
                   </Form>
-
                 </Card>
-
               </Row>
             </Col>
           </Row>
           <br />
-
         </Container>
       </div>
-    </React.Fragment >
-  );
-};
+    </React.Fragment>
+  )
+}
 
 TasksOverview.propTypes = {
   match: PropTypes.object,
-};
+}
 
-export default withRouter(TasksOverview);
+export default withRouter(TasksOverview)
