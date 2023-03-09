@@ -7,7 +7,7 @@ import { connect, useSelector, useDispatch } from "react-redux"
 import classnames from "classnames"
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
-import { Button, Table, Space, Modal, Form, Input, Select, } from "antd"
+import { Button, Table, Space, Modal, Form, Input, Select } from "antd"
 import {
   MinusCircleOutlined,
   CalendarTwoTone,
@@ -17,14 +17,28 @@ import {
   ProfileTwoTone,
 } from "@ant-design/icons"
 import { Container } from "reactstrap"
-import { getTeams, getStaffs, updateStaffs, deleteStaffs, addTeams } from "store/actions"
+import {
+  getTeams,
+  getStaffs,
+  updateStaffs,
+  deleteStaffs,
+  addTeams,
+} from "store/actions"
 
 import { Card, CardBody, Col, Row } from "reactstrap"
 
 const { confirm } = Modal
 
 const StaffManager = props => {
-  const { staffs, teams, onGetStaffs, onGetTeams, onUpdateStaff, onDeleteStaff, onAddTeam } = props
+  const {
+    staffs,
+    teams,
+    onGetStaffs,
+    onGetTeams,
+    onUpdateStaff,
+    onDeleteStaff,
+    onAddTeam,
+  } = props
 
   useEffect(() => {
     onGetStaffs()
@@ -58,9 +72,9 @@ const StaffManager = props => {
       workingType: value.job.workingTimeType,
       // workFrom: workFrom,
       // workTo: workTo,
-      id: value.id
+      id: value.id,
     }
-    onUpdateStaff(data);
+    onUpdateStaff(data)
   }
 
   const showDeleteConfirm = staff => {
@@ -73,7 +87,7 @@ const StaffManager = props => {
       onOk() {
         onDeleteStaff(staff.id)
       },
-      onCancel() { },
+      onCancel() {},
     })
   }
 
@@ -150,9 +164,7 @@ const StaffManager = props => {
           <a href={`contacts-profile/${record.id}`}>
             <ProfileTwoTone />
           </a>
-          <a
-            href={`calendar/${record.id}`}
-          >
+          <a href={`calendar/${record.id}`}>
             <CalendarTwoTone />
           </a>
           <a
@@ -177,18 +189,15 @@ const StaffManager = props => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-        >
+        <Form form={form} name="control-hooks" onFinish={onFinish}>
           <Form.Item name={["job", "team", "id"]} label="Team">
             <Select allowClear>
-
               {teams.map(team => {
                 return (
-                  <Select.Option key={team.id} value={team.id}>{team.name}</Select.Option>
-                );
+                  <Select.Option key={team.id} value={team.id}>
+                    {team.name}
+                  </Select.Option>
+                )
               })}
             </Select>
           </Form.Item>
@@ -220,31 +229,50 @@ const StaffManager = props => {
               <Select.Option value="MINIJOB">Minijob</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item noStyle shouldUpdate={(prev, cur) => prev?.job?.workingTimeType !== cur?.job?.workingTimeType}>
-            {({ getFieldValue }) => getFieldValue(["job", "workingTimeType"]) !== "FULLTIME" && (
-              <>
-                <Form.Item name={["job", "minHours"]} label="Min Hours (in month)">
-                  <Input />
-                </Form.Item>
-
-              </>
-            )}
+          <Form.Item
+            noStyle
+            shouldUpdate={(prev, cur) =>
+              prev?.job?.workingTimeType !== cur?.job?.workingTimeType
+            }
+          >
+            {({ getFieldValue }) =>
+              getFieldValue(["job", "workingTimeType"]) !== "FULLTIME" && (
+                <>
+                  <Form.Item
+                    name={["job", "minHours"]}
+                    label="Min Hours (in month)"
+                  >
+                    <Input />
+                  </Form.Item>
+                </>
+              )
+            }
           </Form.Item>
           <Form.Item name={["job", "maxHours"]} label="Vacation days (in year)">
-              <Input />
-            </Form.Item>
-          <Form.Item name={["accountRole", "capabilities"]} label="Manage Calendar">
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={["accountRole", "capabilities"]}
+            label="Manage Calendar"
+          >
             <Select
               mode="multiple"
               allowClear
               value={() => {
-                getFieldValue(["accountRole", "capabilities"]).map(e => { e.capabilityId })
+                getFieldValue(["accountRole", "capabilities"]).map(e => {
+                  e.capabilityId
+                })
               }}
             >
               {teams.map(team => {
                 return (
-                  <Select.Option key={team.id} value={"Calendar.Team." + team.id}>{team.name}</Select.Option>
-                );
+                  <Select.Option
+                    key={team.id}
+                    value={"Calendar.Team." + team.id}
+                  >
+                    {team.name}
+                  </Select.Option>
+                )
               })}
             </Select>
           </Form.Item>
@@ -253,13 +281,15 @@ const StaffManager = props => {
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs title="Staff Manager" breadcrumbItem="Team" />
-            <Col lg="12" style={{ overflowX: 'scroll' }}>
-                  <a href={`/new-staff`}>
-                    <Button type="primary">Add Staff</Button>
-                  </a>
+          <Col lg="12" style={{ overflowX: "scroll" }}>
+            <Link to={`/new-staff`}>
+              <Button type="primary" style={{ marginBottom: 20 }}>
+                Add Staff
+              </Button>
+            </Link>
 
-                  <Table columns={columns} dataSource={staffs} bordered />
-            </Col>
+            <Table columns={columns} dataSource={staffs} bordered />
+          </Col>
         </Container>
       </div>
     </>
@@ -270,7 +300,7 @@ StaffManager.propTypes = { devices: PropTypes.any }
 
 const mapStateToProps = ({ Staffs, Teams }) => ({
   staffs: Staffs.staffs,
-  teams: Teams.teams
+  teams: Teams.teams,
 })
 
 const mapDispatchToProps = dispatch => ({
