@@ -15,7 +15,7 @@ import {
   TabContent,
   TabPane,
   Button,
-  Spinner
+  Spinner,
 } from "reactstrap"
 import Select from "react-select"
 import classnames from "classnames"
@@ -35,8 +35,8 @@ import {
   resetStaff as onResetStaff,
 } from "store/admin/staff/actions"
 
-import { post } from "../../../helpers/api_helper";
-import { GET_STAFFS } from "../../../helpers/url_helper";
+import { post } from "../../../helpers/api_helper"
+import { GET_STAFFS } from "../../../helpers/url_helper"
 const NewStaff = props => {
   //meta title
   document.title = "Form Wizard | Skote - React Admin & Dashboard Template"
@@ -126,19 +126,24 @@ const NewStaff = props => {
     console.log(data)
     setIsLoading(true)
     setIsSubmit(true)
-    post(`${GET_STAFFS}`, data).then((res) => {
-      console.log(res);
-      if(res.code != 0 ){
+    post(`${GET_STAFFS}`, data)
+      .then(res => {
+        console.log(res)
+        if (res.code != 0) {
+          setIsSuccess(false)
+          setMessage(res.message)
+        } else {
+          setIsSuccess(true)
+          setMessage("Success")
+        }
+      })
+      .catch(error => {
         setIsSuccess(false)
-        setMessage(res.message);
-      }else{
-        setIsSuccess(true)
-        setMessage("Success");
-      }
-    }).catch((error)=>{
-      setIsSuccess(false)
-      setMessage("something wrong!")
-    }).finally(()=>{setIsLoading(false)});
+        setMessage("something wrong!")
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   function toggleNormal(e) {
@@ -151,6 +156,66 @@ const NewStaff = props => {
       })
     }
   }
+
+  const infoList = [
+    {
+      key: "firstName",
+      value: firstName,
+      name: "First Name",
+    },
+    {
+      key: "lastName",
+      value: lastName,
+      name: "Last Name",
+    },
+    {
+      key: "phone",
+      value: phone,
+      name: "Phone",
+    },
+    {
+      key: "email",
+      value: email,
+      name: "Email",
+    },
+    {
+      key: "selectedRole",
+      value: selectedRole,
+      name: "Role",
+    },
+    {
+      key: "selectedMulti",
+      value: selectedMulti,
+      name: "Manager calendar of teams",
+      render: selectedMulti =>
+        selectedMulti?.map(item => item?.name).join(", "),
+    },
+    {
+      key: "team",
+      value: selectedTeam?.name,
+      name: "Team",
+    },
+    {
+      key: "jobName",
+      value: jobName,
+      name: "Job name",
+    },
+    {
+      key: "selectedWorkingType",
+      value: selectedWorkingType,
+      name: "Working Type",
+    },
+    {
+      key: "minHours",
+      value: minHours,
+      name: "Min hours",
+    },
+    {
+      key: "maxHours",
+      value: maxHours,
+      name: "Vacation in year (days)",
+    },
+  ]
 
   return (
     <React.Fragment>
@@ -211,7 +276,7 @@ const NewStaff = props => {
                               (classnames({
                                 active: activeTabVartical === 3,
                               }),
-                                "done")
+                              "done")
                             }
                             onClick={() => {
                               toggleTabVertical(3)
@@ -231,7 +296,7 @@ const NewStaff = props => {
                               (classnames({
                                 active: activeTabVartical === 4,
                               }),
-                                "done")
+                              "done")
                             }
                             onClick={() => {
                               toggleTabVertical(4)
@@ -432,7 +497,9 @@ const NewStaff = props => {
 
                                 <Col lg="6">
                                   <FormGroup className="mb-3">
-                                    <Label htmlFor="maxHours">Vacation in year (days)</Label>
+                                    <Label htmlFor="maxHours">
+                                      Vacation in year (days)
+                                    </Label>
                                     <Input
                                       type="text"
                                       className="form-control"
@@ -453,34 +520,58 @@ const NewStaff = props => {
                             <Col lg="6">
                               <div className="text-center">
                                 <div className="mb-4">
-                                  {isSubmit ? (isSuccess && isSubmit ? (
-                                    <i className="mdi mdi-check-circle-outline text-success display-4" />
-                                  ) : (
-                                    <i className="mdi mdi-check-circle-outline text-danger display-4" />
-                                  )) : null}
-
+                                  {isSubmit ? (
+                                    isSuccess && isSubmit ? (
+                                      <i className="mdi mdi-check-circle-outline text-success display-4" />
+                                    ) : (
+                                      <i className="mdi mdi-check-circle-outline text-danger display-4" />
+                                    )
+                                  ) : null}
                                 </div>
                                 <div>
                                   <h5>Add a new Employee</h5>
-                                  <p className="text-info">
-                                    {message}
-                                  </p>
-                                  {isSuccess ? <Button
-                                    onClick={()=>window.location.reload()}
-                                    className="btn-success"
-                                  >
-                                    Add more
-                                  </Button> : <Button
-                                    onClick={handleClick}
-                                    className="btn-success"
-                                  >
-                                    Confirm
-                                    {" "}
-                                    {isLoading ? <Spinner size="sm">
-                                      Loading...
-                                    </Spinner> : null}
-                                  </Button>}
-
+                                  <p className="text-info">{message}</p>
+                                  {isSuccess ? (
+                                    <Button
+                                      onClick={() => window.location.reload()}
+                                      className="btn-success"
+                                    >
+                                      Add more
+                                    </Button>
+                                  ) : (
+                                    <>
+                                      {infoList.map(item => {
+                                        return (
+                                          <div
+                                            key={item.key}
+                                            style={{ textAlign: "left" }}
+                                          >
+                                            <Row>
+                                              <Col lg="6">
+                                                <b>{item.name}:</b>
+                                              </Col>
+                                              <Col lg="6">
+                                                {item.render
+                                                  ? item.render(item.value)
+                                                  : item.value}
+                                              </Col>
+                                            </Row>
+                                          </div>
+                                        )
+                                      })}
+                                      <Button
+                                        onClick={handleClick}
+                                        className="btn-success"
+                                      >
+                                        Confirm{" "}
+                                        {isLoading ? (
+                                          <Spinner size="sm">
+                                            Loading...
+                                          </Spinner>
+                                        ) : null}
+                                      </Button>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             </Col>
