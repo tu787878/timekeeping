@@ -135,6 +135,14 @@ const adminContent = [
     contextId: "Staff Manager",
     children: [
       {
+        path: "/location-manager",
+        id: "Location",
+        allowedPermissions: ["edit"],
+        className: "",
+        contextId: "Location",
+        children: [],
+      },
+      {
         path: "/team-manager",
         id: "Team",
         allowedPermissions: ["edit"],
@@ -175,9 +183,17 @@ const adminContent = [
     path: "/#",
     id: "CalendarAdmin",
     allowedPermissions: ["view"],
-    className: "bx bx-calendar",
-    contextId: "Calendar",
+    className: "bx bx-cog",
+    contextId: "Settings",
     children: [
+      {
+        path: "/edit-general",
+        id: "Holiday",
+        allowedPermissions: ["edit"],
+        className: "",
+        contextId: "General",
+        children: [],
+      },
       {
         path: "/edit-holiday",
         id: "Holiday",
@@ -188,6 +204,8 @@ const adminContent = [
       },
     ],
   },
+
+  
 ]
 
 export { authProtectedContent, adminContent }

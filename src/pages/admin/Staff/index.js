@@ -5,6 +5,10 @@ import { Link, withRouter } from "react-router-dom"
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
 import classnames from "classnames"
+
+import { get} from "../../../helpers/api_helper"
+import { GET_LOCATIONS } from "../../../helpers/url_helper"
+
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import { Button, Table, Space, Modal, Form, Input, Select } from "antd"
@@ -51,11 +55,33 @@ const StaffManager = props => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editTeam, setEditTeam] = useState(null)
   const [isEdit, setIsEditTeam] = useState(true)
+  const [locations, setLocations] = useState([])
   const [form] = Form.useForm()
 
   useEffect(() => {
     form.setFieldsValue(editTeam)
   }, [form, editTeam])
+
+  useEffect(() => {
+    getLocations()
+  }, [])
+
+  const getLocations = () => {
+    get(`${GET_LOCATIONS}`)
+      .then(res => {
+        console.log(res);
+        if(res){
+          setLocations(res.data);
+          console.log(res.data);
+        }
+        else{
+          setLocation([]);
+        }
+      })
+      .catch(error => {
+        setLocation([]);
+      })
+  }
 
   const onFinish = value => {
     let data = {
@@ -67,6 +93,7 @@ const StaffManager = props => {
       capabilities: value.accountRole.capabilities,
       jobName: value.job.name,
       team: value.job.team.id,
+      location: value.location.id,
       minHours: value.job.minHours,
       maxHours: value.job.maxHours,
       workingType: value.job.workingTimeType,
@@ -114,6 +141,12 @@ const StaffManager = props => {
   }
 
   const columns = [
+    {
+      title: "Location",
+      dataIndex: ["location", "name"],
+      key: "locationName",
+      sorter: (a, b) => a.locationName?.localeCompare(b.locationName),
+    },
     {
       title: "Team",
       dataIndex: ["job", "team", "name"],
@@ -190,6 +223,17 @@ const StaffManager = props => {
         onCancel={handleCancel}
       >
         <Form form={form} name="control-hooks" onFinish={onFinish}>
+        <Form.Item name={["location", "id"]} label="Location">
+            <Select allowClear>
+              {locations.map(location => {
+                return (
+                  <Select.Option key={location.id} value={location.id}>
+                    {location.name}
+                  </Select.Option>
+                )
+              })}
+            </Select>
+          </Form.Item>
           <Form.Item name={["job", "team", "id"]} label="Team">
             <Select allowClear>
               {teams.map(team => {
@@ -280,7 +324,7 @@ const StaffManager = props => {
       </Modal>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Staff Manager" breadcrumbItem="Team" />
+          <Breadcrumbs title="Staff Manager" breadcrumbItem="Staff" />
           <Col lg="12" style={{ overflowX: "scroll" }}>
             <Link to={`/new-staff`}>
               <Button type="primary" style={{ marginBottom: 20 }}>

@@ -59,10 +59,12 @@ import EditProfile from "../pages/Contacts/ContactsProfile/edit-profile"
 
 // admin
 import TeamManager from "../pages/admin/team"
+import LocationManager from "../pages/admin/location"
 import StaffManager from "../pages/admin/Staff"
 import NewStaff from "../pages/admin/Staff/new-staff"
 import ScanDevice from "../pages/admin/scan-device/index"
-import EditHoliday from "../pages/admin/calendar/holiday"
+import EditHoliday from "../pages/admin/settings/holiday"
+import EditGeneral from "../pages/admin/settings/general"
 import SocketConfig from "../components/socket/socket"
 
 // notification
@@ -102,7 +104,7 @@ const authProtectedRoutes = [
     path: "/calendar/:id",
     component: Calendar,
     id: "Calendar",
-    allowedPermissions: [],
+    allowedPermissions: ["admin"],
     className: "bx-calendar",
     contextId: "Calendar",
   },
@@ -232,6 +234,12 @@ const authProtectedRoutes = [
 
   // admin
   {
+    path: "/location-manager",
+    component: LocationManager,
+    id: "Location",
+    allowedPermissions: ["admin"],
+  },
+  {
     path: "/team-manager",
     component: TeamManager,
     id: "Team",
@@ -255,6 +263,12 @@ const authProtectedRoutes = [
     path: "/scan-device",
     component: ScanDevice,
     id: "ScanDevice",
+    allowedPermissions: ["admin"],
+  },
+  {
+    path: "/edit-general",
+    component: EditGeneral,
+    id: "EditGeneral",
     allowedPermissions: ["admin"],
   },
   {

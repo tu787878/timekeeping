@@ -30,10 +30,6 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import { getCapabilities } from "store/actions"
 
 import { getTeams as onGetTeams } from "store/admin/team/actions"
-import {
-  newStaff as addNewStaff,
-  resetStaff as onResetStaff,
-} from "store/admin/staff/actions"
 
 import { post } from "../../../helpers/api_helper"
 import { GET_STAFFS } from "../../../helpers/url_helper"
@@ -139,7 +135,7 @@ const NewStaff = props => {
       })
       .catch(error => {
         setIsSuccess(false)
-        setMessage("something wrong!")
+        setMessage(error)
       })
       .finally(() => {
         setIsLoading(false)

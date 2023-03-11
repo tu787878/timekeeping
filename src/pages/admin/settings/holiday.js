@@ -6,18 +6,44 @@ import { Link, withRouter } from "react-router-dom"
 import { connect, useSelector, useDispatch } from "react-redux"
 import { del, get, post } from "../../../helpers/api_helper"
 import * as url from "../../../helpers/url_helper"
+import { Select } from "antd"
+
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
-import { DatePicker, Button, Form, Input, Modal, Radio, Tag } from "antd"
+import { DatePicker, Button, Form, Input, Modal, Radio, Tag, Checkbox } from "antd"
 import {
   DeleteTwoTone,
 } from "@ant-design/icons"
 import { Container } from "reactstrap"
 import dayjs from 'dayjs';
-import { Card, CardBody, Col, Row  } from "reactstrap"
+import { Card, CardBody, Col, Row, CardHeader, CardTitle } from "reactstrap"
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
+  const [locations, setLocations] = useState([])
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    getLocations()
+  }, [])
+
+  const getLocations = () => {
+    get(`${url.GET_LOCATIONS}`)
+      .then(res => {
+        console.log(res);
+        if (res) {
+          setLocations(res.data);
+          console.log(res.data);
+        }
+        else {
+          setLocations([]);
+        }
+      })
+      .catch(error => {
+        setLocations([]);
+      })
+  }
+
+
   return (
     <Modal
       open={open}
@@ -51,10 +77,24 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="date" format={"DD/MM/YYYY"} label="Date">
-        <DatePicker />
-
+        <Form.Item name={["location", "id"]} label="Location">
+          <Select allowClear mode="multiple">
+            {locations.map(location => {
+              return (
+                <Select.Option key={location.id} value={location.id}>
+                  {location.name}
+                </Select.Option>
+              )
+            })}
+          </Select>
         </Form.Item>
+        <Form.Item name="date" format={"DD/MM/YYYY"} label="Date">
+          <DatePicker />
+        </Form.Item>
+        <Form.Item name="isEveryYear" valuePropName="checked">
+          <Checkbox>Every Year</Checkbox>
+        </Form.Item>
+
       </Form>
     </Modal>
   );
@@ -71,7 +111,9 @@ const EditHoliday = props => {
     let holiday = {
       date: values.date.format("DD/MM/YYYY"),
       name: values.name,
-      year: year.format("YYYY")
+      year: year.format("YYYY"),
+      locations: values.location.id,
+      isEveryYear: values.isEveryYear ? 1 : 0
     }
     console.log(holiday);
     post(url.BASE + "/holiday", holiday
@@ -85,12 +127,23 @@ const EditHoliday = props => {
 
   const onGetHoliday = () => {
     get(url.BASE + "/holiday?year=" + year.format("YYYY"))
-    .then(data => {
-      console.log(data);
-      setHolidays(data.data)
-    }).catch(err => {
-      console.log(err);
-    })
+      .then(data => {
+        console.log(data);
+        // TODO: convert to map by location!!
+        let abc = new Map();
+        data.data.forEach(el => {
+          let key = el.location.name;
+          if (!abc.has(key)) {
+            abc.set(key, new Array());
+          }
+          abc.get(key).push(el);
+        });
+        console.log(abc);
+
+        setHolidays(abc)
+      }).catch(err => {
+        console.log(err);
+      })
   }
 
   const onDeleteHoliday = (id) => {
@@ -142,22 +195,39 @@ const EditHoliday = props => {
               </Card>
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <Card>
-                <CardBody>
-                  {holidays.map((holiday)=>{
-                    return (
-                      <>
-                        <Tag color="magenta">{holiday.date}</Tag> <Tag color="blue">{holiday.name}</Tag> <DeleteTwoTone onClick={() => onDeleteHoliday(holiday.id)} style={{fontSize:"15px"}} twoToneColor={"red"} />
-                        <br/><br/>
-                      </>
-                    );
-                  })}
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          {
+          Array.from(holidays.entries()).map((entry) => {
+            const [key, value] = entry;
+            console.log(key);
+            return (
+              <>
+              <Row>
+                <Col>
+                  <Card>
+                  {/* <CardHeader>
+                    {key}
+                  </CardHeader> */}
+                    <CardBody>
+                    <CardTitle tag="h5">
+                      {key}
+                    </CardTitle>
+                      {value.map((holiday) => {
+                        return (
+                          <>
+                            <Tag color="magenta">{holiday.date}</Tag> <Tag color="blue">{holiday.name}</Tag>  <DeleteTwoTone onClick={() => onDeleteHoliday(holiday.id)} style={{ fontSize: "15px" }} twoToneColor={"red"} />
+                            <br /><br />
+                          </>
+                        );
+                      })}
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              </>
+            )
+          })}
+
+
         </Container>
       </div>
     </>

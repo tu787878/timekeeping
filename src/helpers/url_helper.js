@@ -107,6 +107,9 @@ export const DELETE_PROJECT = "/delete/project"
 export const GET_TASKS = process.env.REACT_APP_API_HOST + "/task"
 
 //admin
+export const GET_LOCATIONS = process.env.REACT_APP_API_HOST + "/location"
+
+
 export const GET_TEAMS = process.env.REACT_APP_API_HOST + "/team"
 export const UPDATE_TEAMS = process.env.REACT_APP_API_HOST + "/team"
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
@@ -25,7 +25,8 @@ import slack from "../../assets/images/brands/slack.png";
 
 import logo from "../../assets/images/logo.svg";
 import logoLightSvg from "../../assets/images/logo-light.svg";
-
+import { get } from "../../helpers/api_helper"
+import * as url from "../../helpers/url_helper"
 //i18n
 import { withTranslation } from "react-i18next";
 
@@ -40,6 +41,23 @@ const Header = props => {
   const [search, setsearch] = useState(false);
   const [megaMenu, setmegaMenu] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
+  const [notiText, setnotiText] = useState();
+  const [showNoti, setShowNoti] = useState(false);
+
+  useEffect(() => {
+    onGetHoliday()
+  }, [])
+
+  const onGetHoliday = () => {
+    get(url.BASE + "/general-setting?key=notifyText,showNotify")
+      .then(data => {
+        console.log(data.data);
+        setnotiText(data.data.notifyText.settingValue)
+        setShowNoti(data.data.showNotify.settingValue === "true" ? true : false)
+      }).catch(err => {
+        console.log(err);
+      })
+  }
 
   function toggleFullscreen() {
     if (
@@ -81,7 +99,7 @@ const Header = props => {
   return (
     <React.Fragment>
       <header id="page-topbar">
-        <div className="navbar-header"> 
+        <div className="navbar-header">
           <div className="d-flex">
 
             <div className="navbar-brand-box d-lg-none d-md-block">
@@ -123,19 +141,21 @@ const Header = props => {
           </div>
           {console.log(window.innerWidth)}
           {window.innerWidth > 600 ? <div className="d-flex" style={{ width: "80%" }}>
-            <Alert
+            {showNoti ? <Alert
+
               banner
               message={
                 <>
                   <Marquee pauseOnHover gradient={false} speed="40">
-                    <span>Server will be unavailable from 20:00 to 21:00 on every Sunday as the IT team will be performing scheduled maintenance at this time.</span>
+                    <span>{notiText}</span>
                     {/* <span>Notifications ...</span> */}
                   </Marquee>
                 </>
               }
-            />
-          </div>: null }
-         
+            /> : null}
+
+          </div> : null}
+
           <div className="d-flex">
             <LanguageDropdown />
 
