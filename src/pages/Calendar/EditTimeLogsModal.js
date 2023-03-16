@@ -97,9 +97,9 @@ const EditTimeLogModal = ({
                             <Option key="VACATION" value="VACATION">
                               VACATION
                             </Option>
-                            <Option key="OTHERS" value="OTHERS">
+                            {/* <Option key="OTHERS" value="OTHERS">
                               OTHERS
-                            </Option>
+                            </Option> */}
                           </Select>
                         </Form.Item>
                       </Col>

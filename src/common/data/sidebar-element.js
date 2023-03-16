@@ -34,7 +34,7 @@ const authProtectedContent = [
         path: "/calendar-admin-request",
         id: "CalendarAdminRequest",
         contextId: "CalendarAdminRequest",
-        allowedPermissions: ["view"],
+        allowedPermissions: ["admin"],
         className: "",
         children: [],
       },

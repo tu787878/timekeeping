@@ -34,8 +34,8 @@ const EditGeneral = props => {
     const [imageUrl, setImageUrl] = useState();
     const [file, setFile] = useState(null);
     const [data, setData] = useState(null);
-    const [checkInColor, setCheckInColor] = useState();
-    const [checkOutColor, setCheckOutColor] = useState();
+    const [checkInColor, setCheckInColor] = useState("rgb(255,0,0)");
+    const [checkOutColor, setCheckOutColor] = useState("rgb(255,0,0)");
     const [showNoti, setShowNoti] = useState(true);
     const [form] = Form.useForm()
 

@@ -49,7 +49,7 @@ const Authmiddleware = ({
 
         return (
           <Redirect
-            to={{ pathname: "/permission-denied", state: { from: props.location } }}
+            to={{ pathname: "/login", state: { from: props.location } }}
           />
         )
       }

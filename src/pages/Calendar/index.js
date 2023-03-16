@@ -20,7 +20,81 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
 import { useParams } from "react-router-dom"
-import { Avatar, DatePicker } from "antd"
+import { Avatar, DatePicker, Collapse, Divider, Table,Tag, Space } from "antd"
+const { Panel } = Collapse;
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+  },
+  {
+    title: 'Tags',
+    key: 'tags',
+    dataIndex: 'tags',
+    render: (_, { tags }) => (
+      <>
+        {tags.map((tag) => {
+          let color = tag.length > 5 ? 'geekblue' : 'green';
+          if (tag === 'loser') {
+            color = 'volcano';
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
+    ),
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Invite {record.name}</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+];
+
 const Calender = () => {
   //meta title
   document.title = "Full Calendar | Skote - React Admin & Dashboard Template"
@@ -33,14 +107,14 @@ const Calender = () => {
   const onGetVacation = id => {
     get(
       url.BASE +
-        "/account/" +
-        id +
-        "/total-vacation?month=" +
-        month.format("DD/MM/YYYY")
+      "/account/" +
+      id +
+      "/total-vacation?month=" +
+      month.format("DD/MM/YYYY")
     )
       .then(data => {
         console.log(data)
-        setVacation(data.data / 60 / 8)
+        setVacation(data.data)
       })
       .catch(err => {
         console.log(err)
@@ -112,9 +186,16 @@ const Calender = () => {
                         {user?.userDetail?.firstName}{" "}
                         {user?.userDetail?.lastName}
                       </h5>
-                      <p className="text-muted mb-0 text-truncate">
-                        {user?.job?.name}
-                      </p>
+
+                      <Collapse size="small" bordered={false}>
+                        <Panel header="Informations" key="1">
+                          <p className="mb-0 text-truncate">
+                            Job: {user?.job?.name}
+                          </p>
+                          <p className="mb-0 text-truncate">Type: {user?.job?.workingTimeType}</p>
+                          <p className="mb-0 text-truncate">Vacation: {vacation / 60 / 8}/{user?.job?.maxHours} days ({vacation / 60}h/{user?.job?.maxHours * 8}{"h"})</p>
+                        </Panel>
+                      </Collapse>
                     </Col>
                     <Col>
                       <DatePicker
@@ -140,7 +221,7 @@ const Calender = () => {
                       </Dropdown> */}
                     </Col>
                   </Row>
-                  <Row
+                  {/* <Row
                     style={{ marginTop: 15 }}
                     className="d-flex justify-content-end"
                   >
@@ -175,7 +256,7 @@ const Calender = () => {
                         </div>
                       </div>
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row>
                     <Col>
                       <TimeLogsTable id={id} month={month} />
