@@ -20,49 +20,50 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
 import { useParams } from "react-router-dom"
-import { Avatar, DatePicker, Collapse, Divider, Table,Tag, Space } from "antd"
-const { Panel } = Collapse;
+import { Avatar, DatePicker, Collapse, Divider, Table, Tag, Space } from "antd"
+import LeaveDayModal from "./leave-day-modal"
+const { Panel } = Collapse
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: text => <a>{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: "Age",
+    dataIndex: "age",
+    key: "age",
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
+    title: "Tags",
+    key: "tags",
+    dataIndex: "tags",
     render: (_, { tags }) => (
       <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
+        {tags.map(tag => {
+          let color = tag.length > 5 ? "geekblue" : "green"
+          if (tag === "loser") {
+            color = "volcano"
           }
           return (
             <Tag color={color} key={tag}>
               {tag.toUpperCase()}
             </Tag>
-          );
+          )
         })}
       </>
     ),
   },
   {
-    title: 'Action',
-    key: 'action',
+    title: "Action",
+    key: "action",
     render: (_, record) => (
       <Space size="middle">
         <a>Invite {record.name}</a>
@@ -70,30 +71,30 @@ const columns = [
       </Space>
     ),
   },
-];
+]
 const data = [
   {
-    key: '1',
-    name: 'John Brown',
+    key: "1",
+    name: "John Brown",
     age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    address: "New York No. 1 Lake Park",
+    tags: ["nice", "developer"],
   },
   {
-    key: '2',
-    name: 'Jim Green',
+    key: "2",
+    name: "Jim Green",
     age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    address: "London No. 1 Lake Park",
+    tags: ["loser"],
   },
   {
-    key: '3',
-    name: 'Joe Black',
+    key: "3",
+    name: "Joe Black",
     age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    address: "Sydney No. 1 Lake Park",
+    tags: ["cool", "teacher"],
   },
-];
+]
 
 const Calender = () => {
   //meta title
@@ -107,10 +108,10 @@ const Calender = () => {
   const onGetVacation = id => {
     get(
       url.BASE +
-      "/account/" +
-      id +
-      "/total-vacation?month=" +
-      month.format("DD/MM/YYYY")
+        "/account/" +
+        id +
+        "/total-vacation?month=" +
+        month.format("DD/MM/YYYY")
     )
       .then(data => {
         console.log(data)
@@ -192,12 +193,23 @@ const Calender = () => {
                           <p className="mb-0 text-truncate">
                             Job: {user?.job?.name}
                           </p>
-                          <p className="mb-0 text-truncate">Type: {user?.job?.workingTimeType}</p>
-                          <p className="mb-0 text-truncate">Vacation: {vacation / 60 / 8}/{user?.job?.maxHours} days ({vacation / 60}h/{user?.job?.maxHours * 8}{"h"})</p>
+                          <p className="mb-0 text-truncate">
+                            Type: {user?.job?.workingTimeType}
+                          </p>
+                          <p className="mb-0 text-truncate">
+                            Vacation: {vacation / 60 / 8}/{user?.job?.maxHours}{" "}
+                            days ({vacation / 60}h/{user?.job?.maxHours * 8}
+                            {"h"})
+                          </p>
                         </Panel>
                       </Collapse>
                     </Col>
+                    <Col></Col>
+                    <Col></Col>
                     <Col>
+                      <LeaveDayModal />
+                    </Col>
+                    <Col className="d-flex justify-content-end">
                       <DatePicker
                         onChange={onChange}
                         defaultValue={dayjs}
@@ -205,20 +217,6 @@ const Calender = () => {
                         picker="month"
                         format={"MM/YYYY"}
                       />
-                    </Col>
-                    <Col className="d-flex justify-content-end">
-                      {/* <Dropdown
-                        direction="right"
-                        className="btn-group dropend"
-                      >
-                        <DropdownToggle className="btn btn-danger" caret>
-                          Exportieren <i className="mdi mdi-chevron-right" />
-                        </DropdownToggle>
-                        <DropdownMenu data-popper-placement="right-start">
-                          <DropdownItem>PDF exportieren</DropdownItem>
-                          <DropdownItem>Excel exportieren</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown> */}
                     </Col>
                   </Row>
                   {/* <Row
