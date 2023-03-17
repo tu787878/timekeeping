@@ -11,7 +11,20 @@ import { GET_LOCATIONS, GET_STAFFS } from "../../../helpers/url_helper"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
-import { Button, Table, Space, Modal, Form, Input, Select, Typography, TimePicker, InputNumber } from "antd"
+import {
+  Button,
+  Table,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Select,
+  Typography,
+  TimePicker,
+  InputNumber,
+  Col,
+  Row,
+} from "antd"
 import {
   MinusCircleOutlined,
   CalendarTwoTone,
@@ -19,7 +32,7 @@ import {
   DeleteTwoTone,
   EditTwoTone,
   ProfileTwoTone,
-  PlusOutlined
+  PlusOutlined,
 } from "@ant-design/icons"
 import { Container } from "reactstrap"
 import {
@@ -30,7 +43,7 @@ import {
   addTeams,
 } from "store/actions"
 const { Option } = Select
-import { Card, CardBody, Col, Row } from "reactstrap"
+import { Card, CardBody } from "reactstrap"
 
 const { confirm } = Modal
 
@@ -59,7 +72,7 @@ const StaffManager = props => {
   const [locations, setLocations] = useState([])
   const [form] = Form.useForm()
 
-  const [workingTimeShouldRemove, setWorkingTimeShouldRemove] = useState([]);
+  const [workingTimeShouldRemove, setWorkingTimeShouldRemove] = useState([])
 
   useEffect(() => {
     form.setFieldsValue(editTeam)
@@ -72,22 +85,24 @@ const StaffManager = props => {
   const getLocations = () => {
     get(`${GET_LOCATIONS}`)
       .then(res => {
-        console.log(res);
+        console.log(res)
         if (res) {
-          setLocations(res.data);
-          console.log(res.data);
-        }
-        else {
-          setLocation([]);
+          setLocations(res.data)
+          console.log(res.data)
+        } else {
+          setLocation([])
         }
       })
       .catch(error => {
-        setLocation([]);
+        setLocation([])
       })
   }
 
-  const addToRemove = (wt) => {
-    setWorkingTimeShouldRemove(workingTimeShouldRemove => [...workingTimeShouldRemove, wt])
+  const addToRemove = wt => {
+    setWorkingTimeShouldRemove(workingTimeShouldRemove => [
+      ...workingTimeShouldRemove,
+      wt,
+    ])
   }
 
   const onFinish = value => {
@@ -97,7 +112,7 @@ const StaffManager = props => {
         dayOfWeek: wt.dayOfWeek,
         timeFrom: wt.timeFrom.format("HH:mm"),
         timeTo: wt.timeTo.format("HH:mm"),
-        id: wt.id
+        id: wt.id,
       }
     })
     value.workingTimes = formatTimeLogs
@@ -106,14 +121,13 @@ const StaffManager = props => {
     workingTimeShouldRemove.forEach(wt => {
       del(`${GET_STAFFS}/workingTime/${wt.id}`)
         .then(res => {
-          console.log(res);
-
+          console.log(res)
         })
         .catch(error => {
-          console.log(error);
+          console.log(error)
         })
     })
-    console.log(value);
+    console.log(value)
     let data = {
       firstName: value.userDetail.firstName,
       lastName: value.userDetail.lastName,
@@ -130,12 +144,10 @@ const StaffManager = props => {
       // workFrom: workFrom,
       // workTo: workTo,
       id: value.id,
-      workingTimes: value.workingTimes
+      workingTimes: value.workingTimes,
     }
     setWorkingTimeShouldRemove([])
     onUpdateStaff(data)
-
-
   }
 
   const showDeleteConfirm = staff => {
@@ -148,7 +160,7 @@ const StaffManager = props => {
       onOk() {
         onDeleteStaff(staff.id)
       },
-      onCancel() { },
+      onCancel() {},
     })
   }
 
@@ -255,8 +267,16 @@ const StaffManager = props => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        width={650}
       >
-        <Form form={form} name="control-hooks" onFinish={onFinish}>
+        <Form
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          labelAlign="left"
+        >
           <Form.Item name={["location", "id"]} label="Location">
             <Select allowClear>
               {locations.map(location => {
@@ -326,21 +346,21 @@ const StaffManager = props => {
               )
             }
           </Form.Item> */}
-          <Form.List name={["workingTimes"]} >
+          <Form.List name={["workingTimes"]}>
             {(fields, { add, remove }) => (
               <>
                 {!!fields.length && (
-                  <Row align='middle'>
-                    <Col span={5} style={{ textAlign: 'center' }}>
+                  <Row align="middle">
+                    <Col span={6} style={{ textAlign: "center" }}>
                       <Typography.Text>Day Of Week</Typography.Text>
                     </Col>
-                    <Col span={5} style={{ textAlign: 'center' }}>
+                    <Col span={6} style={{ textAlign: "center" }}>
                       <Typography.Text>From</Typography.Text>
                     </Col>
-                    <Col span={5} style={{ textAlign: 'center' }}>
+                    <Col span={6} style={{ textAlign: "center" }}>
                       <Typography.Text>To</Typography.Text>
                     </Col>
-                    <Col span={2} style={{ textAlign: 'center' }} >
+                    <Col span={5} style={{ textAlign: "center" }}>
                       <Typography.Text>Breaktime (mins)</Typography.Text>
                     </Col>
                   </Row>
@@ -349,19 +369,21 @@ const StaffManager = props => {
                   <Row key={key}>
                     <Space
                       style={{
-                        display: 'flex',
+                        display: "flex",
                         marginBottom: 8,
                       }}
                       align="baseline"
                     >
-                      <Col span={5}>
-                        <Form.Item hidden={true} {...field} name={[name, 'id']}>
+                      <Col span={6}>
+                        <Form.Item hidden={true} {...field} name={[name, "id"]}>
                           <Input />
                         </Form.Item>
-                        <Form.Item {...field} name={[name, 'dayOfWeek']}>
-                          <Select placeholder="Select" style={{
-                            width: 120,
-                          }}
+                        <Form.Item {...field} name={[name, "dayOfWeek"]}>
+                          <Select
+                            placeholder="Select"
+                            style={{
+                              width: 140,
+                            }}
                           >
                             <Option value={1} label="Monday">
                               Monday
@@ -390,36 +412,58 @@ const StaffManager = props => {
                           </Select>
                         </Form.Item>
                       </Col>
-                      <Col span={5}>
-                        <Form.Item {...field} name={[name, 'timeFrom']} >
-                          <TimePicker format="HH:mm" />
+                      <Col span={6}>
+                        <Form.Item {...field} name={[name, "timeFrom"]}>
+                          <TimePicker
+                            format="HH:mm"
+                            style={{
+                              width: 140,
+                            }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={6}>
+                        <Form.Item {...field} name={[name, "timeTo"]}>
+                          <TimePicker
+                            format="HH:mm"
+                            style={{
+                              width: 140,
+                            }}
+                          />
                         </Form.Item>
                       </Col>
                       <Col span={5}>
-                        <Form.Item {...field} name={[name, 'timeTo']}>
-                          <TimePicker format="HH:mm" />
+                        <Form.Item {...field} name={[name, "breakTime"]}>
+                          <InputNumber
+                            min={0}
+                            style={{
+                              width: 140,
+                            }}
+                          />
                         </Form.Item>
                       </Col>
-                      <Col span={2}>
-                        <Form.Item {...field} name={[name, 'breakTime']}>
-                          <InputNumber min={0} />
+                      <Col span={1}>
+                        <Form.Item {...field}>
+                          <MinusCircleOutlined
+                            onClick={() => {
+                              addToRemove(
+                                form.getFieldsValue().workingTimes[name]
+                              )
+                              remove(name)
+                            }}
+                          />
                         </Form.Item>
                       </Col>
-                      <Col span={2}>
-                        <Form.Item {...field} >
-                          <MinusCircleOutlined onClick={() => {
-                            addToRemove(form.getFieldsValue().workingTimes[name])
-                            remove(name)
-                          }
-                          } />
-                        </Form.Item>
-                      </Col>
-
                     </Space>
                   </Row>
                 ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                <Form.Item wrapperCol={24}>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    block
+                    icon={<PlusOutlined />}
+                  >
                     Add Workingtime
                   </Button>
                 </Form.Item>
