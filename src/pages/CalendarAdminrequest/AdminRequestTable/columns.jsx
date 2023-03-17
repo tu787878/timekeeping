@@ -19,6 +19,11 @@ export const columns = (doAccept, doDenied) => [
     dataIndex: "onDate",
     key: "onDate",
     align: "center",
+    render: (_, record) => (
+      <div>
+        {record.onDate}{record.toDate !== null ? (" - " + record.toDate) : ""}
+      </div>
+    ),
   },
   {
     title: <b>TimeLogs</b>,
@@ -29,8 +34,7 @@ export const columns = (doAccept, doDenied) => [
       <div>
         {timeLogs.map(time => (
           <div key={time.id}>
-            {time.timeFrom} - {time.timeTo}{" "}
-            {time.type !== "WORK" ? <CarTwoTone /> : ""}
+            {time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : time.info} 
           </div>
         ))}
       </div>

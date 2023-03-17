@@ -1,27 +1,47 @@
 import React, { useState } from "react"
-import { Modal, Button, Form, DatePicker, Checkbox } from "antd"
+import { Modal, Button, Form, DatePicker, Radio, Input } from "antd"
 import moment from "moment"
-
+import { get, post } from "../../helpers/api_helper"
+import * as url from "../../helpers/url_helper"
 const { RangePicker } = DatePicker
-
+const { TextArea } = Input
 const LeaveDayModal = () => {
   const [open, setOpen] = useState(false)
+  const [value, setValue] = useState(1);
+  const [form] = Form.useForm()
+
+  const user = JSON.parse(localStorage.getItem("authUser"))
 
   const handleFinish = values => {
     const data = { ...values }
-    data.fromDate = values.date[0]
-    data.toDate = values.date[1]
+    data.onDate = values.date[0].format("DD/MM/YYYY")
+    if(values.date[0].format("DD/MM/YYYY") !== values.date[1].format("DD/MM/YYYY"))
+      data.toDate = values.date[1].format("DD/MM/YYYY")
     delete data.date
     // call api...
+    if(values.type== undefined) data.type=1
+
+    data.timeLogs = []
+    data.note = values.note
+
+    console.log(data);
+    setOpen(false)
+
+    post(`${url.GET_STAFFS}/${user.account.id}/calendar/request`, data).then(
+      res => {
+        form.resetFields()
+      }
+    )
   }
+
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Create leave day</Button>
+      <Button type="primary" onClick={() => setOpen(true)}>Request off day</Button>
       <Modal
-        title="Create leave day"
+        title="Request off day"
         open={open}
-        onOk={() => setOpen(false)}
+        onOk={(datas) => setOpen(false)}
         onCancel={() => setOpen(false)}
         footer={null}
       >
@@ -31,17 +51,26 @@ const LeaveDayModal = () => {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           labelAlign="left"
+          form={form}
         >
           <Form.Item
             name="date"
             label="Date"
             style={{ margin: "20px 0 10px 0" }}
+            rules={[{ required: true, message: 'Please input the date!' }]}
           >
-            <RangePicker />
+            <RangePicker format={"DD/MM/YYYY"} />
           </Form.Item>
 
-          <Form.Item name="isFullDay" label="Full Day">
-            <Checkbox />
+          <Form.Item name="type" label="Type">
+            <Radio.Group defaultValue={1}>
+              <Radio value={2}>Half day</Radio>
+              <Radio defaultChecked={true} value={1}>Full day</Radio>
+              <Radio value={0} disabled={true}>Custom</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item name="note" label="Note">
+            <TextArea />
           </Form.Item>
 
           <Form.Item>
@@ -49,7 +78,7 @@ const LeaveDayModal = () => {
               <Button type="primary" htmlType="submit">
                 Create
               </Button>
-              <Button>Cancel</Button>
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
             </div>
           </Form.Item>
         </Form>

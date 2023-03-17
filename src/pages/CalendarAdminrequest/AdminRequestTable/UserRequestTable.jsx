@@ -49,6 +49,7 @@ const AdminRequestTable = () => {
     get(`${url.EDIT_CALENDAR}/admin`, {
       query: filter
     }).then(res => {
+      console.log(res);
       setData(res.data)
       setLoading(false)
     }).catch(() => {

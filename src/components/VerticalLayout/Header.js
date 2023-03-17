@@ -45,7 +45,7 @@ const Header = props => {
   const [showNoti, setShowNoti] = useState(false);
 
   useEffect(() => {
-    onGetHoliday()
+    // onGetHoliday()
   }, [])
 
   const onGetHoliday = () => {
@@ -139,7 +139,6 @@ const Header = props => {
             </form> */}
 
           </div>
-          {console.log(window.innerWidth)}
           {window.innerWidth > 600 ? <div className="d-flex" style={{ width: "80%" }}>
             {showNoti ? <Alert
 

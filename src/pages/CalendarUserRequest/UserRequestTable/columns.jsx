@@ -17,6 +17,11 @@ export const columns = (doCancel) => [
     dataIndex: "onDate",
     key: "onDate",
     align: "center",
+    render: (_, record) => (
+      <div>
+        {record.onDate}{record.toDate !== null ? (" - " + record.toDate) : ""}
+      </div>
+    ),
   },
   {
     title: <b>TimeLogs</b>,
@@ -27,7 +32,7 @@ export const columns = (doCancel) => [
       <div>
         {
           timeLogs.map(time => (
-            <div key={time.id}>{time.timeFrom} - {time.timeTo} {time.type !== "WORK" ? <CarTwoTone /> : ""}</div>
+            <div key={time.id}>{time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : time.info} </div>
           ))
         }
       </div>
@@ -41,6 +46,12 @@ export const columns = (doCancel) => [
     render: (_,record) => (
       <Moment fromNow>{record.createdTime}</Moment>
     ),
+  },
+  {
+    title: <b>Note</b>,
+    dataIndex: "note",
+    key: "note",
+    align: "center",
   },
   {
     title: <b>Action</b>,
