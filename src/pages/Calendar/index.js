@@ -20,81 +20,41 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import profile1 from "assets/images/profile-img.png"
 import TimeLogsTable from "./TimeLogsTable"
 import { useParams } from "react-router-dom"
-import { Avatar, DatePicker, Collapse, Divider, Table, Tag, Space } from "antd"
+import { Avatar, DatePicker, Collapse, Table } from "antd"
 import LeaveDayModal from "./leave-day-modal"
 const { Panel } = Collapse
 
+const dayOfWeeks =  ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]  
+
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: text => <a>{text}</a>,
+    title: "DayOfWeek",
+    dataIndex: "dayOfWeek",
+    key: "dayOfWeek",
+    render: value => dayOfWeeks[value]
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "TimeFrom",
+    dataIndex: "timeFrom",
+    key: "timeFrom",
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "TimeTo",
+    dataIndex: "timeTo",
+    key: "timeTo",
   },
   {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? "geekblue" : "green"
-          if (tag === "loser") {
-            color = "volcano"
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          )
-        })}
-      </>
-    ),
+    title: "BreakTime",
+    dataIndex: "breakTime",
+    key: "breakTime",
   },
   {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
+    title: "Total",
+    dataIndex: "total",
+    key: "total",
+  }
 ]
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-]
+
 
 const Calender = () => {
   //meta title
@@ -171,7 +131,7 @@ const Calender = () => {
                 </div>
                 <CardBody className="pt-0">
                   <Row className="align-items-center">
-                    <Col sm="4">
+                    <Col sm="6">
                       <div className="avatar-md profile-user-wid mb-4">
                         {user?.userDetail.avatar !== "" ? (
                           <Avatar src={user?.userDetail.avatar} />
@@ -201,10 +161,10 @@ const Calender = () => {
                             days ({vacation / 60}h/{user?.job?.maxHours * 8}
                             {"h"})
                           </p>
+                          <Table columns={columns} dataSource={user?.workingTimes}/>
                         </Panel>
                       </Collapse>
                     </Col>
-                    <Col></Col>
                     <Col></Col>
                     <Col>
                       <LeaveDayModal />

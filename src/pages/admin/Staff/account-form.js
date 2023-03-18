@@ -1,10 +1,50 @@
-import React from "react"
-import { Form, Input, Row, Col } from "antd"
+import React, { useEffect, useState } from "react"
+import { Form, Input, Row, Col, Select } from "antd"
+import { get } from "../../../helpers/api_helper"
+import { GET_LOCATIONS } from "../../../helpers/url_helper"
 
 const AccountForm = () => {
+  const [locations, setLocations] = useState([])
+
+  useEffect(() => {
+    getLocations()
+  }, [])
+
+  const getLocations = () => {
+    get(`${GET_LOCATIONS}`)
+      .then(res => {
+        console.log(res)
+        if (res) {
+          setLocations(res.data)
+          console.log(res.data)
+        } else {
+          setLocation([])
+        }
+      })
+      .catch(error => {
+        setLocation([])
+      })
+  }
+
   return (
     <>
       {/* <h4>1. Account</h4> */}
+
+      <Row gutter={24}>
+        <Col span={12}>
+          <Form.Item name={"location"} label="Location">
+            <Select allowClear>
+              {locations.map(location => {
+                return (
+                  <Select.Option key={location.id} value={location.id}>
+                    {location.name}
+                  </Select.Option>
+                )
+              })}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item
