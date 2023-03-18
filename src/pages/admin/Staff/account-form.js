@@ -32,7 +32,9 @@ const AccountForm = () => {
 
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item name={"location"} label="Location">
+          <Form.Item name={"location"} label="Location" rules={[
+              { required: true, message: "Please input location!" },
+            ]}>
             <Select allowClear>
               {locations.map(location => {
                 return (
