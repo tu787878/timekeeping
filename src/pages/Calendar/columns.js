@@ -36,7 +36,7 @@ export const tableColumns = (handleOpenEditModal, id) => [
       <> 
           {timeLogs.map(time => (
             <div style={{color: time.status === "VALID" ? "black" : "red"}} key={time.id}>
-             {time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : time.info} 
+             {time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null || time.info === "")  ? (time.timeFrom + "-" + time.timeTo) : time.info} 
             </div>
           ))}
 
