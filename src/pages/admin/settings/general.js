@@ -233,7 +233,7 @@ const EditGeneral = props => {
                     <Row>
                         <Col lg="12">
                             <Button onClick={resetAllWhiteList} danger>
-                                Reset all ip whitelist 
+                                Reset whitelist! 
                             </Button>
                             <Card>
                                 
