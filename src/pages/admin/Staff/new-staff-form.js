@@ -17,11 +17,16 @@ const NewStaffForm = () => {
     setLoading(true)
     values.capabilities = []
 
-    values.workingTimes = values.workingTimes.map(w => {
-      w.timeFrom = w.timeFrom.format("HH:mm")
-      w.timeTo = w.timeTo.format("HH:mm")
-      return w;
-    })
+    if(values.workingTimes){
+      values.workingTimes = values.workingTimes.map(w => {
+        w.timeFrom = w.timeFrom.format("HH:mm")
+        w.timeTo = w.timeTo.format("HH:mm")
+        return w;
+      })
+    }else{
+      values.workingTimes =  []
+    }
+
 
 
     post(`${GET_STAFFS}`, values)
