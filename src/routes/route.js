@@ -3,9 +3,9 @@ import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
 import { get, put } from "../helpers/api_helper"
 import * as url from "../helpers/url_helper"
-
+import axios from 'axios'
 const checkPermissions = (accountRole = {}, allowedPermissions, id) => {
-  
+
   get(url.BASE + "/account/checkToken").then((data) => {
     if (accountRole.roleName === "ADMIN") return true;
     let userPermissions = accountRole?.capabilities;
@@ -22,12 +22,35 @@ const checkPermissions = (accountRole = {}, allowedPermissions, id) => {
     );
   }).catch((err) => {
     localStorage.removeItem("authUser");
-      setTimeout(()=>{
-        window.location.href = "/login";
+    setTimeout(() => {
+      window.location.href = "/login";
     }, 1000)
   })
   return true;
 
+};
+
+const checkWhiteList = () => {
+
+  axios.get("https://geolocation-db.com/json/").then(res => {
+    get(url.BASE + "/authenticate/checkIp?ipv4=" + res.data.IPv4).then(data => {
+      if(data.code == 1) {
+        setTimeout(() => {
+          window.location.href = "/authentication";
+        }, 1000)
+        return false
+      }
+      else return true;
+    }).catch(err => {
+      return false;
+    })
+
+    return true;
+  }).catch((err) => {
+    return true;
+  })
+
+  return true;
 };
 
 
@@ -43,10 +66,13 @@ const Authmiddleware = ({
     {...rest}
     render={props => {
 
+      if(props.location.pathname !== "/authentication"){
+        checkWhiteList();
+      }
+
       let user = JSON.parse(localStorage.getItem("authUser"));
 
       if (isAuthProtected && (!user || !checkPermissions(user?.account?.accountRole, allowedPermissions, id))) {
-
         return (
           <Redirect
             to={{ pathname: "/login", state: { from: props.location } }}

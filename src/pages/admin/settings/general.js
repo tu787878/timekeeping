@@ -37,6 +37,8 @@ const EditGeneral = props => {
     const [checkInColor, setCheckInColor] = useState("rgb(255,0,0)");
     const [checkOutColor, setCheckOutColor] = useState("rgb(255,0,0)");
     const [showNoti, setShowNoti] = useState(true);
+    const [masterUsername, setMasterUsername] = useState("");
+    const [masterPassword, setMasterPassword] = useState("");
     const [form] = Form.useForm()
 
     const beforeUpload = (file) => {
@@ -62,6 +64,16 @@ const EditGeneral = props => {
             setImageUrl(url);
         });
     };
+
+    const resetAllWhiteList = () => {
+        get(url.BASE + "/general-setting/resetWhiteList"
+        ).then(data => {
+            console.log(data);
+            message.success('Removed all whitelist IP!');
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     const uploadButton = (
         <div>
@@ -98,7 +110,7 @@ const EditGeneral = props => {
     };
 
     const onGetHoliday = () => {
-        get(url.BASE + "/general-setting?key=businessName,logo,notifyText,showNotify, checkInColor, checkOutColor")
+        get(url.BASE + "/general-setting?key=businessName,logo,notifyText,showNotify, checkInColor, checkOutColor, masterUsername, masterPassword")
             .then(data => {
                 console.log(data.data);
                 if (data.data.showNotify) {
@@ -109,6 +121,8 @@ const EditGeneral = props => {
                 setImageUrl(data.data.logo.settingValue)
                 setCheckInColor(data.data.checkInColor.settingValue);
                 setCheckOutColor(data.data.checkOutColor.settingValue);
+                setMasterPassword(data.data.masterPassword.settingValue)
+                setMasterUsername(data.data.masterUsername.settingValue)
                 form.setFieldsValue(data.data)
             }).catch(err => {
                 console.log(err);
@@ -149,6 +163,9 @@ const EditGeneral = props => {
                     values.checkInColor = checkInColor
                     values.checkOutColor = checkOutColor
 
+                    values.masterUsername = values.masterUsername.settingValue
+                    values.masterPassword = values.masterPassword.settingValue
+
 
                     console.log('Success:', values);
                     post(url.BASE + "/general-setting", values)
@@ -182,6 +199,9 @@ const EditGeneral = props => {
             values.checkInColor = checkInColor
             values.checkOutColor = checkOutColor
 
+            values.masterUsername = values.masterUsername.settingValue
+            values.masterPassword = values.masterPassword.settingValue
+
 
             console.log('Success:', values);
             post(url.BASE + "/general-setting", values)
@@ -212,8 +232,13 @@ const EditGeneral = props => {
                     <Breadcrumbs title="General Settings" breadcrumbItem="General Settings" />
                     <Row>
                         <Col lg="12">
+                            <Button onClick={resetAllWhiteList} danger>
+                                Reset all ip whitelist 
+                            </Button>
                             <Card>
+                                
                                 <CardBody>
+                                
                                     <Form
                                         form={form}
                                         name="basic"
@@ -236,6 +261,18 @@ const EditGeneral = props => {
                                         <Form.Item
                                             label="Business name"
                                             name={["businessName", "settingValue"]}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Master Username"
+                                            name={["masterUsername", "settingValue"]}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Master Password"
+                                            name={["masterPassword", "settingValue"]}
                                         >
                                             <Input />
                                         </Form.Item>

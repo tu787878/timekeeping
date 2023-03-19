@@ -25,6 +25,7 @@ import ProjectsCreate from "../pages/Projects/projects-create"
 
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
+import Authentication from "../pages/Authentication/Authentication"
 import Logout from "../pages/Authentication/Logout"
 import Register from "../pages/Authentication/Register"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
@@ -306,6 +307,7 @@ const authProtectedRoutes = [
 const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
+  { path: "/authentication", component: Authentication },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/reset-password", component: ResetPassword },
   { path: "/register", component: Register },
