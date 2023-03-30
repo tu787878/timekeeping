@@ -1,14 +1,14 @@
 import React from "react"
 import UserRequestTable from "./UserRequestTable/UserRequestTable"
-
-const UserCalendarRequest = () => {
+import { withTranslation } from "react-i18next";
+const UserCalendarRequest = (props) => {
 
   return (
     <div className="page-content">
-      <h1>User Requests</h1>
+      <h1>{props.t("User Requests")}</h1>
       <UserRequestTable />
     </div>
   )
 }
 
-export default UserCalendarRequest
+export default withTranslation()(UserCalendarRequest)

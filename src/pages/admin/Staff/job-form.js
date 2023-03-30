@@ -11,16 +11,16 @@ import {
   Button,
 } from "antd"
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons"
-
+import { withTranslation } from "react-i18next";
 const { Option } = Select
 
-const JobForm = () => {
+const JobForm = (props) => {
   return (
     <>
       {/* <h4>3. Job</h4> */}
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item label="Job name" name="jobName">
+          <Form.Item label={props.t("Job name")} name="jobName">
             <Input />
           </Form.Item>
         </Col>
@@ -28,9 +28,9 @@ const JobForm = () => {
         <Col span={12}>
           <Form.Item label="Working Type" name="workingType">
             <Select placeholder="Select Type">
-              <Option value="FULLTIME">Fulltime</Option>
-              <Option value="PARTTIME">Parttime</Option>
-              <Option value="MINIJOB">Minijob</Option>
+              <Option value="FULLTIME">{props.t("Fulltime")}</Option>
+              <Option value="PARTTIME">{props.t("Parttime")}</Option>
+              <Option value="MINIJOB">{props.t("Minijob")}</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -38,7 +38,7 @@ const JobForm = () => {
 
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item label="Vacation in year (days)" name="maxHours">
+          <Form.Item label={props.t("Vacation days (in year)")} name="maxHours">
             <Input />
           </Form.Item>
         </Col>
@@ -51,16 +51,16 @@ const JobForm = () => {
                 {!!fields.length && (
                   <Row align="middle">
                     <Col span={6} style={{ textAlign: "center" }}>
-                      <Typography.Text>Day Of Week</Typography.Text>
+                      <Typography.Text>{props.t("Day Of Week")}</Typography.Text>
                     </Col>
                     <Col span={6} style={{ textAlign: "center" }}>
-                      <Typography.Text>From</Typography.Text>
+                      <Typography.Text>{props.t("From")}</Typography.Text>
                     </Col>
                     <Col span={6} style={{ textAlign: "center" }}>
-                      <Typography.Text>To</Typography.Text>
+                      <Typography.Text>{props.t("To")}</Typography.Text>
                     </Col>
                     <Col span={5} style={{ textAlign: "center" }}>
-                      <Typography.Text>Breaktime (mins)</Typography.Text>
+                      <Typography.Text>{props.t("Breaktime")} ({props.t("mins")})</Typography.Text>
                     </Col>
                   </Row>
                 )}
@@ -69,13 +69,13 @@ const JobForm = () => {
                     <Col span={6}>
                       <Form.Item {...field} name={[name, "dayOfWeek"]}>
                         <Select placeholder="Select" style={{ width: "100%" }}>
-                          <Option value={1}>Monday</Option>
-                          <Option value={2}>Tuesday</Option>
-                          <Option value={3}>Wednesday</Option>
-                          <Option value={4}>Thursday</Option>
-                          <Option value={5}>Friday</Option>
-                          <Option value={6}>Saturday</Option>
-                          <Option value={7}>Sunday</Option>
+                          <Option value={1}>{props.t("Monday")}</Option>
+                          <Option value={2}>{props.t("Tuesday")}</Option>
+                          <Option value={3}>{props.t("Wednesday")}</Option>
+                          <Option value={4}>{props.t("Thursday")}</Option>
+                          <Option value={5}>{props.t("Friday")}</Option>
+                          <Option value={6}>{props.t("Saturday")}</Option>
+                          <Option value={7}>{props.t("Sunday")}</Option>
                         </Select>
                       </Form.Item>
                     </Col>
@@ -108,7 +108,7 @@ const JobForm = () => {
                     block
                     icon={<PlusOutlined />}
                   >
-                    Add Workingtime
+                    {props.t("Add Workingtime")}
                   </Button>
                 </Form.Item>
               </>
@@ -120,4 +120,4 @@ const JobForm = () => {
   )
 }
 
-export default JobForm
+export default withTranslation()(JobForm)

@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import { Modal, Button, Form, DatePicker, Radio, Input } from "antd"
 import moment from "moment"
+import { withTranslation } from "react-i18next";
 import { get, post } from "../../helpers/api_helper"
 import * as url from "../../helpers/url_helper"
 const { RangePicker } = DatePicker
 const { TextArea } = Input
-const LeaveDayModal = () => {
+const LeaveDayModal = (props) => {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(1);
   const [form] = Form.useForm()
@@ -37,9 +38,9 @@ const LeaveDayModal = () => {
 
   return (
     <>
-      <Button type="primary" onClick={() => setOpen(true)}>Request off day</Button>
+      <Button type="primary" onClick={() => setOpen(true)}> {props.t("Request off day")}</Button>
       <Modal
-        title="Request off day"
+        title={props.t("Request off day")}
         open={open}
         onOk={(datas) => setOpen(false)}
         onCancel={() => setOpen(false)}
@@ -55,30 +56,30 @@ const LeaveDayModal = () => {
         >
           <Form.Item
             name="date"
-            label="Date"
+            label={props.t("Date")}
             style={{ margin: "20px 0 10px 0" }}
             rules={[{ required: true, message: 'Please input the date!' }]}
           >
             <RangePicker format={"DD/MM/YYYY"} />
           </Form.Item>
 
-          <Form.Item name="type" label="Type">
+          <Form.Item name="type" label={props.t("Type")}>
             <Radio.Group defaultValue={1}>
-              <Radio value={2}>Half day</Radio>
-              <Radio defaultChecked={true} value={1}>Full day</Radio>
-              <Radio value={0} disabled={true}>Custom</Radio>
+              <Radio value={2}>{props.t("Hafl day")}</Radio>
+              <Radio defaultChecked={true} value={1}>{props.t("Full day")}</Radio>
+              <Radio value={0} disabled={true}>{props.t("Custom")}</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item name="note" label="Note">
+          <Form.Item name="note" label={props.t("Note")}>
             <TextArea />
           </Form.Item>
 
           <Form.Item>
             <div style={{ display: "flex", gap: 10 }}>
               <Button type="primary" htmlType="submit">
-                Create
+              {props.t("Create")}
               </Button>
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button onClick={() => setOpen(false)}>{props.t("Cancel")}</Button>
             </div>
           </Form.Item>
         </Form>
@@ -87,4 +88,4 @@ const LeaveDayModal = () => {
   )
 }
 
-export default LeaveDayModal
+export default withTranslation()(LeaveDayModal)

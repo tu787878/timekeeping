@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-
+import { withTranslation } from "react-i18next";
 import { Link, withRouter } from "react-router-dom"
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
@@ -114,11 +114,11 @@ const LocationManager = props => {
 
   const showDeleteConfirm = location => {
     confirm({
-      title: `Are you sure delete location '${location.name}'?`,
+      title: `${props.t("Are you sure delete location")} '${location.name}'?`,
       icon: <ExclamationCircleFilled />,
-      okText: "Yes",
+      okText: props.t("Yes"),
       okType: "danger",
-      cancelText: "No",
+      cancelText: props.t("No"),
       onOk() {
         deleteLocation(location)
       },
@@ -174,20 +174,20 @@ const LocationManager = props => {
 
   const columns = [
     {
-      title: "Name",
+      title: props.t("Name"),
       dataIndex: "name",
       key: "name",
       defaultSortOrder: "ascend",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "Description",
+      title: props.t("Description"),
       dataIndex: "description",
       key: "description",
       sorter: (a, b) => a.description.localeCompare(b.description),
     },
     {
-      title: "Action",
+      title: props.t("Action"),
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -218,7 +218,7 @@ const LocationManager = props => {
   return (
     <>
       <Modal
-        title={isEdit ? "Edit Location" : "Add new location"}
+        title={isEdit ? props.t("Edit Location") : props.t("Add new location")}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -229,20 +229,20 @@ const LocationManager = props => {
           name="control-hooks"
           onFinish={onFinish}
         >
-          <Form.Item hidden={true} name="id" label="Id">
+          <Form.Item hidden={true} name="id" label={props.t("Id")}>
             <Input />
           </Form.Item>
-          <Form.Item name="name" label="Name">
+          <Form.Item name="name" label={props.t("Name")}>
             <Input />
           </Form.Item>
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label={props.t("Description")}>
             <Input.TextArea />
           </Form.Item>
         </Form>
       </Modal>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Location Manager" breadcrumbItem="Location" />
+          <Breadcrumbs title={props.t("Location Manager")} breadcrumbItem={props.t("Location")} />
             <Col lg="12" style={{ overflowX: 'scroll' }}>
                   <Button
                     onClick={() => {
@@ -257,7 +257,7 @@ const LocationManager = props => {
                     }}
                     type="primary"
                   >
-                    Add location
+                    {props.t("Add location")}
                   </Button>
                   <Table columns={columns} dataSource={locations} bordered />
             </Col>
@@ -270,4 +270,4 @@ const LocationManager = props => {
 LocationManager.propTypes = { devices: PropTypes.any }
 
 export default connect(
-)(withRouter(LocationManager))
+)(withRouter(withTranslation()(LocationManager)))

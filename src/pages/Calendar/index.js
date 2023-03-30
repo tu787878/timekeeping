@@ -6,6 +6,8 @@ import { useState, useEffect } from "react"
 import { get } from "../../helpers/api_helper"
 import * as url from "../../helpers/url_helper"
 import dayjs from "dayjs"
+
+import { withTranslation } from "react-i18next";
 import {
   Card,
   CardBody,
@@ -56,7 +58,7 @@ const columns = [
 ]
 
 
-const Calender = () => {
+const Calender = (props) => {
   //meta title
   document.title = "Full Calendar | Skote - React Admin & Dashboard Template"
   const { id } = useParams()
@@ -108,11 +110,13 @@ const Calender = () => {
     // dispatch(onGetEvents({id:obj.account.id, month:month.format('DD/MM/YYYY')}))
   }
 
+  console.log(props.t);
+
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Calendar" breadcrumbItem="Full Calendar" />
+          <Breadcrumbs title={props.t("Calendar")} breadcrumbItem={props.t("Calendar Manager")} />
           <Row>
             <Col>
               <Card className="overflow-hidden">
@@ -120,8 +124,8 @@ const Calender = () => {
                   <Row>
                     <Col xs="7">
                       <div className="text-primary p-3">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>It will seem like simplified</p>
+                        {/* <h5 className="text-primary">Welcome Back !</h5>
+                        <p>It will seem like simplified</p> */}
                       </div>
                     </Col>
                     <Col xs="5" className="align-self-end">
@@ -151,15 +155,15 @@ const Calender = () => {
                       <Collapse size="small" bordered={false}>
                         <Panel header="Informations" key="1">
                           <p className="mb-0 text-truncate">
-                            Job: {user?.job?.name}
+                          {props.t("Job")}: {user?.job?.name}
                           </p>
                           <p className="mb-0 text-truncate">
-                            Type: {user?.job?.workingTimeType}
+                          {props.t("Type")}: {user?.job?.workingTimeType}
                           </p>
                           <p className="mb-0 text-truncate">
-                            Vacation: {vacation / 60 / 8}/{user?.job?.maxHours}{" "}
-                            days ({vacation / 60}h/{user?.job?.maxHours * 8}
-                            {"h"})
+                          {props.t("Vacation")}: {vacation / 60 / 8}/{user?.job?.maxHours}{" "}
+                          {props.t("days")} ({vacation / 60}{props.t("h")}/{user?.job?.maxHours * 8}
+                          {props.t("h")})
                           </p>
                           <Table columns={columns} dataSource={user?.workingTimes}/>
                         </Panel>
@@ -217,7 +221,7 @@ const Calender = () => {
                   </Row> */}
                   <Row>
                     <Col>
-                      <TimeLogsTable id={id} month={month} />
+                      <TimeLogsTable id={id} month={month} tr={props.t} />
                     </Col>
                   </Row>
                 </CardBody>
@@ -242,4 +246,4 @@ Calender.propTypes = {
   onGetCategories: PropTypes.func,
 }
 
-export default Calender
+export default withTranslation()(Calender)

@@ -13,21 +13,21 @@ const toTime = (minutes) => {
   return (negative ? "-" : "") + h + ":" + ((m < 10) ? "0" : "") + m;
 }
 
-export const tableColumns = (handleOpenEditModal, id) => [
+export const tableColumns = (handleOpenEditModal, id, tr) => [
   {
-    title: "DW",
+    title: tr("Day"),
     key: "dayOfWeek",
     dataIndex: "dayOfWeek",
     align: "center",
   },
   {
-    title: "Date",
+    title: tr("Date"),
     key: "date",
     dataIndex: "date",
     align: "center",
   },
   {
-    title: "Time logs",
+    title: tr("Time logs"),
     key: "timeLogs",
     dataIndex: "timeLogs",
     align: "center",
@@ -36,15 +36,15 @@ export const tableColumns = (handleOpenEditModal, id) => [
       <> 
           {timeLogs.map(time => (
             <div style={{color: time.status === "VALID" ? "black" : "red"}} key={time.id}>
-             {time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null || time.info === "")  ? (time.timeFrom + "-" + time.timeTo) : time.info} 
+             {time.type !== "WORK" ? (tr(time.type) + ":") : ""} {(time.info === "CUSTOM" || time.info === null || time.info === "")  ? (time.timeFrom + "-" + time.timeTo) : tr(time.info)} 
             </div>
           ))}
 
       </>
-    ) : (<div>Holiday</div>)},
+    ) : (<div>{tr("Holiday")}</div>)},
   },
   {
-    title: "Total time",
+    title: tr("Total time"),
     key: "total",
     dataIndex: "total",
     align: "center",
@@ -55,7 +55,7 @@ export const tableColumns = (handleOpenEditModal, id) => [
     ),
   },
   {
-    title: "Regular time",
+    title: tr("Regular time"),
     key: "regularTime",
     dataIndex: "regularTime",
     align: "center",
@@ -66,7 +66,7 @@ export const tableColumns = (handleOpenEditModal, id) => [
     ),
   },
   {
-    title: "Overtime",
+    title:  tr("Overtime"),
     key: "balance",
     dataIndex: "balance",
     align: "center",
@@ -77,12 +77,12 @@ export const tableColumns = (handleOpenEditModal, id) => [
     ),
   },
   {
-    title: "Action",
+    title: tr("Action"),
     key: "Action",
     align: "center",
     render: item => (
       !id ? <Button color="warning" outline onClick={() => handleOpenEditModal(item)}>
-        Edit
+        {tr("Edit")}
       </Button> : null
     ),
   },

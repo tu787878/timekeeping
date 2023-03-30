@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import { withTranslation } from "react-i18next";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 import axios from 'axios'
@@ -34,8 +35,8 @@ const Authentication = props => {
       password: "" || '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required(props.t("Please Enter Master Username")),
+      password: Yup.string().required(props.t("Please Enter Master Password")),
     }),
     onSubmit: (values) => {
       // dispatch(loginUser(values, props.history));
@@ -55,7 +56,7 @@ const Authentication = props => {
             window.location.href = "/login";
           }, 1000)
         } else {
-          setError("Authentication failed!")
+          setError(props.t("Authentication failed!"))
         }
 
       }).catch(error => {
@@ -81,8 +82,8 @@ const Authentication = props => {
                   <Row>
                     <Col xs={7}>
                       <div className="text-white p-4">
-                        <h5 className="text-white">Welcome Back !</h5>
-                        <p>Authenticate to continue to Dashboard.</p>
+                        <h5 className="text-white">{props.t("Welcome Back !")}</h5>
+                        <p>{props.t("Authenticate to continue to Dashboard.")}</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
@@ -157,7 +158,7 @@ const Authentication = props => {
                           className="btn btn-primary bg-black btn-block"
                           type="submit"
                         >
-                          Authenticate
+                          {props.t("Authenticate")}
                         </button>
                       </div>
 
@@ -179,7 +180,7 @@ const Authentication = props => {
   );
 };
 
-export default withRouter(Authentication);
+export default withRouter(withTranslation()(Authentication));
 
 Authentication.propTypes = {
   history: PropTypes.object,

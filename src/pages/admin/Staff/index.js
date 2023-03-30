@@ -5,6 +5,7 @@ import { Link, withRouter } from "react-router-dom"
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
 import classnames from "classnames"
+import { withTranslation } from "react-i18next";
 
 import { get, del } from "../../../helpers/api_helper"
 import { GET_LOCATIONS, GET_STAFFS } from "../../../helpers/url_helper"
@@ -152,11 +153,11 @@ const StaffManager = props => {
 
   const showDeleteConfirm = staff => {
     confirm({
-      title: `Are you sure delete staff '${staff.userDetail.firstName}'?`,
+      title: `${props.t("Are you sure delete staff")} '${staff.userDetail.firstName}'?`,
       icon: <ExclamationCircleFilled />,
-      okText: "Yes",
+      okText: props.t("Yes"),
       okType: "danger",
-      cancelText: "No",
+      cancelText: props.t("No"),
       onOk() {
         onDeleteStaff(staff.id)
       },
@@ -188,45 +189,45 @@ const StaffManager = props => {
 
   const columns = [
     {
-      title: "Location",
+      title: props.t("Location"),
       dataIndex: ["location", "name"],
       key: "locationName",
       sorter: (a, b) => a.locationName?.localeCompare(b.locationName),
     },
     {
-      title: "Team",
+      title: props.t("Team"),
       dataIndex: ["job", "team", "name"],
       key: "teamName",
       sorter: (a, b) => a.teamName?.localeCompare(b.teamName),
     },
     {
-      title: "First Name",
+      title: props.t("First Name"),
       dataIndex: ["userDetail", "firstName"],
       key: "firstName",
 
       sorter: (a, b) => a.firstName?.localeCompare(b.firstName),
     },
     {
-      title: "Last Name",
+      title: props.t("Last Name"),
       dataIndex: ["userDetail", "lastName"],
       key: "lastName",
       defaultSortOrder: "ascend",
       sorter: (a, b) => a.name?.localeCompare(b.name),
     },
     {
-      title: "Job",
+      title: props.t("Job"),
       dataIndex: ["job", "name"],
       key: "jobName",
       sorter: (a, b) => a.name?.localeCompare(b.name),
     },
     {
-      title: "Email",
+      title: props.t("Email"),
       dataIndex: ["userDetail", "email"],
       key: "username",
       sorter: (a, b) => a.name?.localeCompare(b.name),
     },
     {
-      title: "Action",
+      title: props.t("Action"),
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -263,7 +264,7 @@ const StaffManager = props => {
   return (
     <>
       <Modal
-        title={"Edit staff"}
+        title={props.t("Edit staff")}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -277,7 +278,7 @@ const StaffManager = props => {
           wrapperCol={{ span: 16 }}
           labelAlign="left"
         >
-          <Form.Item name={["location", "id"]} label="Location">
+          <Form.Item name={["location", "id"]} label={props.t("Location")}>
             <Select allowClear>
               {locations.map(location => {
                 return (
@@ -288,7 +289,7 @@ const StaffManager = props => {
               })}
             </Select>
           </Form.Item>
-          <Form.Item name={["job", "team", "id"]} label="Team">
+          <Form.Item name={["job", "team", "id"]} label={props.t("Team")}>
             <Select allowClear>
               {teams.map(team => {
                 return (
@@ -299,32 +300,32 @@ const StaffManager = props => {
               })}
             </Select>
           </Form.Item>
-          <Form.Item hidden={true} name="id" label="Id">
+          <Form.Item hidden={true} name="id" label={props.t("Id")}>
             <Input />
           </Form.Item>
-          <Form.Item name={["userDetail", "firstName"]} label="First Name">
+          <Form.Item name={["userDetail", "firstName"]} label={props.t("First name")}>
             <Input />
           </Form.Item>
-          <Form.Item name={["userDetail", "lastName"]} label="Last Name">
+          <Form.Item name={["userDetail", "lastName"]} label={props.t("Last name")}>
             <Input />
           </Form.Item>
-          <Form.Item name={["userDetail", "email"]} label="Email">
+          <Form.Item name={["userDetail", "email"]} label={props.t("Email")}>
             <Input />
           </Form.Item>
-          <Form.Item name={["type"]} label="Role">
+          <Form.Item name={["type"]} label={props.t("Role")}>
             <Select>
-              <Select.Option value="ADMIN">Admin</Select.Option>
-              <Select.Option value="EMPLOYEE">Employee</Select.Option>
+              <Select.Option value="ADMIN">{props.t("Admin")}</Select.Option>
+              <Select.Option value="EMPLOYEE">{props.t("Employee")}</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={["job", "name"]} label="Job name">
+          <Form.Item name={["job", "name"]} label={props.t("Job name")}>
             <Input />
           </Form.Item>
-          <Form.Item name={["job", "workingTimeType"]} label="WorkingType">
+          <Form.Item name={["job", "workingTimeType"]} label={props.t("WorkingType")}>
             <Select>
-              <Select.Option value="FULLTIME">Fulltime</Select.Option>
-              <Select.Option value="PARTTIME">Parttime</Select.Option>
-              <Select.Option value="MINIJOB">Minijob</Select.Option>
+              <Select.Option value="FULLTIME">{props.t("Fulltime")}</Select.Option>
+              <Select.Option value="PARTTIME">{props.t("Parttime")}</Select.Option>
+              <Select.Option value="MINIJOB">{props.t("Minijob")}</Select.Option>
             </Select>
           </Form.Item>
           {/* <Form.Item
@@ -352,16 +353,16 @@ const StaffManager = props => {
                 {!!fields.length && (
                   <Row align="middle">
                     <Col span={6} style={{ textAlign: "center" }}>
-                      <Typography.Text>Day Of Week</Typography.Text>
+                      <Typography.Text>{props.t("Day Of Week")}</Typography.Text>
                     </Col>
                     <Col span={6} style={{ textAlign: "center" }}>
-                      <Typography.Text>From</Typography.Text>
+                      <Typography.Text>{props.t("From")}</Typography.Text>
                     </Col>
                     <Col span={6} style={{ textAlign: "center" }}>
-                      <Typography.Text>To</Typography.Text>
+                      <Typography.Text>{props.t("To")}</Typography.Text>
                     </Col>
                     <Col span={5} style={{ textAlign: "center" }}>
-                      <Typography.Text>Breaktime (mins)</Typography.Text>
+                      <Typography.Text>{props.t("Breaktime")} ({props.t("mins")})</Typography.Text>
                     </Col>
                   </Row>
                 )}
@@ -386,25 +387,25 @@ const StaffManager = props => {
                             }}
                           >
                             <Option value={1} label="Monday">
-                              Monday
+                            {props.t("Monday")}
                             </Option>
                             <Option value={2} label="Tuesday">
-                              Tuesday
+                            {props.t("Tuesday")}
                             </Option>
                             <Option value={3} label="Wednesday">
-                              Wednesday
+                               {props.t("Wednesday")}
                             </Option>
                             <Option value={4} label="Thursday">
-                              Thursday
+                               {props.t("Thursday")}
                             </Option>
                             <Option value={5} label="Friday">
-                              Friday
+                               {props.t("Friday")}
                             </Option>
                             <Option value={6} label="Saturday">
-                              Saturday
+                               {props.t("Saturday")}
                             </Option>
                             <Option value={7} label="Sunday">
-                              Sunday
+                               {props.t("Sunday")}
                             </Option>
                             {/* <Option key="OTHERS" value="OTHERS">
                               OTHERS
@@ -464,13 +465,13 @@ const StaffManager = props => {
                     block
                     icon={<PlusOutlined />}
                   >
-                    Add Workingtime
+                    {props.t("Add Workingtime")}
                   </Button>
                 </Form.Item>
               </>
             )}
           </Form.List>
-          <Form.Item name={["job", "maxHours"]} label="Vacation days (in year)">
+          <Form.Item name={["job", "maxHours"]} label={props.t("Vacation days (in year)")}>
             <Input />
           </Form.Item>
           {/* <Form.Item
@@ -502,11 +503,11 @@ const StaffManager = props => {
       </Modal>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Staff Manager" breadcrumbItem="Staff" />
+          <Breadcrumbs title={props.t("Staff Manager" )} breadcrumbItem={props.t("Staff")} />
           <Col lg="12" style={{ overflowX: "scroll" }}>
             <Link to={`/new-staff`}>
               <Button type="primary" style={{ marginBottom: 20 }}>
-                Add Staff
+              {props.t("Add Staff")}
               </Button>
             </Link>
 
@@ -536,4 +537,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(StaffManager))
+)(withRouter(withTranslation()(StaffManager)))

@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react"
 import { Link, withRouter } from "react-router-dom"
 import { Col, Container, Row } from "reactstrap"
 import { Table, Avatar, Tooltip, Tag, Checkbox } from "antd"
+import { withTranslation } from "react-i18next";
 //Import Component
 import Breadcrumbs from "components/Common/Breadcrumb"
 import { GET_PROJECTS } from "../../helpers/url_helper"
 import { get } from "../../helpers/api_helper"
 import Moment from "react-moment"
 import { filter } from "lodash"
-const columns = [
+const columns = tr => [
   {
-    title: "Name",
+    title: tr("Name"),
     dataIndex: "name",
     sorter: true,
     render: (name, record) => {
@@ -20,7 +21,7 @@ const columns = [
     sorter: (a, b) => a.name.length - b.name.length,
   },
   {
-    title: "Status",
+    title: tr("Status"),
     dataIndex: "status",
     render: status => (
       <>
@@ -49,7 +50,7 @@ const columns = [
     ],
   },
   {
-    title: "Users",
+    title: tr("Users"),
     dataIndex: "accounts",
     render: accounts => (
       <>
@@ -88,7 +89,7 @@ const columns = [
     ),
   },
   {
-    title: "Team",
+    title: tr("Team"),
     dataIndex: "team",
     render: team => (
       <>
@@ -107,7 +108,7 @@ const columns = [
     ),
   },
   {
-    title: "Created Date",
+    title: tr("Created Date"),
     dataIndex: "createdTime",
     render: time => <Moment format="HH:mm DD/MM/YYYY">{time}</Moment>,
     width: "20%",
@@ -119,7 +120,7 @@ const getRandomuserParams = params => ({
   ...params,
 })
 
-const ProjectsList = () => {
+const ProjectsList = (props) => {
   //meta title
   document.title = "Project List | TCG - Web & Marketing"
 
@@ -197,15 +198,15 @@ const ProjectsList = () => {
       <div className="page-content">
         <Container fluid style={{ overflowX: "scroll" }}>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Projects" breadcrumbItem="Projects List" />
+          <Breadcrumbs title={props.t("Projects")} breadcrumbItem={props.t("Projects List")} />
           <Row>
             <Checkbox checked={myProject} onChange={myProjectChange}>
-              My Projects
+            {props.t("My Projects")}
             </Checkbox>
           </Row>
           <Row>
             <Table
-              columns={columns}
+              columns={columns(props.t)}
               scroll={{ y: 500 }}
               rowKey={record => record.login?.uuid}
               dataSource={data}
@@ -220,4 +221,4 @@ const ProjectsList = () => {
   )
 }
 
-export default withRouter(ProjectsList)
+export default withRouter(withTranslation()(ProjectsList))

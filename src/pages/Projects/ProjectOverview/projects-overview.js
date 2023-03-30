@@ -15,6 +15,8 @@ import { del, get, post, put } from "../../../helpers/api_helper"
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 import { Card } from "antd"
+import { withTranslation } from "react-i18next";
+
 //redux
 import { useSelector, useDispatch } from "react-redux"
 export const EDIT_PROFILE = "EDIT_PROFILE"
@@ -38,7 +40,7 @@ import Moment from "react-moment"
 import { InboxOutlined, UploadOutlined, DeleteTwoTone } from "@ant-design/icons"
 import { useParams } from "react-router-dom"
 const { Option } = Select
-const ProjectsOverview = () => {
+const ProjectsOverview = (props) => {
   const [teams, setTeams] = useState([])
   const [staffs, setStaffs] = useState([])
   const [project, setProject] = useState(null)
@@ -62,7 +64,7 @@ const ProjectsOverview = () => {
   const obj = JSON.parse(localStorage.getItem("authUser"))
   const accountId = obj.account.id
 
-  const props = {
+  const props2 = {
     onRemove: file => {
       const index = fileList.indexOf(file)
       const newFileList = fileList.slice()
@@ -123,12 +125,12 @@ const ProjectsOverview = () => {
 
   const [messageApi, contextHolder] = message.useMessage()
   const success = () => {
-    messageApi.success("Add a team success!")
+    messageApi.success(props.t("Add a team success!"))
   }
   const error = () => {
     messageApi.open({
       type: "error",
-      content: "Upload failed",
+      content: props.t("Upload failed"),
     })
   }
 
@@ -261,7 +263,7 @@ const ProjectsOverview = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Projects" breadcrumbItem="Project Overview" />
+          <Breadcrumbs title={props.t("Projects")} breadcrumbItem={props.t("Project Overview")} />
           <Row>
             <Col lg="8">
               <Row>
@@ -275,30 +277,30 @@ const ProjectsOverview = () => {
                       : "red"
                   }
                 >
-                  <Card title="Project">
+                  <Card title={props.t("Project")}>
                     <Form
                       form={form}
                       name="nest-messages"
                       onFinish={onFinish}
                       initialValues={project}
                     >
-                      <Form.Item name={["name"]} label="Name">
+                      <Form.Item name={["name"]} label={props.t("Name")}>
                         <Input />
                       </Form.Item>
-                      <Form.Item name={"status"} label="Status">
+                      <Form.Item name={"status"} label={props.t("Status")}>
                         <Select
                           style={{
                             width: 120,
                           }}
                           defaultValue={"TODO"}
                         >
-                          <Option key={"TODO"}>{"Todo"}</Option>
-                          <Option key={"PROCESSING"}>{"Processing"}</Option>
-                          <Option key={"DONE"}>{"Done"}</Option>
+                          <Option key={"TODO"}>{props.t("Todo")}{""}</Option>
+                          <Option key={"PROCESSING"}>{props.t("Processing")}</Option>
+                          <Option key={"DONE"}>{props.t("Done")}</Option>
                         </Select>
                       </Form.Item>
 
-                      <Form.Item name={["team", "id"]} label="Assign to Team">
+                      <Form.Item name={["team", "id"]} label={props.t("Assign to Team")}>
                         <Select
                           style={{
                             width: 120,
@@ -315,7 +317,7 @@ const ProjectsOverview = () => {
                           ))}
                         </Select>
                       </Form.Item>
-                      <Form.Item label="Assign to Users">
+                      <Form.Item label={props.t("Assign to Users")}>
                         <Select
                           value={accounts}
                           mode="multiple"
@@ -339,7 +341,7 @@ const ProjectsOverview = () => {
                           })}
                         </Select>
                       </Form.Item>
-                      <Form.Item name={["description"]} label="Description">
+                      <Form.Item name={["description"]} label={props.t("Description")}>
                         <Input.TextArea rows={6} />
                       </Form.Item>
                       {oldMedia?.map(med => {
@@ -359,9 +361,9 @@ const ProjectsOverview = () => {
                           </>
                         )
                       })}
-                      <Form.Item label="Documents">
-                        <Upload {...props} multiple>
-                          <Button icon={<UploadOutlined />}>Select File</Button>
+                      <Form.Item label={props.t("Documents")}>
+                        <Upload {...props2} multiple>
+                          <Button icon={<UploadOutlined />}>{props.t("Select File")}</Button>
                         </Upload>
                       </Form.Item>
                       <Form.Item
@@ -371,7 +373,7 @@ const ProjectsOverview = () => {
                         }}
                       >
                         <Button type="primary" htmlType="submit">
-                          Save
+                        {props.t("Save")}
                         </Button>
                       </Form.Item>
                     </Form>
@@ -402,7 +404,7 @@ const ProjectsOverview = () => {
 
             <Col lg="4">
               <Row>
-                <Card title="Comments">
+                <Card title={props.t("Comments")}>
                   <List
                     itemLayout="horizontal"
                     dataSource={project?.comments}
@@ -473,7 +475,7 @@ const ProjectsOverview = () => {
                           style={{ width: "calc(100% - 100px)" }}
                         />
                         <Button onClick={doComment} type="primary">
-                          Send
+                        {props.t("Send")}
                         </Button>
                       </Input.Group>
                     </Form.Item>
@@ -484,7 +486,7 @@ const ProjectsOverview = () => {
               <Row>
                 <Card
                   title={
-                    "Tasks " +
+                    props.t("Tasks")+" " +
                     "(" +
                     tasks?.data?.length +
                     "/" +
@@ -493,7 +495,7 @@ const ProjectsOverview = () => {
                   }
                   extra={
                     <>
-                      <a href="/tasks-create">New Task</a>
+                      <a href="/tasks-create">{props.t("New Task")}</a>
                     </>
                   }
                 >
@@ -502,11 +504,11 @@ const ProjectsOverview = () => {
                       <>
                         <a href={"/tasks-overview/" + task.id} key={task.id}>
                           {task.status === "TODO" ? (
-                            <Tag color="purple">TODO</Tag>
+                            <Tag color="purple">{props.t("TODO")}</Tag>
                           ) : task.status === "DONE" ? (
-                            <Tag color="cyan">DONE</Tag>
+                            <Tag color="cyan">{props.t("DONE")}</Tag>
                           ) : (
-                            <Tag color="red">PROCESSING</Tag>
+                            <Tag color="red">{props.t("PROCESSING")}</Tag>
                           )}
                           <Tag color="geekblue">{task.type}</Tag>
                           <Tag color="orange">{task.severity}</Tag>
@@ -517,7 +519,7 @@ const ProjectsOverview = () => {
                     )
                   })}
                   <br></br>
-                  <a href="/tasks-list">View all</a>
+                  <a href="/tasks-list">{props.t("View all")}</a>
                 </Card>
               </Row>
             </Col>
@@ -533,4 +535,4 @@ ProjectsOverview.propTypes = {
   match: PropTypes.object,
 }
 
-export default withRouter(ProjectsOverview)
+export default withRouter(withTranslation()(ProjectsOverview))

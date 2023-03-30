@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import SockJsClient from 'react-stomp';
+import { withTranslation } from "react-i18next";
 import {
   Container,
   Row,
@@ -157,11 +158,11 @@ const ScanDevice = props => {
   const onDismiss = () => setVisible(false);
 
   //meta title
-  document.title = "New Page | Skote - React Admin & Dashboard Template"
+  document.title = "Scandevice | Skote - React Admin & Dashboard Template"
   return (
     <>
      <Alert color="info" isOpen={visible} toggle={onDismiss}>
-      New card is registered!
+        {props.t("New card is registered!")}
     </Alert>
     <SockJsClient url={`${process.env.REACT_APP_API_HOST}/websocket-chat/`}
         topics={[`/topic/scan-device`]}
@@ -182,7 +183,7 @@ const ScanDevice = props => {
         }} />
       {/* add waiting card */}
       <Modal isOpen={modalAddCard} toggle={toggleAddCard}>
-        <ModalHeader toggle={toggleAddCard}>Register a card</ModalHeader>
+        <ModalHeader toggle={toggleAddCard}>{props.t("Register a card")}</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup row>
@@ -190,7 +191,7 @@ const ScanDevice = props => {
                 for="exampleSelect1"
                 sm={4}
               >
-                Scan Device
+                {props.t("Scan Device")}
               </Label>
               {devices?.map(device => {
                     groupedOptions.push( {
@@ -215,7 +216,7 @@ const ScanDevice = props => {
                 for="exampleSelect2"
                 sm={4}
               >
-               Select Account
+               {props.t("Select Account")}
               </Label>
               <Col sm={8}>
               <Select
@@ -233,21 +234,21 @@ const ScanDevice = props => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={addCardBtn}>
-            Add
+          {props.t("Add")}
           </Button>{' '}
           <Button color="secondary" onClick={toggleAddCard}>
-            Cancel
+          {props.t("Cancel")}
           </Button>
         </ModalFooter>
       </Modal>
       {/* add scan device modal */}
       <Modal isOpen={modalScanDevice} toggle={toggleScanDevice}>
-        <ModalHeader toggle={toggleScanDevice}>Add a new device</ModalHeader>
+        <ModalHeader toggle={toggleScanDevice}>{props.t("Add a new device")}</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
               <Label for="deviceName">
-                Device name
+              {props.t("Device name")}
               </Label>
               <Input
                 id="deviceName"
@@ -259,7 +260,7 @@ const ScanDevice = props => {
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">
-                Device Type
+              {props.t("Device Type")}
               </Label>
               <Input
                 id="deviceType"
@@ -277,26 +278,26 @@ const ScanDevice = props => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={addScanDeviceBtn}>
-            Add
+          {props.t("Add")}
           </Button>{' '}
           <Button color="secondary" onClick={toggleScanDevice}>
-            Cancel
+          {props.t("Cancel")}
           </Button>
         </ModalFooter>
       </Modal>
 
       {/* delete scan device modal */}
       <Modal isOpen={modalDeleteScanDevice} toggle={() => toggleDeleteScanDevice()}>
-        <ModalHeader toggle={() => toggleDeleteScanDevice()}>Delete device</ModalHeader>
+        <ModalHeader toggle={() => toggleDeleteScanDevice()}>{props.t("Delete device")}</ModalHeader>
         <ModalBody>
-          Do you want to device '{deleteScanDevice?.name}' ? It will delete all waiting cards of this scan device!
+        {props.t("Do you want to device")} '{deleteScanDevice?.name}' ? {props.t("It will delete all waiting cards of this scan device!")}
         </ModalBody>
         <ModalFooter>
           <Button color="danger" onClick={() => deleteScanDeviceBtn()}>
-            Yes
+          {props.t("Yes")}
           </Button>{' '}
           <Button color="secondary" onClick={() => toggleDeleteScanDevice()}>
-            Cancel
+          {props.t("Cancel")}
           </Button>
         </ModalFooter>
       </Modal>
@@ -305,30 +306,30 @@ const ScanDevice = props => {
        <Modal isOpen={modalDeleteWaitingCard} toggle={() => toggleDeleteWaitingCard()}>
         <ModalHeader toggle={() => toggleDeleteWaitingCard()}>Delete waiting card</ModalHeader>
         <ModalBody>
-          Do you want to  delete card '{deleteWaitingCard?.is}' ? 
+        {props.t("Do you want to delete waiting card")} '{deleteWaitingCard?.is}' ? 
         </ModalBody>
         <ModalFooter>
           <Button color="danger" onClick={() => deleteWaitingCardBtn()}>
-            Yes
+          {props.t("Yes")}
           </Button>{' '}
           <Button color="secondary" onClick={() => toggleDeleteWaitingCard()}>
-            Cancel
+          {props.t("Cancel")}
           </Button>
         </ModalFooter>
       </Modal>
 
       {/* delete card modal */}
       <Modal isOpen={modalDeleteCard} toggle={() => toggleDeleteCard()}>
-        <ModalHeader toggle={() => toggleDeleteCard()}>Delete registered card</ModalHeader>
+        <ModalHeader toggle={() => toggleDeleteCard()}>{props.t("Delete registered card")}</ModalHeader>
         <ModalBody>
-          Do you want to card '{deleteCard?.id}' ? 
+        {props.t("Do you want to card")} '{deleteCard?.id}' ? 
         </ModalBody>
         <ModalFooter>
           <Button color="danger" onClick={() => deleteCardBtn()}>
-            Yes
+          {props.t("Yes")}
           </Button>{' '}
           <Button color="secondary" onClick={() => toggleDeleteCard()}>
-            Cancel
+          {props.t("Cancel")}
           </Button>
         </ModalFooter>
       </Modal>
@@ -383,14 +384,14 @@ const ScanDevice = props => {
 
       {/* update scan device modal */}
       <Modal isOpen={modalUpdateScanDevice} toggle={() => toggleUpdateScanDevice()}>
-        <ModalHeader toggle={() => toggleUpdateScanDevice()}>Update device
+        <ModalHeader toggle={() => toggleUpdateScanDevice()}>{props.t("Update device")}
 
         </ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
               <Label for="deviceName">
-                Device name
+              {props.t("Device name")}
               </Label>
               <Input
                 id="deviceName"
@@ -409,7 +410,7 @@ const ScanDevice = props => {
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">
-                Device Type
+              {props.t("Device type")}
               </Label>
               <Input
                 id="deviceType"
@@ -424,7 +425,7 @@ const ScanDevice = props => {
               </Input>
             </FormGroup>
             <FormGroup switch>
-              <Label check>Active</Label>
+              <Label check>{props.t("Active")}</Label>
               <Input
                 type="switch"
                 checked={updateScanDevice?.active}
@@ -444,10 +445,10 @@ const ScanDevice = props => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={updateScanDeviceBtn}>
-            Yes
+          {props.t("Yes")}
           </Button>{' '}
           <Button color="secondary" onClick={() => toggleUpdateScanDevice()}>
-            Cancel
+          {props.t("Cancel")}
           </Button>
         </ModalFooter>
       </Modal>
@@ -455,8 +456,8 @@ const ScanDevice = props => {
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs
-            title="Scan Device Manager"
-            breadcrumbItem="Scan Device"
+            title={props.t("Scan Device Manager")}
+            breadcrumbItem={props.t("Scan Device")}
           />
 
           <Row>
@@ -465,7 +466,7 @@ const ScanDevice = props => {
                 <Row>
                   <Col lg={12}>
                     <CardTitle className="h4">
-                      Scan devices &nbsp; &nbsp; &nbsp;
+                    {props.t("Scan Devices")} &nbsp; &nbsp; &nbsp;
                       <Link onClick={toggleScanDevice} to="#" className="text-primary">
                         <i className="fas fa-plus-square h4 m-0" />
                       </Link>
@@ -522,10 +523,10 @@ const ScanDevice = props => {
                                                 </Link>
                                               </h5>
                                               <small>
-                                                Status :{" "}
+                                              {props.t("Status")} :{" "}
                                                 {child.active
-                                                  ? "active"
-                                                  : "deactive"}
+                                                  ? props.t("Active")
+                                                  : props.t("Deactive")}
                                               </small>
                                             </td>
                                             <td>
@@ -645,10 +646,10 @@ const ScanDevice = props => {
                                                 </Link>
                                               </h5>
                                               <small>
-                                                Status :{" "}
+                                              {props.t("Status")} :{" "}
                                                 {child.active
-                                                  ? "active"
-                                                  : "deactive"}
+                                                  ? props.t("Active")
+                                                  : props.t("Deactive")}
                                               </small>
                                             </td>
                                             <td>
@@ -689,7 +690,7 @@ const ScanDevice = props => {
                 <Row>
                   <Col lg={12}>
                     <CardTitle className="h4">
-                      Waiting List Cards &nbsp; &nbsp; &nbsp;
+                    {props.t("Waiting List Cards")} &nbsp; &nbsp; &nbsp;
                       <Link onClick={() => {
                         onGetAllAccounts();
                         toggleAddCard();
@@ -752,7 +753,7 @@ const ScanDevice = props => {
                                                   }
                                                 </Link>
                                               </h5>
-                                              <small>Status : waiting</small>
+                                              {/* <small>Status : waiting</small> */}
                                             </td>
                                             <td>
                                               <div className="text-end">
@@ -827,4 +828,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ScanDevice))
+)(withRouter(withTranslation()(ScanDevice)))

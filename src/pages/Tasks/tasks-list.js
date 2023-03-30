@@ -12,10 +12,10 @@ import { GET_TASKS, GET_ALL_PROJECTS } from "../../helpers/url_helper";
 import { get } from "../../helpers/api_helper";
 import Moment from 'react-moment';
 import { filter } from "lodash";
+import { withTranslation } from "react-i18next";
 
 
-
-const TasksList = () => {
+const TasksList = (props) => {
 
   //meta title
   document.title = "Task List | TCG - Web & Marketing";
@@ -50,7 +50,7 @@ const TasksList = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: props.t("Name"),
       dataIndex: 'name',
       sorter: true,
       render: (name, record) => {
@@ -60,7 +60,7 @@ const TasksList = () => {
       sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-      title: "Project",
+      title: props.t("Project"),
       key: "project",
       dataIndex: "project",
       render: project => <a href={`/projects-overview/${project.id}`}>{project?.name}</a>,
@@ -69,7 +69,7 @@ const TasksList = () => {
       onFilter: (value, record) => record.name.includes(value),
     },
     {
-      title: 'Status',
+      title: props.t("Status"),
       dataIndex: 'status',
       render: status => (
         <>
@@ -116,7 +116,7 @@ const TasksList = () => {
       ],
     },
     {
-      title: "Severity",
+      title: props.t("Severity"),
       key: "severity",
       dataIndex: "severity",
       render: severity => (<Tag color="orange">{severity}</Tag>),
@@ -136,7 +136,7 @@ const TasksList = () => {
       ],
     },
     {
-      title: 'Users',
+      title: props.t("Users"),
       dataIndex: 'accounts',
       render: accounts => (
         <>
@@ -168,7 +168,7 @@ const TasksList = () => {
       )
     },
     {
-      title: 'Created Date',
+      title: props.t("Created Date"),
       dataIndex: 'createdTime',
       render: time => (
         <Moment format="HH:mm DD/MM/YYYY">{time}</Moment>
@@ -227,9 +227,9 @@ const TasksList = () => {
       <div className="page-content">
         <Container fluid style={{overflowX:"scroll"}}>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Tasks" breadcrumbItem="Tasks List" />
+          <Breadcrumbs title={props.t("Tasks")} breadcrumbItem={props.t("Tasks List")} />
           <Row>
-            <Checkbox checked={myProject} onChange={myProjectChange}>My Tasks</Checkbox>
+            <Checkbox checked={myProject} onChange={myProjectChange}>{props.t("My Tasks")}</Checkbox>
           </Row>
           <Row>
             <Table
@@ -247,4 +247,4 @@ const TasksList = () => {
   );
 };
 
-export default withRouter(TasksList);
+export default withRouter(withTranslation()(TasksList));

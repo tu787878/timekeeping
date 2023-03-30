@@ -3,8 +3,8 @@ import { Spin, Table } from "antd"
 import { columns } from "./columns"
 import { get, del } from "../../../helpers/api_helper"
 import * as url from "../../../helpers/url_helper"
-
-const UserRequestTable = () => {
+import { withTranslation } from "react-i18next";
+const UserRequestTable = (props) => {
   const [data, setData] = useState([])
   const [size, setSize] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -67,7 +67,7 @@ const UserRequestTable = () => {
   return (
     <Spin spinning={loading}>
       <Table
-        columns={columns(doCancel)}
+        columns={columns(doCancel, props.t)}
         dataSource={data || []}
         bordered
         scroll={{y: 500}}
@@ -85,4 +85,4 @@ const UserRequestTable = () => {
   )
 }
 
-export default UserRequestTable
+export default withTranslation()(UserRequestTable)

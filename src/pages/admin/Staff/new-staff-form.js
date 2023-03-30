@@ -7,8 +7,9 @@ import { GET_STAFFS } from "../../../helpers/url_helper"
 import { post } from "../../../helpers/api_helper"
 import { message } from "antd"
 import { useForm } from "rc-field-form"
+import { withTranslation } from "react-i18next";
 
-const NewStaffForm = () => {
+const NewStaffForm = (props) => {
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
 
@@ -56,7 +57,7 @@ const NewStaffForm = () => {
         <JobForm />
         <Form.Item>
           <Button htmlType="submit" type="primary" loading={loading}>
-            Submit
+            {props.t("Submit")}
           </Button>
         </Form.Item>
       </Form>
@@ -64,4 +65,4 @@ const NewStaffForm = () => {
   )
 }
 
-export default NewStaffForm
+export default withTranslation()(NewStaffForm)

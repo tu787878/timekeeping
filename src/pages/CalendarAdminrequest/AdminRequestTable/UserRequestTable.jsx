@@ -3,8 +3,8 @@ import { Spin, Table } from "antd"
 import { columns } from "./columns"
 import { get, post } from "../../../helpers/api_helper"
 import * as url from "../../../helpers/url_helper"
-
-const AdminRequestTable = () => {
+import { withTranslation } from "react-i18next";
+const AdminRequestTable = (props) => {
   const [data, setData] = useState([])
   const [size, setSize] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -77,7 +77,7 @@ const AdminRequestTable = () => {
   return (
     <Spin spinning={loading}>
       <Table
-        columns={columns(doAccept, doDenied)}
+        columns={columns(doAccept, doDenied, props.t)}
         dataSource={data || []}
         bordered
         scroll={{ y: 500 }}
@@ -95,4 +95,4 @@ const AdminRequestTable = () => {
   )
 }
 
-export default AdminRequestTable
+export default withTranslation()(AdminRequestTable)

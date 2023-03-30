@@ -13,6 +13,7 @@ const EditTimeLogModal = ({
   openEditModal,
   setOpenEditModal,
   selectedItem,
+  tr
 }) => {
   const [form] = Form.useForm()
   const user = JSON.parse(localStorage.getItem("authUser"))
@@ -46,7 +47,7 @@ const EditTimeLogModal = ({
   return (
     <>
       <Modal
-        title="Edit time logs"
+        title={tr("Edit time logs")}
         open={openEditModal}
         footer={null}
         onCancel={handleCloseModal}
@@ -92,10 +93,10 @@ const EditTimeLogModal = ({
                         >
                           <Select placeholder="Select">
                             <Option key="WORK" value="WORK">
-                              WORK
+                            {tr("WORK")}
                             </Option>
                             <Option key="VACATION" value="VACATION">
-                              VACATION
+                            {tr("VACATION")}
                             </Option>
                             {/* <Option key="OTHERS" value="OTHERS">
                               OTHERS
@@ -111,14 +112,14 @@ const EditTimeLogModal = ({
                 ))}
                 <Form.Item>
                   <Button type="dashed" onClick={() => add()} block>
-                    Add time
+                  {tr("Add time")}
                   </Button>
                 </Form.Item>
               </>
             )}
           </Form.List>
 
-          <Form.Item name="note" label="Note">
+          <Form.Item name="note" label= {tr("Note")}>
             <TextArea />
           </Form.Item>
 
@@ -127,10 +128,10 @@ const EditTimeLogModal = ({
               style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}
             >
               <Button danger onClick={handleCloseModal}>
-                Cancel
+              {tr("Cancel")}
               </Button>
               <Button htmlType="submit" type="primary">
-                Save
+              {tr("Save")}
               </Button>
             </div>
           </Form.Item>

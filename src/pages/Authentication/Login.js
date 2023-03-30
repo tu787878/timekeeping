@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import { withTranslation } from "react-i18next";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 
@@ -34,8 +35,8 @@ const Login = props => {
       password: "" || '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required(props.t("Please Enter Your Email")),
+      password: Yup.string().required(props.t("Please Enter Your Password")),
     }),
     onSubmit: (values) => {
       // dispatch(loginUser(values, props.history));
@@ -78,8 +79,8 @@ const Login = props => {
                   <Row>
                     <Col xs={7}>
                       <div className="text-primary p-4">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Dashboard.</p>
+                        <h5 className="text-primary">{props.t("Welcome Back !")}</h5>
+                        <p>{props.t("Sign in to continue to Dashboard.")}</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
@@ -114,11 +115,11 @@ const Login = props => {
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
                       <div className="mb-3">
-                        <Label className="form-label">Email</Label>
+                        <Label className="form-label">{props.t("Email")}</Label>
                         <Input
                           name="email"
                           className="form-control"
-                          placeholder="Enter email"
+                          placeholder={props.t("Enter email")}
                           type="email"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
@@ -133,7 +134,7 @@ const Login = props => {
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Password</Label>
+                        <Label className="form-label">{props.t("Password")}</Label>
                         <Input
                           name="password"
                           value={validation.values.password || ""}
@@ -154,13 +155,13 @@ const Login = props => {
                           className="btn btn-primary btn-block"
                           type="submit"
                         >
-                          Log In
+                          {props.t("Log In")}
                         </button>
                       </div>
                       <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
-                          Forgot your password?
+                          {props.t("Forgot your password?")}
                         </Link>
                       </div>
                     </Form>
@@ -169,8 +170,8 @@ const Login = props => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  © {new Date().getFullYear()} Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by TCG Web & Marketing
+                  © {new Date().getFullYear()} {props.t("Crafted with")}{" "}
+                  <i className="mdi mdi-heart text-danger" /> {props.t("by")} TCG Web & Marketing
                 </p>
               </div>
             </Col>
@@ -181,7 +182,7 @@ const Login = props => {
   );
 };
 
-export default withRouter(Login);
+export default withRouter(withTranslation()(Login));
 
 Login.propTypes = {
   history: PropTypes.object,

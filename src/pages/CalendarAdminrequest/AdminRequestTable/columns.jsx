@@ -7,15 +7,15 @@ import {
 import { Button, Table, Space, Modal, Form, Input, Select } from "antd"
 import Moment from "react-moment"
 import _ from "lodash"
-export const columns = (doAccept, doDenied) => [
+export const columns = (doAccept, doDenied, tr) => [
   {
-    title: <b>User</b>,
+    title: <b>{tr("User")}</b>,
     dataIndex: "createdBy",
     key: "createdBy",
     align: "center",
   },
   {
-    title: <b>Date</b>,
+    title: <b>{tr("Date")}</b>,
     dataIndex: "onDate",
     key: "onDate",
     align: "center",
@@ -26,7 +26,7 @@ export const columns = (doAccept, doDenied) => [
     ),
   },
   {
-    title: <b>TimeLogs</b>,
+    title: <b>{tr("TimeLogs")}</b>,
     dataIndex: "timeLogs",
     key: "timeLogs",
     align: "center",
@@ -34,35 +34,35 @@ export const columns = (doAccept, doDenied) => [
       <div>
         {timeLogs.map(time => (
           <div key={time.id}>
-            {time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : time.info} 
+            {time.type !== "WORK" ? (tr(time.type) + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : tr(time.info)} 
           </div>
         ))}
       </div>
     ),
   },
   {
-    title: <b>Created at</b>,
+    title: <b>{tr("Created at")}</b>,
     dataIndex: "createdTime",
     key: "createdTime",
     align: "center",
     render: (_, record) => <Moment fromNow>{record.createdTime}</Moment>,
   },
   {
-    title: <b>Note</b>,
+    title: <b>{tr("Note")}</b>,
     dataIndex: "note",
     key: "note",
     align: "center",
   },
   {
-    title: <b>Action</b>,
+    title: <b>{tr("Action")}</b>,
     key: "action",
     align: "center",
     render: (_, record) => {
       return record.status ? (
         record.accept ? (
-          "accepted"
+          tr("Accepted")
         ) : (
-          "denied"
+          tr("Denied")
         )
       ) : (
         <Space size="middle">

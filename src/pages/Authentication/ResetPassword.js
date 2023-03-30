@@ -13,6 +13,7 @@ import {
 } from 'antd';
 //redux
 import { useSelector, useDispatch } from "react-redux";
+import { withTranslation } from "react-i18next";
 
 import { withRouter, Link } from "react-router-dom";
 import { get, post } from "../../helpers/api_helper"
@@ -143,11 +144,11 @@ const ResetPassword = props => {
                     >
                       <Form.Item
                         name="password"
-                        label="Password"
+                        label={props.t("New Password")}
                         rules={[
                           {
                             required: true,
-                            message: 'Please input your password!',
+                            message: props.t("Please input your new password!"),
                           },
                         ]}
                         hasFeedback
@@ -157,20 +158,20 @@ const ResetPassword = props => {
 
                       <Form.Item
                         name="confirm"
-                        label="Confirm Password"
+                        label={props.t("Confirm Password")}
                         dependencies={['password']}
                         hasFeedback
                         rules={[
                           {
                             required: true,
-                            message: 'Please confirm your password!',
+                            message: props.t("Please input your password again!"),
                           },
                           ({ getFieldValue }) => ({
                             validator(_, value) {
                               if (!value || getFieldValue('password') === value) {
                                 return Promise.resolve();
                               }
-                              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                              return Promise.reject(new Error(props.t("The two passwords that you entered do not match!")));
                             },
                           }),
                         ]}
@@ -184,11 +185,11 @@ const ResetPassword = props => {
                         }}
                       >
                         <Button type="primary" htmlType="submit">
-                          Do it
+                        {props.t("Change")}
                         </Button>
                       </Form.Item>
                     </Form> : <Alert color="success" style={{ marginTop: "13px" }}>
-                    {"Well done!"}
+                    {props.t("Well done!")}
                     </Alert>)}
 
                   </div>
@@ -196,9 +197,9 @@ const ResetPassword = props => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  Go back to{" "}
+                {props.t("Go back to")}
                   <Link to="login" className="font-weight-medium text-primary">
-                    Login
+                  {props.t("Login")}
                   </Link>{" "}
                 </p>
                 <p>
@@ -218,4 +219,4 @@ ResetPassword.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(ResetPassword);
+export default withRouter(withTranslation()(ResetPassword));

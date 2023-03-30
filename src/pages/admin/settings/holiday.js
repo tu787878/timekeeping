@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-
+import { withTranslation } from "react-i18next";
 import { Link, withRouter } from "react-router-dom"
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
@@ -18,7 +18,7 @@ import { Container } from "reactstrap"
 import dayjs from 'dayjs';
 import { Card, CardBody, Col, Row, CardHeader, CardTitle } from "reactstrap"
 
-const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
+const CollectionCreateForm = ({ open, onCreate, onCancel, tr }) => {
   const [locations, setLocations] = useState([])
   const [form] = Form.useForm();
 
@@ -47,9 +47,9 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   return (
     <Modal
       open={open}
-      title="Add a new holiday"
-      okText="Add"
-      cancelText="Cancel"
+      title={tr("Add a new holiday")}
+      okText={tr("Add")}
+      cancelText={tr("Cancel")}
       onCancel={onCancel}
       onOk={() => {
         form
@@ -73,11 +73,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
       >
         <Form.Item
           name="name"
-          label="Name"
+          label={tr("Name")}
         >
           <Input />
         </Form.Item>
-        <Form.Item name={["location", "id"]} label="Location">
+        <Form.Item name={["location", "id"]} label={tr("Location")}>
           <Select allowClear mode="multiple">
             {locations.map(location => {
               return (
@@ -88,11 +88,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
             })}
           </Select>
         </Form.Item>
-        <Form.Item name="date" format={"DD/MM/YYYY"} label="Date">
+        <Form.Item name="date" format={"DD/MM/YYYY"} label={tr("Date")}>
           <DatePicker />
         </Form.Item>
         <Form.Item name="isEveryYear" valuePropName="checked">
-          <Checkbox>Every Year</Checkbox>
+          <Checkbox>{tr("Every Year")}</Checkbox>
         </Form.Item>
 
       </Form>
@@ -169,7 +169,7 @@ const EditHoliday = props => {
     <>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Holiday" breadcrumbItem="Holiday" />
+          <Breadcrumbs title={props.t("Holiday")} breadcrumbItem={props.t("Holiday")} />
           <Row>
             <Col lg="12">
               <Card>
@@ -182,7 +182,7 @@ const EditHoliday = props => {
                       setOpen(true);
                     }}
                   >
-                    New Holiday
+                    {props.t("New Holiday")}
                   </Button>
                   <CollectionCreateForm
                     open={open}
@@ -190,6 +190,7 @@ const EditHoliday = props => {
                     onCancel={() => {
                       setOpen(false);
                     }}
+                    tr={props.t}
                   />
                 </CardBody>
               </Card>
@@ -247,4 +248,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(EditHoliday))
+)(withRouter(withTranslation()(EditHoliday)))

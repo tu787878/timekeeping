@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
+import { withTranslation } from "react-i18next";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { GET_STAFFS, GET_PROJECTS, UPLOAD_FILE_MULTI, GET_TASKS } from "../../helpers/url_helper";
@@ -25,7 +26,7 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
-const TasksCreate = () => {
+const TasksCreate = (props) => {
 
   const [projects, setProjects] = useState([])
   const [staffs, setStaffs] = useState([])
@@ -38,7 +39,7 @@ const TasksCreate = () => {
   const [project, setProject] = useState(null)
   const [accounts, setAccounts] = useState(null)
 
-  const props = {
+  const props2 = {
     onRemove: (file) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
@@ -70,7 +71,7 @@ const TasksCreate = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {
-    messageApi.success('Add a task success!');
+    messageApi.success(props.t("Add a task success!"));
   };
 
   const onFinish = (values) => {
@@ -141,18 +142,18 @@ const TasksCreate = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Tasks" breadcrumbItem="Create New" />
+          <Breadcrumbs title={props.t("Tasks")} breadcrumbItem={props.t("Create New")} />
           <Row>
             <Col lg="12">
               <Form labelCol={{ span: 3 }} name="nest-messages" onFinish={onFinish}>
                 <Form.Item
                   name={['name']}
-                  label="Name"
+                  label={props.t("Name")}
                 >
                   <Input />
                 </Form.Item>
 
-                <Form.Item label="Type" >
+                <Form.Item label={props.t("Type")} >
                   <Select
                     style={{
                       width: 120,
@@ -160,13 +161,13 @@ const TasksCreate = () => {
                     onChange={(type) => { setType(type) }}
                     defaultValue={"FEATURES"}
                   >
-                    <Option key="BUGS">Bugs</Option>
-                    <Option key="FEATURES">Features</Option>
-                    <Option key="TODO">Todo</Option>
-                    <Option key="OTHERS">Others</Option>
+                    <Option key="BUGS">{props.t("Bugs")}</Option>
+                    <Option key="FEATURES">{props.t("Features")}</Option>
+                    <Option key="TODO">{props.t("Todo")}</Option>
+                    <Option key="OTHERS">{props.t("Others")}</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Severity" >
+                <Form.Item label={props.t("Severity")} >
                   <Select
                     style={{
                       width: 120,
@@ -174,12 +175,12 @@ const TasksCreate = () => {
                     onChange={(severity) => { setSeverity(severity) }}
                     defaultValue={"LOW"}
                   >
-                    <Option key="LOW">Low</Option>
-                    <Option key="MEDIUM">Medium</Option>
-                    <Option key="HIGH">High</Option>
+                    <Option key="LOW">{props.t("Low")}</Option>
+                    <Option key="MEDIUM">{props.t("Medium")}</Option>
+                    <Option key="HIGH">{props.t("High")}</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Assign to Project" >
+                <Form.Item label={props.t("Assign to Project")} >
                   <Select
                     style={{
                       width: 120,
@@ -192,7 +193,7 @@ const TasksCreate = () => {
                     ))}
                   </Select>
                 </Form.Item>
-                <Form.Item label="Assign to Users">
+                <Form.Item label={props.t("Assign to Users")}>
                   <Select
                     mode="multiple"
                     style={{
@@ -213,18 +214,18 @@ const TasksCreate = () => {
 
                   </Select>
                 </Form.Item>
-                <Form.Item name={['description']} label="Description">
+                <Form.Item name={['description']} label={props.t("Description")}>
                   <Input.TextArea rows={6}/>
                 </Form.Item>
                 <Form.Item label="Documents">
-                  <Upload {...props} multiple>
-                    <Button icon={<UploadOutlined />}>Select File</Button>
+                  <Upload {...props2} multiple>
+                    <Button icon={<UploadOutlined />}>label={props.t("Select File")}</Button>
                   </Upload>
                 </Form.Item>
                 <Form.Item
                 >
                   <Button type="primary" htmlType="submit">
-                    Submit
+                  {props.t("Submit")}
                   </Button>
                 </Form.Item>
               </Form>
@@ -236,4 +237,4 @@ const TasksCreate = () => {
   );
 };
 
-export default TasksCreate;
+export default withTranslation()(TasksCreate);

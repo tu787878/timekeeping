@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { Form, Input, Row, Col, Select } from "antd"
 import { get } from "../../../helpers/api_helper"
 import { GET_LOCATIONS } from "../../../helpers/url_helper"
-
-const AccountForm = () => {
+import { withTranslation } from "react-i18next";
+const AccountForm = (props) => {
   const [locations, setLocations] = useState([])
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const AccountForm = () => {
 
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item name={"location"} label="Location" rules={[
-              { required: true, message: "Please input location!" },
+          <Form.Item name={"location"} label={props.t("Location")} rules={[
+              { required: true, message: props.t("Please input location!")},
             ]}>
             <Select allowClear>
               {locations.map(location => {
@@ -50,10 +50,10 @@ const AccountForm = () => {
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item
-            label="First name"
+            label={props.t("First name")}
             name="firstName"
             rules={[
-              { required: true, message: "Please input your firstname!" },
+              { required: true, message: props.t("Please input firstname!") },
             ]}
           >
             <Input />
@@ -62,9 +62,9 @@ const AccountForm = () => {
 
         <Col span={12}>
           <Form.Item
-            label="Last name"
+            label={props.t("Last name")}
             name="lastName"
-            rules={[{ required: true, message: "Please input your lastname!" }]}
+            rules={[{ required: true, message: props.t("Please input lastname!") }]}
           >
             <Input />
           </Form.Item>
@@ -74,10 +74,10 @@ const AccountForm = () => {
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item
-            label="Phone"
+            label={props.t("Phone")}
             name="phone"
             rules={[
-              { required: true, message: "Please input your phone number!" },
+              { required: true, message: props.t("Please input phone number!")},
             ]}
           >
             <Input />
@@ -86,9 +86,9 @@ const AccountForm = () => {
 
         <Col span={12}>
           <Form.Item
-            label="Email"
+            label={props.t("Email")}
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[{ required: true, message: props.t("Please input email!") }]}
           >
             <Input />
           </Form.Item>
@@ -98,4 +98,4 @@ const AccountForm = () => {
   )
 }
 
-export default AccountForm
+export default withTranslation()(AccountForm)

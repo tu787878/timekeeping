@@ -2,6 +2,8 @@ import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import { withTranslation } from "react-i18next";
+
 import {
     Card,
     CardBody,
@@ -59,7 +61,7 @@ const EditProfile = props => {
 
     const [messageApi, contextHolder] = message.useMessage();
     const success = () => {
-        messageApi.success('Edit profile success!');
+        messageApi.success(props.t("Edit profile success!"));
     };
     const getUser = () => {
         let u = url.GET_STAFFS + "/-1";
@@ -125,7 +127,7 @@ const EditProfile = props => {
                     marginTop: 8,
                 }}
             >
-                Change Avatar
+                {props.t("Change Avatar")}
             </div>
         </div>
     );
@@ -136,7 +138,7 @@ const EditProfile = props => {
             <div className="page-content">
                 <Container fluid>
                     {/* Render Breadcrumbs */}
-                    <Breadcrumbs title="Staffs" breadcrumbItem="Edit Profile" />
+                    <Breadcrumbs title={props.t("Staffs")} breadcrumbItem={props.t("Edit Profile")} />
 
                     <Row>
                         <Col xl="12">
@@ -197,7 +199,7 @@ const EditProfile = props => {
                                             <div className="pt-4">
                                                 <Row>
                                                     <Col xs="8">
-                                                        <p className="text-muted mb-0">Username</p>
+                                                        <p className="text-muted mb-0">{props.t("Username")}</p>
                                                         <h5 className="font-size-12">
                                                             {info?.username}
                                                         </h5>
@@ -216,7 +218,7 @@ const EditProfile = props => {
                         <Col md="6">
                             <Card>
                                 <CardBody>
-                                    <CardTitle className="mb-4">Personal Information</CardTitle>
+                                    <CardTitle className="mb-4">{props.t("Personal Information")}</CardTitle>
                                     <Form form={form}
                                         name="basic"
                                         labelCol={{
@@ -232,31 +234,31 @@ const EditProfile = props => {
                                     >
                                         <Form.Item
                                             name={["userDetail", "email"]}
-                                            label="Email"
+                                            label={props.t("Email")}
                                         >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
                                             name={["userDetail", "firstName"]}
-                                            label="First Name"
+                                            label={props.t("First Name")}
                                         >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
                                             name={["userDetail", "lastName"]}
-                                            label="Last Name"
+                                            label={props.t("Last Name")}
                                         >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
                                             name={["userDetail", "phone"]}
-                                            label="Phone"
+                                            label={props.t("Phone")}
                                         >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
                                             name={["userDetail", "address"]}
-                                            label="Address"
+                                            label={props.t("Address")}
                                         >
                                             <Input />
                                         </Form.Item>
@@ -268,7 +270,7 @@ const EditProfile = props => {
                                             }}
                                         >
                                             <Button type="primary" htmlType="submit">
-                                                Save
+                                            {props.t("Save")}
                                             </Button>
                                         </Form.Item>
                                     </Form>
@@ -278,7 +280,7 @@ const EditProfile = props => {
                         <Col>
                             <Card>
                                 <CardBody>
-                                    <CardTitle className="mb-4">Change password</CardTitle>
+                                    <CardTitle className="mb-4">{props.t("Change password")}</CardTitle>
                                     <Form
                                         form={form2}
                                         name="register"
@@ -287,11 +289,11 @@ const EditProfile = props => {
                                     >
                                         <Form.Item
                                             name="oldPassword"
-                                            label="Old Password"
+                                            label={props.t("Old Password")}
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: 'Please input your old password!',
+                                                    message: props.t("Please input your old password!"),
                                                 },
                                             ]}
                                         >
@@ -299,11 +301,11 @@ const EditProfile = props => {
                                         </Form.Item>
                                         <Form.Item
                                             name="password"
-                                            label="Password"
+                                            label={props.t("New Password")}
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: 'Please input your new password!',
+                                                    message: props.t("Please input your new password!"),
                                                 },
                                             ]}
                                             hasFeedback
@@ -313,20 +315,20 @@ const EditProfile = props => {
 
                                         <Form.Item
                                             name="confirm"
-                                            label="Confirm Password"
+                                            label={props.t("Confirm Password")}
                                             dependencies={['password']}
                                             hasFeedback
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: 'Please confirm your password!',
+                                                    message: props.t("Please input your password again!"),
                                                 },
                                                 ({ getFieldValue }) => ({
                                                     validator(_, value) {
                                                         if (!value || getFieldValue('password') === value) {
                                                             return Promise.resolve();
                                                         }
-                                                        return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                                        return Promise.reject(new Error(props.t("The two passwords that you entered do not match!")));
                                                     },
                                                 }),
                                             ]}
@@ -341,7 +343,7 @@ const EditProfile = props => {
                                             }}
                                         >
                                             <Button type="primary" htmlType="submit">
-                                                Do it
+                                            {props.t("Submit")}
                                             </Button>
                                         </Form.Item>
                                     </Form>
@@ -372,4 +374,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(EditProfile));
+)(withRouter(withTranslation()(EditProfile)));

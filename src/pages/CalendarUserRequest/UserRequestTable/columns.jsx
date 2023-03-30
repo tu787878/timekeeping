@@ -5,15 +5,15 @@ import {
 } from "@ant-design/icons"
 import { Button, Table, Space, Modal, Form, Input, Select, } from "antd"
 import Moment from 'react-moment';
-export const columns = (doCancel) => [
+export const columns = (doCancel, tr) => [
   {
-    title: <b>User</b>,
+    title: <b>{tr("User")}</b>,
     dataIndex: "createdBy",
     key: "createdBy",
     align: "center",
   },
   {
-    title: <b>Date</b>,
+    title: <b>{tr("Date")}</b>,
     dataIndex: "onDate",
     key: "onDate",
     align: "center",
@@ -24,7 +24,7 @@ export const columns = (doCancel) => [
     ),
   },
   {
-    title: <b>TimeLogs</b>,
+    title: <b>{tr("Timelogs")}</b>,
     dataIndex: "timeLogs",
     key: "timeLogs",
     align: "center",
@@ -32,14 +32,14 @@ export const columns = (doCancel) => [
       <div>
         {
           timeLogs.map(time => (
-            <div key={time.id}>{time.type !== "WORK" ? (time.type + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : time.info} </div>
+            <div key={time.id}>{time.type !== "WORK" ? (tr(time.type) + ":") : ""} {(time.info === "CUSTOM" || time.info === null)  ? (time.timeFrom + "-" + time.timeTo) : tr(time.info)} </div>
           ))
         }
       </div>
     )
   },
   {
-    title: <b>Created at</b>,
+    title: <b>{tr("Created at")}</b>,
     dataIndex: "createdTime",
     key: "createdTime",
     align: "center",
@@ -48,13 +48,13 @@ export const columns = (doCancel) => [
     ),
   },
   {
-    title: <b>Note</b>,
+    title: <b>{tr("Note")}</b>,
     dataIndex: "note",
     key: "note",
     align: "center",
   },
   {
-    title: <b>Action</b>,
+    title: <b>{tr("Action")}</b>,
     key: "action",
     align: "center",
     render: (_, record) => {

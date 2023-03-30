@@ -1,13 +1,13 @@
 import React from "react"
 import AdminRequestTable from "./AdminRequestTable/UserRequestTable"
-
-const CalendarAdminRequest = () => {
+import { withTranslation } from "react-i18next";
+const CalendarAdminRequest = (props) => {
   return (
     <div className="page-content">
-      <h1>Admin Requests</h1>
+      <h1>{props.t("Admin Requests")}</h1>
       <AdminRequestTable />
     </div>
   )
 }
 
-export default CalendarAdminRequest
+export default withTranslation()(CalendarAdminRequest)

@@ -8,7 +8,7 @@ import { del, get, post } from "../../../helpers/api_helper"
 import * as url from "../../../helpers/url_helper"
 import { Select } from "antd"
 import { BlockPicker, ChromePicker } from "react-color";
-
+import { withTranslation } from "react-i18next";
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import { Button, Checkbox, Form, Input, Upload, message } from 'antd';
@@ -44,12 +44,12 @@ const EditGeneral = props => {
     const beforeUpload = (file) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+            message.error(props.t("You can only upload JPG/PNG file!"));
             return false;
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+            message.error(props.t("Image must smaller than 2MB!"));
             return false;
         }
 
@@ -229,11 +229,11 @@ const EditGeneral = props => {
         <>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumbs title="General Settings" breadcrumbItem="General Settings" />
+                    <Breadcrumbs title={props.t("General Settings")} breadcrumbItem={props.t("General Settings")} />
                     <Row>
                         <Col lg="12">
                             <Button onClick={resetAllWhiteList} danger>
-                                Reset whitelist! 
+                            {props.t("Reset whitelist!")}
                             </Button>
                             <Card>
                                 
@@ -259,24 +259,24 @@ const EditGeneral = props => {
                                         autoComplete="off"
                                     >
                                         <Form.Item
-                                            label="Business name"
+                                            label={props.t("Business name")}
                                             name={["businessName", "settingValue"]}
                                         >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
-                                            label="Master Username"
+                                            label={props.t("Master Username")}
                                             name={["masterUsername", "settingValue"]}
                                         >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
-                                            label="Master Password"
+                                            label={props.t("Master Password")}
                                             name={["masterPassword", "settingValue"]}
                                         >
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item label="Logo">
+                                        <Form.Item label={props.t("Logo")}>
 
                                             <Upload
                                                 name="avatar"
@@ -300,7 +300,7 @@ const EditGeneral = props => {
                                             </Upload>
                                         </Form.Item>
                                         <Form.Item
-                                            label="Notification text"
+                                            label={props.t("Notification text")}
                                             name={["notifyText", "settingValue"]}
                                         >
                                             <TextArea rows={4} />
@@ -318,11 +318,11 @@ const EditGeneral = props => {
                                                 setShowNoti(e.target.checked)
                                             }}
                                         >
-                                            <Checkbox>Show notify</Checkbox>
+                                            <Checkbox>{props.t("Show notify")}</Checkbox>
                                         </Form.Item>
 
                                         <Form.Item
-                                            label="Check in color"
+                                            label={props.t("Check in color")}
                                         >
                                             {/* Block Picker from react-color and handling color on onChange event */}
                                             <ChromePicker
@@ -336,7 +336,7 @@ const EditGeneral = props => {
                                             />
                                         </Form.Item>
                                         <Form.Item
-                                            label="Check out color"
+                                            label={props.t("Check out color")}
                                         >
                                             <ChromePicker
 
@@ -355,7 +355,7 @@ const EditGeneral = props => {
                                             }}
                                         >
                                             <Button type="primary" htmlType="submit">
-                                                Submit
+                                            {props.t("Submit")}
                                             </Button>
                                         </Form.Item>
 
@@ -384,4 +384,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(EditGeneral))
+)(withRouter(withTranslation()(EditGeneral)));

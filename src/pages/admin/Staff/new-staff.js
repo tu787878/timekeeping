@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import { Card, CardBody, Col, Container, Row } from "reactstrap"
 import { withRouter } from "react-router-dom"
-
+import { withTranslation } from "react-i18next";
 //redux
 import { connect, useSelector, useDispatch } from "react-redux"
 
@@ -75,4 +75,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(NewStaff))
+)(withRouter(withTranslation()(NewStaff)))

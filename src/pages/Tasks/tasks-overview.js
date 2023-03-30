@@ -14,6 +14,8 @@ import { del, get, post, put } from "../../helpers/api_helper"
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 import { Card } from "antd"
+import { withTranslation } from "react-i18next";
+
 //redux
 import { useSelector, useDispatch } from "react-redux"
 export const EDIT_PROFILE = "EDIT_PROFILE"
@@ -36,7 +38,7 @@ import Moment from "react-moment"
 import { InboxOutlined, UploadOutlined, DeleteTwoTone } from "@ant-design/icons"
 import { useParams } from "react-router-dom"
 const { Option } = Select
-const TasksOverview = () => {
+const TasksOverview = (props) => {
   const [teams, setTeams] = useState([])
   const [staffs, setStaffs] = useState([])
   const [project, setProject] = useState(null)
@@ -59,7 +61,7 @@ const TasksOverview = () => {
   const obj = JSON.parse(localStorage.getItem("authUser"))
   const accountId = obj.account.id
 
-  const props = {
+  const props2 = {
     onRemove: file => {
       const index = fileList.indexOf(file)
       const newFileList = fileList.slice()
@@ -118,12 +120,12 @@ const TasksOverview = () => {
 
   const [messageApi, contextHolder] = message.useMessage()
   const success = () => {
-    messageApi.success("Add a team success!")
+    messageApi.success(props.t("Add a team success!"))
   }
   const error = () => {
     messageApi.open({
       type: "error",
-      content: "Upload failed",
+      content: props.t("Upload failed"),
     })
   }
 
@@ -242,7 +244,7 @@ const TasksOverview = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Tasks" breadcrumbItem="Task Overview" />
+          <Breadcrumbs title={props.t("Tasks")} breadcrumbItem={props.t("Task Overview")} />
           <Row>
             <Col lg="8">
               <Row>
@@ -256,53 +258,53 @@ const TasksOverview = () => {
                       : "red"
                   }
                 >
-                  <Card title="Task">
+                  <Card title={props.t("Task")}>
                     <Form
                       form={form}
                       name="nest-messages"
                       onFinish={onFinish}
                       initialValues={project}
                     >
-                      <Form.Item name={["name"]} label="Name">
+                      <Form.Item name={["name"]} label={props.t("Name")}>
                         <Input />
                       </Form.Item>
-                      <Form.Item name={"status"} label="Status">
+                      <Form.Item name={"status"} label={props.t("Status")}>
                         <Select
                           style={{
                             width: 120,
                           }}
                         >
-                          <Option key={"TODO"}>{"Todo"}</Option>
-                          <Option key={"PROCESSING"}>{"Processing"}</Option>
-                          <Option key={"DONE"}>{"Done"}</Option>
+                          <Option key={"TODO"}>{props.t("Todo")}</Option>
+                          <Option key={"PROCESSING"}>{props.t("Processing")}</Option>
+                          <Option key={"DONE"}>{props.t("Done")}</Option>
                         </Select>
                       </Form.Item>
-                      <Form.Item name={"type"} label="Type">
+                      <Form.Item name={"type"} label={props.t("Type")}>
                         <Select
                           style={{
                             width: 120,
                           }}
                         >
-                          <Option key="BUGS">Bugs</Option>
-                          <Option key="FEATURES">Features</Option>
-                          <Option key="TODO">Todo</Option>
-                          <Option key="OTHERS">Others</Option>
+                          <Option key="BUGS">{props.t("Bugs")}</Option>
+                          <Option key="FEATURES">{props.t("Features")}</Option>
+                          <Option key="TODO">{props.t("Todo")}</Option>
+                          <Option key="OTHERS">{props.t("Others")}</Option>
                         </Select>
                       </Form.Item>
-                      <Form.Item name={"severity"} label="Severity">
+                      <Form.Item name={"severity"} label={props.t("Severity")}>
                         <Select
                           style={{
                             width: 120,
                           }}
                         >
-                          <Option key="LOW">Low</Option>
-                          <Option key="MEDIUM">Medium</Option>
-                          <Option key="HIGH">High</Option>
+                          <Option key="LOW">{props.t("Low")}</Option>
+                          <Option key="MEDIUM">{props.t("Medium")}</Option>
+                          <Option key="HIGH">{props.t("High")}</Option>
                         </Select>
                       </Form.Item>
                       <Form.Item
                         name={["project", "id"]}
-                        label="Assign to Project"
+                        label={props.t("Assign to Project")}
                       >
                         <Select
                           style={{
@@ -320,7 +322,7 @@ const TasksOverview = () => {
                           ))}
                         </Select>
                       </Form.Item>
-                      <Form.Item label="Assign to Users">
+                      <Form.Item label={props.t("Assign to Users")}>
                         <Select
                           value={accounts}
                           mode="multiple"
@@ -344,7 +346,7 @@ const TasksOverview = () => {
                           })}
                         </Select>
                       </Form.Item>
-                      <Form.Item name={["description"]} label="Description">
+                      <Form.Item name={["description"]} label={props.t("Description")}>
                         <Input.TextArea rows={6} />
                       </Form.Item>
                       {oldMedia?.map(med => {
@@ -364,9 +366,9 @@ const TasksOverview = () => {
                           </>
                         )
                       })}
-                      <Form.Item label="Documents">
-                        <Upload {...props} multiple>
-                          <Button icon={<UploadOutlined />}>Select File</Button>
+                      <Form.Item label={props.t("Documents")}>
+                        <Upload {...props2} multiple>
+                          <Button icon={<UploadOutlined />}>{props.t("Select File")}</Button>
                         </Upload>
                       </Form.Item>
                       <Form.Item
@@ -376,7 +378,7 @@ const TasksOverview = () => {
                         }}
                       >
                         <Button type="primary" htmlType="submit">
-                          Save
+                        {props.t("Save")}
                         </Button>
                       </Form.Item>
                     </Form>
@@ -407,7 +409,7 @@ const TasksOverview = () => {
 
             <Col lg="4">
               <Row>
-                <Card title="Comments">
+                <Card title={props.t("Comments")}>
                   <List
                     itemLayout="horizontal"
                     dataSource={project?.comments}
@@ -478,7 +480,7 @@ const TasksOverview = () => {
                           style={{ width: "calc(100% - 100px)" }}
                         />
                         <Button onClick={doComment} type="primary">
-                          Send
+                          {props.t("Send")}
                         </Button>
                       </Input.Group>
                     </Form.Item>
@@ -498,4 +500,4 @@ TasksOverview.propTypes = {
   match: PropTypes.object,
 }
 
-export default withRouter(TasksOverview)
+export default withRouter(withTranslation()(TasksOverview))

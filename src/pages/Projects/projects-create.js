@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
-
+import { withTranslation } from "react-i18next";
 import "react-datepicker/dist/react-datepicker.css";
 import { GET_STAFFS, GET_TEAMS, GET_PROJECTS, UPLOAD_FILE_MULTI } from "../../helpers/url_helper";
 import { del, get, post, put } from "../../helpers/api_helper";
@@ -25,7 +25,7 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
-const ProjectsCreate = () => {
+const ProjectsCreate = (props) => {
 
   const [teams, setTeams] = useState([])
   const [staffs, setStaffs] = useState([])
@@ -36,7 +36,7 @@ const ProjectsCreate = () => {
   const [team, setTeam] = useState(null)
   const [accounts, setAccounts] = useState(null)
 
-  const props = {
+  const props2 = {
     onRemove: (file) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
@@ -68,12 +68,12 @@ const ProjectsCreate = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {
-    messageApi.success('Add a project success!');
+    messageApi.success(props.t("Add a project success!"));
   };
   const error = () => {
     messageApi.open({
       type: 'error',
-      content: 'Upload failed',
+      content: props.t("Upload failed"),
     });
   };
 
@@ -142,18 +142,18 @@ const ProjectsCreate = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Projects" breadcrumbItem="Create New" />
+          <Breadcrumbs title={props.t("Projects" )} breadcrumbItem={props.t("Create New")} />
           <Row>
             <Col lg="12">
               <Form labelCol={{ span: 3 }} name="nest-messages" onFinish={onFinish}>
                 <Form.Item
                   name={['name']}
-                  label="Name"
+                  label={props.t("Name")}
                 >
                   <Input />
                 </Form.Item>
 
-                <Form.Item label="Assign to Team" >
+                <Form.Item label={props.t("Assign to Team")} >
                   <Select
                     style={{
                       width: 120,
@@ -166,7 +166,7 @@ const ProjectsCreate = () => {
                     ))}
                   </Select>
                 </Form.Item>
-                <Form.Item label="Assign to Users">
+                <Form.Item label={props.t("Assign to Users")}>
                   <Select
                     mode="multiple"
                     style={{
@@ -187,18 +187,18 @@ const ProjectsCreate = () => {
 
                   </Select>
                 </Form.Item>
-                <Form.Item name={['description']} label="Description">
+                <Form.Item name={['description']} label={props.t("Description")}>
                   <Input.TextArea rows={6} />
                 </Form.Item>
-                <Form.Item label="Documents">
-                  <Upload {...props} multiple>
-                    <Button icon={<UploadOutlined />}>Select File</Button>
+                <Form.Item label={props.t("Documents")}>
+                  <Upload {...props2} multiple>
+                    <Button icon={<UploadOutlined />}>{props.t("Select File")}</Button>
                   </Upload>
                 </Form.Item>
                 <Form.Item
                 >
                   <Button type="primary" htmlType="submit">
-                    Submit
+                  {props.t("Submit")}
                   </Button>
                 </Form.Item>
               </Form>
@@ -210,4 +210,4 @@ const ProjectsCreate = () => {
   );
 };
 
-export default ProjectsCreate;
+export default withTranslation()(ProjectsCreate);
