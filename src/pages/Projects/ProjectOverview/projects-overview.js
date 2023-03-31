@@ -347,7 +347,7 @@ const ProjectsOverview = (props) => {
                       {oldMedia?.map(med => {
                         return (
                           <>
-                            <a key={"link" + med.id} href={med.link}>
+                            <a key={"link" + med.id} href={process.env.REACT_APP_API_HOST+med.link}>
                               <Tag>{med.title}</Tag>
                             </a>
                             <a

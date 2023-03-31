@@ -42,6 +42,11 @@ const JobForm = (props) => {
             <Input />
           </Form.Item>
         </Col>
+        <Col span={12}>
+          <Form.Item label={props.t("Min Overtime (in minutes)")} name="minOvertime">
+            <Input />
+          </Form.Item>
+        </Col>
       </Row>
       <Row>
         <Col span={24}>

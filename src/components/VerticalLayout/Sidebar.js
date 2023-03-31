@@ -26,7 +26,7 @@ const Sidebar = props => {
     get(url.BASE + "/general-setting?key=logo")
         .then(data => {
             console.log(data.data);
-            setLogo(data.data.logo.settingValue)
+            setLogo(process.env.REACT_APP_API_HOST+data.data.logo.settingValue)
         }).catch(err => {
             console.log(err);
         })

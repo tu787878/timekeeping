@@ -28,32 +28,43 @@ const { Panel } = Collapse
 
 const dayOfWeeks =  ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]  
 
-const columns = [
+const toTime = (minutes) => {
+  let negative = false;
+  if (minutes < 0) negative = true;
+
+  minutes = Math.abs(minutes);
+  var m = minutes % 60;
+  var h = (minutes - m) / 60;
+  return (negative ? "-" : "") + h + ":" + ((m < 10) ? "0" : "") + m;
+}
+
+const columns = tr => [
   {
-    title: "DayOfWeek",
+    title: tr("Day"),
     dataIndex: "dayOfWeek",
     key: "dayOfWeek",
     render: value => dayOfWeeks[value]
   },
   {
-    title: "TimeFrom",
+    title: tr("From"),
     dataIndex: "timeFrom",
     key: "timeFrom",
   },
   {
-    title: "TimeTo",
+    title: tr("To"),
     dataIndex: "timeTo",
     key: "timeTo",
   },
   {
-    title: "BreakTime",
+    title: tr("Breaktime"),
     dataIndex: "breakTime",
     key: "breakTime",
   },
   {
-    title: "Total",
+    title: tr("Total time"),
     dataIndex: "total",
     key: "total",
+    render: value => toTime(value)
   }
 ]
 
@@ -165,7 +176,10 @@ const Calender = (props) => {
                           {props.t("days")} ({vacation / 60}{props.t("h")}/{user?.job?.maxHours * 8}
                           {props.t("h")})
                           </p>
-                          <Table columns={columns} dataSource={user?.workingTimes}/>
+                          <p className="mb-0 text-truncate">
+                          {props.t("Min Overtime")}: {user?.job?.minOvertime} {props.t("mins")}
+                          </p>
+                          <Table columns={columns(props.t)} dataSource={user?.workingTimes}/>
                         </Panel>
                       </Collapse>
                     </Col>

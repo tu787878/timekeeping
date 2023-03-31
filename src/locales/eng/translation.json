@@ -211,5 +211,7 @@
   "Please Enter Master Username":"Please Enter Master Username",
   "Please Enter Master Password":"Please Enter Master Password",
   "Authentication failed!":"Authentication failed!",
-  "Authenticate":"Authenticate"
+  "Authenticate":"Authenticate",
+
+  "Min Overtime (in Hours)":"Min Overtime (in Hours)"
 }

@@ -142,6 +142,7 @@ const StaffManager = props => {
       minHours: value.job.minHours,
       maxHours: value.job.maxHours,
       workingType: value.job.workingTimeType,
+      minOvertime: value.job.minOvertime,
       // workFrom: workFrom,
       // workTo: workTo,
       id: value.id,
@@ -472,6 +473,9 @@ const StaffManager = props => {
             )}
           </Form.List>
           <Form.Item name={["job", "maxHours"]} label={props.t("Vacation days (in year)")}>
+            <Input />
+          </Form.Item>
+          <Form.Item name={["job", "minOvertime"]} label={props.t("Min Overtime (in minutes)")}>
             <Input />
           </Form.Item>
           {/* <Form.Item

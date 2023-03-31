@@ -118,7 +118,7 @@ const EditGeneral = props => {
                     data.data.showNotify.settingValue = data.data.showNotify.settingValue === "true" ? true : false
                     setShowNoti(data.data.showNotify.settingValue);
                 }
-                setImageUrl(data.data.logo.settingValue)
+                setImageUrl(process.env.REACT_APP_API_HOST+data.data.logo.settingValue)
                 setCheckInColor(data.data.checkInColor.settingValue);
                 setCheckOutColor(data.data.checkOutColor.settingValue);
                 setMasterPassword(data.data.masterPassword.settingValue)
