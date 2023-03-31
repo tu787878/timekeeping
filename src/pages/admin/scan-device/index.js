@@ -341,19 +341,8 @@ const ScanDevice = props => {
           <p> Instruction:</p>
           <Card>
             <CardBody>
-              <p> Download source code:</p>
-              <code>git clone https://github.com/tu787878/scan-device-rfid</code>
-            </CardBody>
-          </Card>
-          
-          <Card>
-            <CardBody>
-            <p> Create file license:</p>
-              <code>cd scan-device-rfid</code>
-              <br></br>
-              <code>rm /license/RFIDLicense.txt </code>
-              <br></br>
-              <code>nano /license/RFIDLicense.txt </code>
+            <p> Create file license /home/Desktop/License:</p>
+              <code>nano /home/Desktop/License </code>
             </CardBody>
           </Card>
             <Card>
