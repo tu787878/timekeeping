@@ -33,6 +33,7 @@ const checkPermissions = (accountRole = {}, allowedPermissions, id) => {
 const checkWhiteList = () => {
 
   axios.get("https://geolocation-db.com/json/").then(res => {
+    console.log(res.data);
     get(url.BASE + "/authenticate/checkIp?ipv4=" + res.data.IPv4).then(data => {
       if(data.code == 1) {
         setTimeout(() => {

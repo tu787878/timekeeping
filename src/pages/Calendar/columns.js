@@ -13,7 +13,7 @@ const toTime = (minutes) => {
   return (negative ? "-" : "") + h + ":" + ((m < 10) ? "0" : "") + m;
 }
 
-export const tableColumns = (handleOpenEditModal, id, tr) => [
+export const tableColumns = (handleOpenEditModal, id, tr, userJob) => [
   {
     title: tr("Day"),
     key: "dayOfWeek",
@@ -35,7 +35,7 @@ export const tableColumns = (handleOpenEditModal, id, tr) => [
       return record.dateType !== "HOLIDAY" ? (  
       <> 
           {timeLogs.map(time => (
-            <div style={{color: time.status === "VALID" ? "black" : "red"}} key={time.id}>
+            <div style={{color: time.status !== "VALID" ||  time.type !== "WORK" ? "red" : "black"}} key={time.id}>
              {time.type !== "WORK" ? (tr(time.type) + ":") : ""} {(time.info === "CUSTOM" || time.info === null || time.info === "")  ? (time.timeFrom + "-" + time.timeTo) : tr(time.info)} 
             </div>
           ))}
@@ -72,7 +72,7 @@ export const tableColumns = (handleOpenEditModal, id, tr) => [
     align: "center",
     render: balance => (
       <>
-        <div style={{ color: balance < 0 ? "red" : "green" }}>{toTime(balance)}</div>
+        <div style={{ color: balance < 0 ? "red" : (balance <= userJob?.minOvertime ? "orange" : "green" )}}>{toTime(balance)} {balance > userJob?.minOvertime ? "(" + toTime(balance - userJob?.minOvertime) + ")" : "" }</div>
       </>
     ),
   },

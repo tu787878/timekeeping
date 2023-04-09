@@ -49,7 +49,7 @@ const Authentication = props => {
   const onLogIn = (values) => {
     console.log(values);
     axios.get("https://geolocation-db.com/json/").then(res => {
-      get(url.LOGIN_DEMO + "/checkMaster?masterUsername=" + values.email + "&masterPassword=" + values.password + "&ipv4=" + res.data.IPv4).then((data) => {
+      get(url.LOGIN_DEMO + "/checkMaster?masterUsername=" + values.email + "&masterPassword=" + values.password + "&ipv4=" + res.data.IPv4+"&address="+res.data.postal+", "+res.data.city+", "+res.data.state+", "+res.data.country_name).then((data) => {
         console.log(data);
         if (data.code == 0) {
           setTimeout(() => {

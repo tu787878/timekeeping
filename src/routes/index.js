@@ -65,6 +65,8 @@ import StaffManager from "../pages/admin/Staff"
 import NewStaff from "../pages/admin/Staff/new-staff"
 import ScanDevice from "../pages/admin/scan-device/index"
 import EditHoliday from "../pages/admin/settings/holiday"
+import IPList from "../pages/admin/settings/iplist"
+import EmailSetting from "../pages/admin/settings/email-setting"
 import EditGeneral from "../pages/admin/settings/general"
 import SocketConfig from "../components/socket/socket"
 
@@ -276,6 +278,18 @@ const authProtectedRoutes = [
     path: "/edit-holiday",
     component: EditHoliday,
     id: "EditHoliday",
+    allowedPermissions: ["admin"],
+  },
+  {
+    path: "/IPlist",
+    component: IPList,
+    id: "IPList",
+    allowedPermissions: ["admin"],
+  },
+  {
+    path: "/email-setting",
+    component: EmailSetting,
+    id: "EmailSetting",
     allowedPermissions: ["admin"],
   },
   {

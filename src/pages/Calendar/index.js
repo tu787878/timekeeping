@@ -24,6 +24,7 @@ import TimeLogsTable from "./TimeLogsTable"
 import { useParams } from "react-router-dom"
 import { Avatar, DatePicker, Collapse, Table } from "antd"
 import LeaveDayModal from "./leave-day-modal"
+import ExportCalendarModel from "./export-modal"
 const { Panel } = Collapse
 
 const dayOfWeeks =  ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]  
@@ -187,6 +188,9 @@ const Calender = (props) => {
                     <Col>
                       <LeaveDayModal />
                     </Col>
+                    <Col>
+                      <ExportCalendarModel />
+                    </Col>
                     <Col className="d-flex justify-content-end">
                       <DatePicker
                         onChange={onChange}
@@ -235,7 +239,7 @@ const Calender = (props) => {
                   </Row> */}
                   <Row>
                     <Col>
-                      <TimeLogsTable id={id} month={month} tr={props.t} />
+                      <TimeLogsTable id={id} month={month} tr={props.t} userJob={user?.job}/>
                     </Col>
                   </Row>
                 </CardBody>

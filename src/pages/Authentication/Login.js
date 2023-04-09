@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { withTranslation } from "react-i18next";
+import axios from 'axios'
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 
@@ -47,21 +48,26 @@ const Login = props => {
   const [error, setError] = useState(null);
 
   const onLogIn = (values) => {
-    let d = {
-      username: values.email,
-      password: values.password
-    }
-    post(url.LOGIN_DEMO, d).then((data) => {
-      localStorage.setItem("authUser", JSON.stringify(data.data));
-      // props.history.push("/dashboard")
-      setTimeout(()=>{
-        window.location.href = "/dashboard";
-    }, 1000)
-    }).catch(error => {
-      let mess = JSON.parse(error.request.response).message;
-      setError(mess)
+    
+    axios.get("https://geolocation-db.com/json/").then(res => {
+      let d = {
+        username: values.email,
+        password: values.password,
+        ipv4: res.data.IPv4
+      }
+      post(url.LOGIN_DEMO, d).then((data) => {
+        localStorage.setItem("authUser", JSON.stringify(data.data));
+        // props.history.push("/dashboard")
+        setTimeout(()=>{
+          window.location.href = "/dashboard";
+      }, 1000)
+      }).catch(error => {
+        let mess = JSON.parse(error.request.response).message;
+        setError(mess)
+      })
     })
   }
+
 
   return (
     <React.Fragment>

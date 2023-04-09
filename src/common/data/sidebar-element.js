@@ -202,6 +202,22 @@ const adminContent = [
         contextId: "Holiday",
         children: [],
       },
+      {
+        path: "/IPlist",
+        id: "IPList",
+        allowedPermissions: ["edit"],
+        className: "",
+        contextId: "IPList",
+        children: [],
+      },
+      {
+        path: "/email-setting",
+        id: "EmailSetting",
+        allowedPermissions: ["edit"],
+        className: "",
+        contextId: "EmailSetting",
+        children: [],
+      },
     ],
   },
 

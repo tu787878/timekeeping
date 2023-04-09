@@ -35,6 +35,7 @@ const EditGeneral = props => {
     const [file, setFile] = useState(null);
     const [data, setData] = useState(null);
     const [checkInColor, setCheckInColor] = useState("rgb(255,0,0)");
+    const [standByColor, setStandByColor] = useState("rgb(255,255,255)");
     const [checkOutColor, setCheckOutColor] = useState("rgb(255,0,0)");
     const [showNoti, setShowNoti] = useState(true);
     const [masterUsername, setMasterUsername] = useState("");
@@ -89,28 +90,10 @@ const EditGeneral = props => {
     );
 
     const [open, setOpen] = useState(false);
-    const onCreate = (values) => {
-        console.log('Received values of form: ', values);
-        setOpen(false);
-        let holiday = {
-            date: values.date.format("DD/MM/YYYY"),
-            name: values.name,
-            year: year.format("YYYY"),
-            locations: values.location.id,
-            isEveryYear: values.isEveryYear ? 1 : 0
-        }
-        console.log(holiday);
-        post(url.BASE + "/holiday", holiday
-        ).then(data => {
-            console.log(data);
-            onGetHoliday()
-        }).catch(err => {
-            console.log(err);
-        })
-    };
+    
 
     const onGetHoliday = () => {
-        get(url.BASE + "/general-setting?key=businessName,logo,notifyText,showNotify, checkInColor, checkOutColor, masterUsername, masterPassword")
+        get(url.BASE + "/general-setting?key=businessName,logo,notifyText,showNotify, standByColor, checkInColor, checkOutColor, masterUsername, masterPassword")
             .then(data => {
                 console.log(data.data);
                 if (data.data.showNotify) {
@@ -119,6 +102,7 @@ const EditGeneral = props => {
                     setShowNoti(data.data.showNotify.settingValue);
                 }
                 setImageUrl(process.env.REACT_APP_API_HOST+data.data.logo.settingValue)
+                setStandByColor(data.data.standByColor.settingValue);
                 setCheckInColor(data.data.checkInColor.settingValue);
                 setCheckOutColor(data.data.checkOutColor.settingValue);
                 setMasterPassword(data.data.masterPassword.settingValue)
@@ -160,6 +144,7 @@ const EditGeneral = props => {
 
                     values.showNotify = values.showNotify.settingValue
 
+                    values.standByColor = standByColor
                     values.checkInColor = checkInColor
                     values.checkOutColor = checkOutColor
 
@@ -196,6 +181,7 @@ const EditGeneral = props => {
 
             values.showNotify = values.showNotify.settingValue
 
+            values.standByColor = standByColor
             values.checkInColor = checkInColor
             values.checkOutColor = checkOutColor
 
@@ -232,9 +218,9 @@ const EditGeneral = props => {
                     <Breadcrumbs title={props.t("General Settings")} breadcrumbItem={props.t("General Settings")} />
                     <Row>
                         <Col lg="12">
-                            <Button onClick={resetAllWhiteList} danger>
+                            {/* <Button onClick={resetAllWhiteList} danger>
                             {props.t("Reset whitelist!")}
-                            </Button>
+                            </Button> */}
                             <Card>
                                 
                                 <CardBody>
@@ -319,6 +305,21 @@ const EditGeneral = props => {
                                             }}
                                         >
                                             <Checkbox>{props.t("Show notify")}</Checkbox>
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            label={props.t("StandBy Screen color")}
+                                        >
+                                            {/* Block Picker from react-color and handling color on onChange event */}
+                                            <ChromePicker
+
+                                                disableAlpha={true}
+                                                color={standByColor}
+                                                onChange={(color) => {
+                                                    let colorStr = "rgb(" + color.rgb.r + "," + color.rgb.g + "," + color.rgb.b + ")"
+                                                    setStandByColor(colorStr)
+                                                }}
+                                            />
                                         </Form.Item>
 
                                         <Form.Item

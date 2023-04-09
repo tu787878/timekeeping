@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getEvents as onGetEvents } from "../../../store/actions"
 import EditTimeLogModal from "../EditTimeLogsModal"
 
-const TimeLogsTable = ({id, month, tr}) => {
+const TimeLogsTable = ({id, month, tr, userJob}) => {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
   const dispatch = useDispatch()
@@ -40,7 +40,7 @@ const TimeLogsTable = ({id, month, tr}) => {
       }}
     >
       <Table
-        columns={tableColumns(handleOpenEditModal, id, tr)}
+        columns={tableColumns(handleOpenEditModal, id, tr, userJob)}
         dataSource={events || []}
         scroll={{ }}
         pagination={false}
