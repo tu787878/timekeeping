@@ -187,13 +187,19 @@ const EmailSetting = props => {
                                         >
                                             <Input />
                                         </Form.Item>
-
                                         <Form.Item
                                             label={props.t("Send mail at date")}
-                                            name={["dateSendCalendar", "settingValue"]}
                                         >
-                                            <Input />
+                                            <Form.Item
+                                                name={["dateSendCalendar", "settingValue"]}
+                                                noStyle
+                                            >
+                                                <Input />
+                                            </Form.Item>
+                                            <p>{props.t("Email will send automatic at 12:00")}</p>
                                         </Form.Item>
+
+                                       
 
                                         <Form.Item
                                             label={props.t("Admin emails")}
