@@ -16,7 +16,7 @@ import {
 
 // TableContainer
 import { useParams } from "react-router-dom";
-import { Avatar, message } from "antd";
+import { Avatar, message, Select } from "antd";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -222,7 +222,7 @@ const EditProfile = props => {
                                     <Form form={form}
                                         name="basic"
                                         labelCol={{
-                                            span: 4,
+                                            span: 8,
                                         }}
                                         wrapperCol={{
                                             span: 12,
@@ -259,6 +259,53 @@ const EditProfile = props => {
                                         <Form.Item
                                             name={["userDetail", "address"]}
                                             label={props.t("Address")}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            name={["userDetail", "taxNumber"]}
+                                            label={props.t("Tax number")}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            name={["userDetail", "rentenNumber"]}
+                                            label={props.t("Rentensnummer")}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name={["userDetail", "insuranceNumber"]}
+                                            label={props.t("Insurance number")}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name={["userDetail", "insuranceProvider"]}
+                                            label={props.t("Insurance Provider")}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name={["userDetail", "passport"]}
+                                            label={props.t("Passport number")}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name={["userDetail", "residencePermit"]}
+                                            label={props.t("Residence permit")}
+                                        >
+                                            <Select>
+                                                <Select.Option value="UNLIMIT">{props.t("Permanent")}</Select.Option>
+                                                <Select.Option value="LIMIT">{props.t("Temporary")}</Select.Option>
+                                            </Select>
+                                        </Form.Item>
+                                        <Form.Item
+                                            name={["userDetail", "residencePermitDate"]}
+                                            label={props.t("Residence permit until")}
                                         >
                                             <Input />
                                         </Form.Item>

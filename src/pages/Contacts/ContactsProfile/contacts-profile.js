@@ -155,6 +155,34 @@ const ContactsProfile = props => {
                           <th scope="row">Location :</th>
                           <td>{info?.userDetail?.address}</td>
                         </tr>
+                        <tr>
+                          <th scope="row">Insurance Provider :</th>
+                          <td>{info?.userDetail?.insuranceProvider}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Insurance number :</th>
+                          <td>{info?.userDetail?.insuranceNumber}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Rentensnummer :</th>
+                          <td>{info?.userDetail?.rentenNumber}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Residence permit :</th>
+                          <td>{info?.userDetail?.residencePermit == "UNLIMIT" ? "Permanent" : (info?.userDetail?.residencePermit == "LIMIT" ? "Temporary" : "")}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Residence permit until :</th>
+                          <td>{info?.userDetail?.residencePermitDate}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Tax number :</th>
+                          <td>{info?.userDetail?.taxNumber}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Passport number :</th>
+                          <td>{info?.userDetail?.passport}</td>
+                        </tr>
                       </tbody>
                     </Table>
                   </div>

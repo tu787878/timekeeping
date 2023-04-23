@@ -76,9 +76,6 @@ const AccountForm = (props) => {
           <Form.Item
             label={props.t("Phone")}
             name="phone"
-            rules={[
-              { required: true, message: props.t("Please input phone number!")},
-            ]}
           >
             <Input />
           </Form.Item>
