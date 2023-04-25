@@ -18,7 +18,7 @@ const UserRequestTable = (props) => {
       console.log(data);
       setLoading(true)
       get(`${url.EDIT_CALENDAR}`, {
-        query: filter
+        params: filter
       }).then(res => {
         setData(res.data)
         setLoading(false)
@@ -27,7 +27,7 @@ const UserRequestTable = (props) => {
       })
   
       get(`${url.EDIT_CALENDAR}/size`, {
-        query: filter
+        params: filter
       }).then(res => {
         setSize(res.data)
         console.log(res.data);
@@ -39,7 +39,7 @@ const UserRequestTable = (props) => {
   useEffect(() => {
     setLoading(true)
     get(`${url.EDIT_CALENDAR}`, {
-      query: filter
+      params: filter
     }).then(res => {
       setData(res.data)
       setLoading(false)
@@ -48,7 +48,7 @@ const UserRequestTable = (props) => {
     })
 
     get(`${url.EDIT_CALENDAR}/size`, {
-      query: filter
+      params: filter
     }).then(res => {
       setSize(res.data)
       console.log(res.data);

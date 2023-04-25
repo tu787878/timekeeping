@@ -18,7 +18,7 @@ const AdminRequestTable = (props) => {
       console.log(data);
       setLoading(true)
       get(`${url.EDIT_CALENDAR}/admin`, {
-        query: filter
+        params: filter
       }).then(res => {
         setData(res.data)
         setLoading(false)
@@ -33,7 +33,7 @@ const AdminRequestTable = (props) => {
       console.log(data);
       setLoading(true)
       get(`${url.EDIT_CALENDAR}/admin`, {
-        query: filter
+        params: filter
       }).then(res => {
         setData(res.data)
         setLoading(false)
@@ -47,7 +47,7 @@ const AdminRequestTable = (props) => {
   useEffect(() => {
     setLoading(true)
     get(`${url.EDIT_CALENDAR}/admin`, {
-      query: filter
+      params: filter
     }).then(res => {
       console.log(res);
       setData(res.data)
@@ -58,7 +58,7 @@ const AdminRequestTable = (props) => {
 
     
     get(`${url.EDIT_CALENDAR}/admin/size`, {
-      query: filter
+      params: filter
     }).then(res => {
       setSize(res.data)
       console.log(res.data);
