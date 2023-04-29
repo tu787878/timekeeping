@@ -48,9 +48,9 @@ export const tableColumns = (handleOpenEditModal, id, tr, userJob) => [
     key: "total",
     dataIndex: "total",
     align: "center",
-    render: total => (
+    render: (total, record) => (
       <>
-        {toTime(total)}
+        {toTime(total)}{record.totalBreakTimes > 0 ? ("(-"+toTime(record.totalBreakTimes)+")") : ""}
       </>
     ),
   },
@@ -59,7 +59,7 @@ export const tableColumns = (handleOpenEditModal, id, tr, userJob) => [
     key: "regularTime",
     dataIndex: "regularTime",
     align: "center",
-    render: regularTime => (
+    render: (regularTime) => (
       <>
         {toTime(regularTime)}
       </>
