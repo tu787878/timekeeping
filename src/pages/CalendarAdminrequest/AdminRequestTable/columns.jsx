@@ -45,7 +45,7 @@ export const columns = (doAccept, doDenied, tr) => [
     dataIndex: "createdTime",
     key: "createdTime",
     align: "center",
-    render: (_, record) => <Moment fromNow>{record.createdTime}</Moment>,
+    render: (_, record) => <Moment format="MM/DD/YYYY h:mm">{record.createdTime}</Moment>,
   },
   {
     title: <b>{tr("Note")}</b>,

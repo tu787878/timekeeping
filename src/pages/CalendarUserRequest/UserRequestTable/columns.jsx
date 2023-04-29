@@ -44,7 +44,7 @@ export const columns = (doCancel, tr) => [
     key: "createdTime",
     align: "center",
     render: (_,record) => (
-      <Moment fromNow>{record.createdTime}</Moment>
+      <Moment format="MM/DD/YYYY hh:mm">{record.createdTime}</Moment>
     ),
   },
   {
