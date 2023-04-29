@@ -14,7 +14,7 @@ const RoleForm = (props) => {
       {/* <h4>2. Role</h4> */}
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item label={props.t("Role")} name="role">
+          <Form.Item label={props.t("Role")} name="role" rules={[{ required: true, message: props.t("Please input Role!") }]}>
             <Select placeholder="Select Role">
               <Option value="ADMIN">{props.t("Admin")}</Option>
               <Option value="EMPLOYEE">{props.t("Employee")}</Option>

@@ -96,7 +96,7 @@ const SidebarContent = props => {
         return (
           <AccessControl
             key={i}
-            allowedPermissions={[object.allowedPermissions]}
+            allowedPermissions={object.allowedPermissions}
             id={object.id}
           >
             <li>
@@ -111,7 +111,7 @@ const SidebarContent = props => {
         return (
           <AccessControl
             key={i}
-            allowedPermissions={[object.allowedPermissions]}
+            allowedPermissions={object.allowedPermissions}
             id={object.id}
           >
             <li>
@@ -126,7 +126,7 @@ const SidebarContent = props => {
       return (
         <AccessControl
           key={i}
-          allowedPermissions={[object.allowedPermissions]}
+          allowedPermissions={object.allowedPermissions}
           id={object.id}
         >
           <li>
@@ -139,7 +139,7 @@ const SidebarContent = props => {
                 return (
                   <AccessControl
                     key={ic}
-                    allowedPermissions={[child.allowedPermissions]}
+                    allowedPermissions={child.allowedPermissions}
                     id={child.id}
                   >
                     <li>
@@ -169,7 +169,7 @@ const SidebarContent = props => {
               })
             }
             <AccessControl
-              allowedPermissions={[""]}
+              allowedPermissions={["admin"]}
               id="semi_admin"
             >
               <li className="menu-title">Admin</li>

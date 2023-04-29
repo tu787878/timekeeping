@@ -5,7 +5,7 @@ const authProtectedContent = [
   {
     path: "/dashboard",
     id: "Dashboard",
-    allowedPermissions: ["view"],
+    allowedPermissions: [],
     className: "bx bx-home-circle",
     contextId: "Dashboard",
     children: [],
@@ -18,7 +18,7 @@ const authProtectedContent = [
   {
     path: "/#",
     id: "Calendar",
-    allowedPermissions: ["view"],
+    allowedPermissions: [],
     className: "bx-calendar",
     contextId: "Calendar",
     children: [
@@ -26,7 +26,7 @@ const authProtectedContent = [
         path: "/calendar",
         id: "Calendar",
         contextId: "Calendar",
-        allowedPermissions: ["view"],
+        allowedPermissions: [],
         className: "",
         children: [],
       },
@@ -42,7 +42,7 @@ const authProtectedContent = [
         path: "/calendar-user-request",
         id: "CalendarUserRequest",
         contextId: "CalendarUserRequest",
-        allowedPermissions: ["view"],
+        allowedPermissions: [],
         className: "",
         children: [],
       },
@@ -56,14 +56,14 @@ const authProtectedContent = [
   {
     path: "/#",
     id: "Project",
-    allowedPermissions: ["view"],
+    allowedPermissions: [],
     contextId: "Projects",
     className: "bx-briefcase-alt-2",
     children: [
       {
         path: "/projects-list",
         id: "Project",
-        allowedPermissions: ["view"],
+        allowedPermissions: [],
         contextId: "Projects List",
         className: "",
         children: [],
@@ -71,7 +71,7 @@ const authProtectedContent = [
       {
         path: "/projects-create",
         id: "Project",
-        allowedPermissions: ["edit"],
+        allowedPermissions: [],
         contextId: "Create New",
         className: "",
         children: [],
@@ -83,7 +83,7 @@ const authProtectedContent = [
   {
     path: "/#",
     id: "Task",
-    allowedPermissions: ["view"],
+    allowedPermissions: [],
     className: "bx-task",
     contextId: "Tasks",
     children: [
@@ -91,7 +91,7 @@ const authProtectedContent = [
         path: "/tasks-list",
         id: "Task",
         contextId: "Task List",
-        allowedPermissions: ["view"],
+        allowedPermissions: [],
         className: "",
         children: [],
       },
@@ -99,7 +99,7 @@ const authProtectedContent = [
         path: "/tasks-create",
         id: "Task",
         contextId: "Create Task",
-        allowedPermissions: ["edit"],
+        allowedPermissions: [],
         className: "",
         children: [],
       },

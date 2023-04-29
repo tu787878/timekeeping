@@ -154,14 +154,14 @@ const Calender = (props) => {
                         ) : (
                           <div className="avatar-md">
                             <span className="avatar-title rounded-circle bg-info text-white font-size-24">
-                              {user?.userDetail.lastName.charAt(0)}
+                              {user?.userDetail?.lastName ? user?.userDetail?.lastName?.charAt(0) : "T"}
                             </span>
                           </div>
                         )}
                       </div>
                       <h5 className="font-size-15 text-truncate">
                         {user?.userDetail?.firstName}{" "}
-                        {user?.userDetail?.lastName}
+                        {user?.userDetail?.lastName}{" "}
                       </h5>
 
                       <Collapse size="small" bordered={false}>
