@@ -185,7 +185,7 @@ const EmailSetting = props => {
                                             label={props.t("Calendar Message")}
                                             name={["emailCalendarMessage", "settingValue"]}
                                         >
-                                            <Input />
+                                            <TextArea rows={4}/>
                                         </Form.Item>
                                         <Form.Item
                                             label={props.t("Send mail at date")}
@@ -196,7 +196,7 @@ const EmailSetting = props => {
                                             >
                                                 <Input />
                                             </Form.Item>
-                                            <p>{props.t("Email will send automatic at 12:00")}</p>
+                                            <p>{props.t("Email will send automatic at 17:00")}</p>
                                         </Form.Item>
 
                                        
@@ -208,7 +208,7 @@ const EmailSetting = props => {
                                                 name={["adminEmails", "settingValue"]}
                                                 noStyle
                                             >
-                                                <TextArea placeholder={props.t("Each line for an email!")}/>
+                                                <TextArea rows={4} placeholder={props.t("Each line for an email!")}/>
                                             </Form.Item>
                                             
                                             <p>{props.t("Each line for an email!")}</p>

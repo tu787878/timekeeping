@@ -24,7 +24,7 @@ const checkPermissions = (accountRole = {}, allowedPermissions, id) => {
     localStorage.removeItem("authUser");
     setTimeout(() => {
       window.location.href = "/login";
-    }, 1000)
+    }, 0)
   })
   return true;
 
@@ -38,7 +38,7 @@ const checkWhiteList = () => {
       if(data.code == 1) {
         setTimeout(() => {
           window.location.href = "/authentication";
-        }, 1000)
+        }, 50)
         return false
       }
       else return true;
