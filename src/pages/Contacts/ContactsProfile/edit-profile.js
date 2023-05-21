@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
+import dayjs from "dayjs"
 
 import {
     Card,
@@ -16,7 +17,7 @@ import {
 
 // TableContainer
 import { useParams } from "react-router-dom";
-import { Avatar, message, Select } from "antd";
+import { Avatar, message, Select, DatePicker } from "antd";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -307,8 +308,10 @@ const EditProfile = props => {
                                             name={["userDetail", "residencePermitDate"]}
                                             label={props.t("Residence permit until")}
                                         >
-                                            <Input />
+                                            <Input placeholder="dd.mm.yyyy"/>
+                                            {/* <DatePicker format={"DD.MM.YYYY"}/> */}
                                         </Form.Item>
+                                        
 
                                         <Form.Item
                                             wrapperCol={{

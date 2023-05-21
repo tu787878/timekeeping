@@ -11,7 +11,7 @@ import { GET_LOCATIONS } from "../../../helpers/url_helper"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
-import { Button, Table, Tag, Space, Modal, Form, Input } from "antd"
+import { Button, Table, Tag, Space, Modal, Form, Input, Select } from "antd"
 import {
   MinusCircleOutlined,
   PlusOutlined,
@@ -45,8 +45,14 @@ const LocationManager = props => {
     get(`${GET_LOCATIONS}`)
       .then(res => {
         if(res){
+          res.data.forEach(element => {
+            if(element.timeZone != null && element.timeZone != "")
+            {
+              element.timeZone = element.timeZone.replace("/", "")
+            }
+          });
+          console.log(res.data);
           setLocation(res.data);
-          console.log(locations);
         }
         else{
           setLocation([]);
@@ -58,11 +64,20 @@ const LocationManager = props => {
   }
 
   const updateLocation = location => {
+    if(location.timeZone != "" && location.timeZone != null){
+      location.timeZone = timeZoneIds.find(x => x.value === location.timeZone).label;
+    }
+    console.log(location);
     put(`${GET_LOCATIONS}/${location.id}`, location)
       .then(res => {
         if(res){
+          res.data.forEach(element => {
+            if(element.timeZone != null && element.timeZone != "")
+            {
+              element.timeZone = element.timeZone.replace("/", "")
+            }
+          });
           setLocation(res.data);
-          console.log(locations);
         }
         else{
           setLocation([]);
@@ -74,11 +89,20 @@ const LocationManager = props => {
   }
 
   const addLocation = location => {
+    if(location.timeZone != "" && location.timeZone != null){
+      location.timeZone = timeZoneIds.find(x => x.value === location.timeZone).label;
+    }
+    console.log(location);
     post(`${GET_LOCATIONS}`, location)
       .then(res => {
         if(res){
+          res.data.forEach(element => {
+            if(element.timeZone != null && element.timeZone != "")
+            {
+              element.timeZone = element.timeZone.replace("/", "")
+            }
+          });
           setLocation(res.data);
-          console.log(locations);
         }
         else{
           setLocation([]);
@@ -93,8 +117,13 @@ const LocationManager = props => {
     del(`${GET_LOCATIONS}/${location.id}`)
       .then(res => {
         if(res){
+          res.data.forEach(element => {
+            if(element.timeZone != null && element.timeZone != "")
+            {
+              element.timeZone = element.timeZone.replace("/", "")
+            }
+          });
           setLocation(res.data);
-          console.log(locations);
         }
         else{
           setLocation([]);
@@ -172,6 +201,7 @@ const LocationManager = props => {
     },
   }
 
+  const timeZoneIds = Intl.supportedValuesOf('timeZone').map(e => ({value: e.replace("/", ""), label: e }))
   const columns = [
     {
       title: props.t("Name"),
@@ -185,6 +215,15 @@ const LocationManager = props => {
       dataIndex: "description",
       key: "description",
       sorter: (a, b) => a.description.localeCompare(b.description),
+    },
+    {
+      title: props.t("Timezone"),
+      dataIndex: "timeZone",
+      key: "timeZone",
+      render: (record, _) => {
+        return (record != "" && record != null) ?
+          <div>{timeZoneIds.find(x => x.value === record) ? timeZoneIds.find(x => x.value === record).label : ""}</div> : ""
+      }
     },
     {
       title: props.t("Action"),
@@ -237,6 +276,16 @@ const LocationManager = props => {
           </Form.Item>
           <Form.Item name="description" label={props.t("Description")}>
             <Input.TextArea />
+          </Form.Item>
+          <Form.Item name="timeZone" label={props.t("TimeZone")}>
+            <Select
+              options={timeZoneIds}
+              showSearch
+              filterOption={(input, option) => (option?.label ?? '').includes(input)}  
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+              }
+              />
           </Form.Item>
         </Form>
       </Modal>
