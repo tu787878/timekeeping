@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Modal, Button, Form, DatePicker, Radio, Input, Select } from "antd"
+import { Modal, Button, Form, DatePicker, Radio, Input, Select, InputNumber } from "antd"
 import moment from "moment"
 import { withTranslation } from "react-i18next";
 import { get, post } from "../../helpers/api_helper"
@@ -23,7 +23,7 @@ const LeaveDayModal = (props) => {
       data.toDate = values.date[1].format("DD/MM/YYYY")
     delete data.date
     // call api...
-    if (values.type == undefined) data.type = 1
+    if (values.type == undefined) data.type = 8
 
     data.timeLogs = []
     data.note = values.note
@@ -79,12 +79,8 @@ const LeaveDayModal = (props) => {
                             </Option> */}
             </Select>
           </Form.Item>
-          <Form.Item name="type" label={props.t("")}>
-            <Radio.Group defaultValue={1}>
-              <Radio value={2}>{props.t("Half day")}</Radio>
-              <Radio defaultChecked={true} value={1}>{props.t("Full day")}</Radio>
-              <Radio value={0} disabled={true}>{props.t("Custom")}</Radio>
-            </Radio.Group>
+          <Form.Item name="type" label={props.t("Hours")}>
+            <InputNumber min={1} defaultValue={8}/>
           </Form.Item>
           <Form.Item name="note" label={props.t("Note")}>
             <TextArea />
