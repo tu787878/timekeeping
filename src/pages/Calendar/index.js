@@ -186,7 +186,7 @@ const Calender = (props) => {
                     </Col>
                     <Col></Col>
                     <Col>
-                      <LeaveDayModal />
+                      {id === undefined ? <LeaveDayModal /> : null}
                     </Col>
                     <Col>
                       <ExportCalendarModel />
